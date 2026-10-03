@@ -3,6 +3,7 @@
   display: flex;
 }
 .sidebar {
+  overflow-y: auto;
   width: 224px;
   position: fixed;
   top: 0;
@@ -619,4 +620,25 @@
   .foundationMap > div:not(.mapLine) {
     transform: none !important;
   }
+}
+.progressDrawer {
+  margin-bottom: 20px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.progressDrawer > summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.progressDrawer > summary span {
+  margin-left: auto;
+  font-family: var(--code);
+  color: var(--ink);
 }

@@ -9,3 +9,7 @@
 - 2026-10-03: Use patched mathjs 15.2 or newer after the dependency audit identified unsafe setters in version 14; no arbitrary user expressions are evaluated.
 - 2026-10-03: Compose step movement as an offset from each layer layout; a shared mutable ScenePlayer runs one requestAnimationFrame loop and both renderers subscribe without React frame updates. Local SDF fonts keep 3D labels offline.
  - User extension (2026-10-03): add local authored Philosophy lessons and an equation graphing workspace; retain milestone gates, finish required labs before unlocking them, and prepare the repository for the user's GitHub push.
+ - M3: progress awards have stable completion identities; daily dial tasks are date scoped, while XP stays deduplicated across replay and reload.
+ - Echoes use local calendar days and preserve local wall-clock hour across DST; Good advances to 3/7/14 days and Again returns to tomorrow.
+ - M3: completed Predict reveals persist separately from XP, so hinted reveals restore correctly after notelet Jump without awarding credit.
+ - GitHub Pages uses relative assets, hash routes and an Actions workflow; the user will push and enable Pages in repository settings.

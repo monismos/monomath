@@ -21,6 +21,10 @@ The app has no accounts, analytics, server, AI calls, or runtime CDN requests. F
 
 ## Architecture
 
+For GitHub, push the repository including `package-lock.json` and `.github/workflows`. In repository Settings → Pages, choose **GitHub Actions**. The included Pages workflow runs the quality gate and publishes `dist/` on pushes to `main` or `master`, or by manual dispatch. `node_modules`, generated builds, test reports and environment files are ignored. Keep local progress and notelet export files somewhere private if they contain personal study notes.
+
+Your GitHub repository name can be anything: Vite uses relative assets and the app uses hash routes. You can also keep Pages disabled and use the source repository without publishing.
+
 ```mermaid
 flowchart LR
   Learner --> Shell[React workshop]

@@ -37,11 +37,11 @@ Derived from `docs/BRIEF.md` §§6–10, §§12–15. This is a review plan; unc
 
 ## Remaining M2 acceptance gaps from read-only review
 
-The latest implementation addresses the earlier single-draft overwrite, unrelated-pointer click suppression, and local-point projection problems. The following still need attention or direct evidence; no source was changed in this review.
+This is a review snapshot, not the live milestone tracker; use PLAN.md for the latest gate evidence. The implementation addresses the earlier single-draft overwrite, unrelated-pointer click suppression, and local-point projection problems. The following require current acceptance evidence; no source was changed in this review.
 
 ### Import validation is incomplete
 
-`core/notelets/types.ts` accepts notes without `context.labId`, `screen`, `theme` or `selection`, and `color in noteColors` accepts inherited keys such as `__proto__`. The current types-test fixture omits the consumed context fields. Summary’s “By lab” sort calls `a.context.labId.localeCompare(...)`, so two imported notes with missing lab ids can pass validation and then crash rendering. Validate the complete consumed schema, anchor type and finite local point, supported enums, integer/nonnegative step and bounded dial; use own-property colour membership. Reject the entire invalid import before changing stored notes, including unsupported export versions.
+The initial review found missing consumed context fields and inherited colour keys; a subsequent source read confirms those fields, supported themes, integer step, bounded dial, anchor type/local point and own-property colours are now checked. Keep negative tests for incomplete context, invalid optional display fields, invalid image data and unsupported export versions. Reject the entire invalid import before changing stored notes. Source inspection alone does not verify a complete import/export interaction.
 
 ### Carousel keyboard and flat-view navigation need completion
 
@@ -60,3 +60,35 @@ The surface-matrix e2e uses `page.mouse` for text, empty space, canvas, settings
 - [ ] Saved thumbnails are actually displayed in summary/recall cards when available; missing thumbnails have a clear useful context fallback. The optional topic chip can be removed as requested.
 - [ ] Hold duration 350–900 ms is configurable, cancellation clears charging/pressed state, normal clicks still work immediately after a hold, and native input long-press remains intact.
 
+## Independent M3 source audit (2026-10-04)
+
+Files were inspected while their owning agents were still implementing M3. No tests were run by this audit and no acceptance box is marked verified.
+
+Observed sound structure:
+
+- Awards use persisted `kind:key` identities; notelet XP counts positive awards by local day.
+- `localDay` uses local calendar components; SRS uses local-day addition and deduplicated successful date keys. Echo rating checks that the item is due before rescheduling it.
+- `isMastered` requires all three facets plus two distinct Echo days.
+- Quiet renders an icon instead of the Three rig; off returns before the active guide component mounts. Normal rigs use demand rendering, and gaze reads renderer-projected entities.
+- Progress export contains a plain versioned data object; callback providers live outside that object. This is the correct separation for JSON persistence.
+
+Concrete repair requests sent to the motivation owner:
+
+1. Raw `set(importedValue)` and raw hydration merge permit unvalidated extra JSON keys to replace store methods, even when required fields are valid. Import/hydration must copy only the closed GameData DTO.
+2. A huge finite XP value can drive an unbounded level-counting loop. Use bounded/algebraic level calculation and a documented sensible XP limit. A huge finite dueAt is not a valid Date and can crash `toISOString`; validate timestamp ranges, real calendar dates/weeks, unique Echo ids and integer review counts.
+3. The storage adapter’s failure notification must be one-shot. Queuing `useGame.setState({unavailable:true})` after every failed persisted write can recursively fail/persist/queue forever. Storage-unavailable mode must remain responsive.
+
+Integration cautions sent to the parent/guide owner:
+
+- Award Watch after the final reveal/checkpoints, not merely mounting a lesson. A subsequent source read confirms the parent added a final-step/unblocked guard; test the real completion flow.
+- A Trophy Shelf Apply action must visibly apply the persisted selected cosmetic. A separate bond-only local hat toggle cannot fulfill that action’s effect unless the relationship is explicit.
+- Direct tips/facts now claim the same dialogue cooldown; keep a regression test so manual guide taps do not bypass the eight-second event rule.
+
+Focused verification needed after the repairs:
+
+- [ ] Import/hydrate a valid JSON roundtrip; unknown method-like fields cannot replace callbacks.
+- [ ] Reject huge XP/timestamps, malformed dates, duplicate Echo ids and malformed schedules without mutating prior progress.
+- [ ] Mock throwing localStorage; one award remains usable, one unavailable notification appears and the microtask queue settles.
+- [ ] Repeat one completion before/after reload; XP/facets do not duplicate. Six distinct notelets award only the first five that day.
+- [ ] Fake-clock SRS tests exercise Again/Good, DST/local midnight and mastery on two genuine dates.
+- [ ] Quiet/off stop the Three rig, a gaze cue tracks the real object in both dimensions, and an earned/applied cosmetic changes the visible guide.

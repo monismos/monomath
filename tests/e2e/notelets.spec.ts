@@ -75,13 +75,11 @@ for (const count of [1, 2, 7, 40])
       },
       anchor: { type: 'screen', nx: 0.5, ny: 0.5 },
     }));
-    await page
-      .locator('input[type=file]')
-      .setInputFiles({
-        name: 'notes.json',
-        mimeType: 'application/json',
-        buffer: Buffer.from(JSON.stringify({ version: 1, notes })),
-      });
+    await page.getByRole('dialog',{name:'Your little collection of understanding'}).locator('input[type=file]').setInputFiles({
+      name: 'notes.json',
+      mimeType: 'application/json',
+      buffer: Buffer.from(JSON.stringify({ version: 1, notes })),
+    });
     await expect(
       page.getByRole('region', { name: 'Notelet carousel' }).getByRole('article'),
     ).toHaveCount(Math.min(count, 15));
@@ -111,7 +109,7 @@ test('hold works over text, empty space, canvas, settings and carousel', async (
     if (area === 'empty')
       point = { x: page.viewportSize()!.width - 60, y: page.viewportSize()!.height - 50 };
     if (area === 'canvas') {
-      const r = (await page.locator('canvas').boundingBox())!;
+      const r = (await page.locator('canvas[data-stage-canvas]').boundingBox())!;
       point = { x: r.x + r.width / 2, y: r.y + r.height / 2 };
     }
     if (area === 'settings') {
@@ -127,22 +125,22 @@ test('hold works over text, empty space, canvas, settings and carousel', async (
       point = { x: r.x + 12, y: r.y + 12 };
     }
     const cameraBefore =
-      area === 'canvas' ? await page.locator('canvas').getAttribute('data-camera-position') : null;
+      area === 'canvas'
+        ? await page.locator('canvas[data-stage-canvas]').getAttribute('data-camera-position')
+        : null;
     if (isMobile) {
       await page.evaluate(({ x, y }) => {
-        document
-          .elementFromPoint(x, y)
-          ?.dispatchEvent(
-            new PointerEvent('pointerdown', {
-              bubbles: true,
-              pointerId: 1,
-              pointerType: 'touch',
-              isPrimary: true,
-              button: 0,
-              clientX: x,
-              clientY: y,
-            }),
-          );
+        document.elementFromPoint(x, y)?.dispatchEvent(
+          new PointerEvent('pointerdown', {
+            bubbles: true,
+            pointerId: 1,
+            pointerType: 'touch',
+            isPrimary: true,
+            button: 0,
+            clientX: x,
+            clientY: y,
+          }),
+        );
       }, point);
       await expect(page.getByRole('dialog', { name: 'Your notelet' })).toBeVisible();
       await page.evaluate(({ x, y }) => {
@@ -165,7 +163,10 @@ test('hold works over text, empty space, canvas, settings and carousel', async (
       await page.mouse.up();
     }
     if (area === 'canvas')
-      await expect(page.locator('canvas')).toHaveAttribute('data-camera-position', cameraBefore!);
+      await expect(page.locator('canvas[data-stage-canvas]')).toHaveAttribute(
+        'data-camera-position',
+        cameraBefore!,
+      );
     await save(page, `A thought from ${area}`);
     if (area === 'settings' || area === 'carousel')
       await page.getByRole('button', { name: 'Close', exact: true }).click();

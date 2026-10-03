@@ -10,6 +10,14 @@ import { useNotes } from './core/notelets/store';
 const Workshop = lazy(() => import('./ui/Workshop'));
 import Notelets from './ui/Notelets';
 import { installAnchorIds } from './core/a11y/anchors';
+import { Onboarding } from './ui/Onboarding';
+import { useLesson } from './core/scene/store';
+import { installProgressEvents } from './core/integration/progressEvents';
+import { restoreNoteContext } from './core/notelets/context';
+import Progress from './ui/Progress';
+import { useGame } from './core/gamification/store';
+const Echoes = lazy(() => import('./ui/Echoes'));
+const TrophyShelf = lazy(() => import('./ui/TrophyShelf'));
 
 const domains = [
   { name: 'Mathematics', symbol: '∑', color: '#2F6BFF' },
@@ -20,7 +28,9 @@ const domains = [
 ];
 function App() {
   const settings = useSettings();
+  const xp = useGame((state) => state.xp);
   useEffect(installAnchorIds, []);
+  useEffect(installProgressEvents, []);
   const notelets = useNotes();
   useEffect(() => {
     const restore = (event: Event) => {
@@ -86,6 +96,20 @@ function App() {
             {strings.notes}
             {notelets.notes.length > 0 && <span>{notelets.notes.length}</span>}
           </button>
+          <button
+            onClick={() => navigate('echoes')}
+            className={page === 'echoes' ? styles.navActive : ''}
+          >
+            <Icon name="RotateCcw" />
+            Echoes
+          </button>
+          <button
+            onClick={() => navigate('trophies')}
+            className={page === 'trophies' ? styles.navActive : ''}
+          >
+            <Icon name="Trophy" />
+            Trophy shelf
+          </button>
         </nav>
         <div className={styles.railSection}>Explore a little</div>
         <div className={styles.domains}>
@@ -132,7 +156,15 @@ function App() {
           </button>
           <div className={styles.breadcrumb}>
             Your workshop <Icon name="ChevronRight" size={14} />
-            <strong>{page === 'map' ? 'Monomap' : 'Fractions'}</strong>
+            <strong>
+              {page === 'map'
+                ? 'Monomap'
+                : page === 'trophies'
+                  ? 'Trophy shelf'
+                  : page === 'echoes'
+                    ? 'Echoes'
+                    : 'Fractions'}
+            </strong>
           </div>
           <div className={styles.topActions}>
             <button
@@ -164,7 +196,45 @@ function App() {
           </div>
         </header>
         <main id="main" className={styles.main}>
-          {page === 'map' ? (
+          {page === 'workshop' && <Onboarding />}
+          <details className={styles.progressDrawer}>
+            <summary>
+              <Icon name="Zap" size={15} />
+              Learning progress <span>{xp} XP</span>
+            </summary>
+            <Progress
+              onEchoes={() => navigate('echoes')}
+              onTrophies={() => navigate('trophies')}
+              onTask={(target) => {
+                navigate('workshop');
+                if (target === 'notelet') notelets.set({ place: true });
+                else
+                  setTimeout(
+                    () =>
+                      document
+                        .querySelector<HTMLElement>(
+                          target === 'dial' ? '#unfold-dial' : '[data-entity-id]',
+                        )
+                        ?.focus(),
+                    100,
+                  );
+              }}
+            />
+          </details>
+          {page === 'echoes' ? (
+            <Suspense fallback={<p>Opening your Echoes…</p>}>
+              <Echoes
+                onJumpNote={(id) => {
+                  const note = useNotes.getState().notes.find((n) => n.id === id);
+                  if (note) restoreNoteContext(note);
+                }}
+              />
+            </Suspense>
+          ) : page === 'trophies' ? (
+            <Suspense fallback={<p>Opening your trophy shelf…</p>}>
+              <TrophyShelf />
+            </Suspense>
+          ) : page === 'map' ? (
             <>
               <div className={styles.pageTitle}>
                 <div>
@@ -252,6 +322,73 @@ function App() {
               <option value="200">200%</option>
             </select>
           </label>
+          <label className={styles.settingRow}>
+            Learner level
+            <select
+              value={settings.level}
+              onChange={(e) => {
+                const level = e.target.value as typeof settings.level;
+                settings.set({ level });
+                useLesson
+                  .getState()
+                  .set({ dial: level === 'explorer' ? 0 : level === 'scholar' ? 1 : 2 });
+              }}
+            >
+              <option value="explorer">Explorer</option>
+              <option value="scholar">Scholar</option>
+              <option value="researcher">Researcher</option>
+            </select>
+          </label>
+          <label className={styles.settingRow}>
+            Your guide
+            <select
+              value={settings.mascot}
+              onChange={(e) => settings.set({ mascot: e.target.value as typeof settings.mascot })}
+            >
+              {['auto', 'moni', 'lumi', 'sig', 'vex', 'bit', 'quiet', 'off'].map((value) => (
+                <option key={value} value={value}>
+                  {value === 'auto'
+                    ? 'Choose for this subject'
+                    : value[0].toUpperCase() + value.slice(1)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={styles.settingRow}>
+            Guide dock
+            <select
+              value={settings.dock}
+              onChange={(e) => settings.set({ dock: e.target.value as 'left' | 'right' })}
+            >
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+            </select>
+          </label>
+          <label className={styles.settingRow}>
+            Soft sounds
+            <input
+              type="checkbox"
+              checked={settings.sound}
+              onChange={(e) => settings.set({ sound: e.target.checked })}
+            />
+          </label>
+          <label className={styles.settingRow}>
+            Read guide speech
+            <input
+              type="checkbox"
+              checked={settings.speech}
+              onChange={(e) => settings.set({ speech: e.target.checked })}
+            />
+          </label>
+          <button
+            onClick={() => {
+              settings.set({ tutorialComplete: false, tutorialStep: 0 });
+              setDialog(null);
+              navigate('workshop');
+            }}
+          >
+            Replay workshop tour
+          </button>
           <p className={styles.privacy}>
             Notelet hold: {settings.holdDuration} ms
             <input

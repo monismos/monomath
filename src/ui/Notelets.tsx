@@ -502,10 +502,12 @@ function Composer({ x, y, note }: { x: number; y: number; note: Notelet }) {
   const save = async () => {
     if (!draft.text.trim()) return;
     saved.current = true;
-    await notes.upsert({ ...draft, text: draft.text.trim(), updatedAt: Date.now() });
+    const isNew = !notes.notes.some((note) => note.id === draft.id);
+    const note = { ...draft, text: draft.text.trim(), updatedAt: Date.now() };
+    await notes.upsert(note);
     await deleteDraft(draft.id);
     useNotes.getState().set({ composer: null });
-    window.dispatchEvent(new Event('monomath:note-saved'));
+    window.dispatchEvent(new CustomEvent('monomath:note-saved', { detail: { note, isNew } }));
   };
   return (
     <dialog

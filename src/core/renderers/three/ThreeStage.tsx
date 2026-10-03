@@ -156,6 +156,7 @@ interface Props {
 }
 function Scene({ state, player, selection, onSelect, flat, reset, onLost }: Props) {
   const { gl, invalidate, camera } = useThree();
+  gl.domElement.dataset.stageCanvas = 'true';
   useFrame(() => {
     gl.domElement.dataset.cameraPosition = camera.position
       .toArray()

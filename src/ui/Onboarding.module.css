@@ -1,0 +1,82 @@
+.tour {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--mat);
+  border-radius: 7px;
+  margin: 0 0 22px;
+}
+.eye {
+  font-size: 26px;
+  color: var(--mat);
+}
+.tour strong {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 600;
+}
+.tour p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 5px;
+  max-width: 65ch;
+}
+.actions {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 5px;
+  margin-left: auto;
+}
+.actions button {
+  border: 0;
+  border-radius: 5px;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 36px;
+  padding: 8px 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.actions button:last-child {
+  background: none;
+  color: var(--muted);
+  font-size: 11px;
+}
+.options {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  margin-top: 10px;
+}
+.options label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  min-height: 44px;
+}
+@media (max-width: 760px) {
+  .tour {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px;
+  }
+  .tour > div:not(.actions) {
+    flex: 1;
+  }
+  .actions {
+    flex-direction: row;
+    width: 100%;
+  }
+  .actions button {
+    min-height: 44px;
+    flex: 1;
+  }
+}

@@ -5,7 +5,7 @@ Status: pending / in progress / verified. A milestone is verified only after its
 - [x] M0 Foundation — verified: tooling, two live themes, persisted settings, routing, PWA, storage, accessibility, local fonts.
 - [x] M1 Dual-render engine — verified: shared SceneSpec, deterministic timeline, tween, 2D/3D, dial, tethers, player, quality probe.
 - [x] M2 Notelets and summary — verified: global hold on desktop/touch, anchors, safe multi-drafts, awaited save, context restoration, ring/helix/flat/grid/list, filters, inertia, exports.
-- [ ] M3 Mascots and motivation — pending: one-eyed guides, local XP, gems, SRS, trophies, first-run tutorial.
+- [x] M3 Mascots and motivation — verified: five one-eyed guides, live gaze, quiet/off, cosmetic application, local XP ledger, facets, daily tasks, streak/freeze, fake-clock-tested SRS, Trophy Shelf and tutorial.
 - [ ] M4 Fractions vertical slice — pending: all operations, predictions, scene-verified challenges, boss, bridges, contributor guide.
 - [ ] M5 Remaining MUST labs — pending, in the exact order below.
   - [ ] Sets — pending.
@@ -62,4 +62,4 @@ Status: pending / in progress / verified. A milestone is verified only after its
 
 ## Exact next actions
 
-M0–M2 pass npm run check (13 unit tests); 24 production desktop/mobile e2e tests pass, including touch on all hold surfaces and unchanged camera position. Shell JS: 66.7 KB gzip; lazy Three chunk: 271.1 KB gzip. Next: M3 local award ledger, pure SRS scheduler, gems, daily tasks, Trophy Shelf, three one-eyed guide rigs and first-run tutorial. User additions remain required: a local Philosophy lesson authoring area and equation workspace for explicit/implicit graphs and surfaces; implement these alongside the completed learning loop, with truthful unsupported-input guidance.
+M0–M3 pass npm run check (42 unit/component tests); 26 production desktop/mobile e2e tests pass, including the connected prediction/notelet/Echo flow. Shell JS: 75.3 KB gzip; lazy shared Three dependencies: 221.1 KB gzip plus stage50.5 KB. Next: M4 Fractions solver and six worked families, same-value pie/bar/stack models, seeded scene proof validators and multi-part Boss, generic Problem Bar and contributor guide. User additions remain required: a local Philosophy lesson authoring area and equation workspace for explicit/implicit graphs and surfaces; implement these beside the completed learning loop, with truthful unsupported-input guidance. Remaining MUST labs stay locked until their full definition of done verifies, in the listed M5 order.

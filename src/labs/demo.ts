@@ -67,6 +67,17 @@ export const demo: SceneSpec = {
       ops: [{ t: 'tween', id: 'slice-3', to: { pos: [1, 0.08, 1] }, ms: 450 }],
       tethers: [tether, { token: 'whole', entities: ['slice-3'], color: 'mint' }],
       gaze: ['slice-3'],
+      predict: {
+        kind: 'choice',
+        prompt: 'If one quarter slides aside, how much remains?',
+        options: ['1/4', '3/4', '4/4'],
+        check: (answer) => answer === '3/4',
+        hints: [
+          'Count the slices that stay.',
+          'Three of the four equal pieces stay.',
+          'Three quarters remain: 3/4.',
+        ],
+      },
       aria: 'Three quarters remain. One quarter slides aside.',
     },
     {

@@ -1,0 +1,161 @@
+.dock {
+  position: fixed;
+  bottom: 58px;
+  width: 118px;
+  z-index: 15;
+  color: var(--ink);
+}
+.left {
+  left: 234px;
+}
+.right {
+  right: 22px;
+}
+.rig {
+  display: block;
+  width: 118px;
+  height: 118px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 28px;
+  touch-action: none;
+  transform: translateY(calc(var(--breathe, 0) * -45px));
+}
+.rig > div {
+  width: 118px;
+  height: 118px;
+}
+.svg {
+  width: 100%;
+  height: 100%;
+}
+.name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font: 600 12px var(--display);
+}
+.name button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+}
+.bubble {
+  position: absolute;
+  width: 205px;
+  bottom: 151px;
+  left: 0;
+  border: 1px solid var(--rule);
+  border-radius: 12px 12px 12px 2px;
+  background: var(--surface);
+  box-shadow: 0 5px 18px #10201c18;
+  padding: 12px 14px;
+  font: 14px/1.4 var(--display);
+}
+.right .bubble {
+  left: auto;
+  right: 0;
+  border-radius: 12px 12px 2px 12px;
+}
+.menu {
+  position: absolute;
+  bottom: 44px;
+  left: 100%;
+  width: 188px;
+  padding: 7px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  box-shadow: 0 5px 18px #10201c18;
+}
+.right .menu {
+  right: 100%;
+  left: auto;
+}
+.menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  width: 100%;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  text-align: left;
+  padding: 8px;
+  font-size: 13px;
+}
+.menu button:hover {
+  background: var(--paper);
+}
+.menu small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  padding: 7px;
+}
+.quiet {
+  width: 88px;
+}
+.quiet .rig {
+  width: 44px;
+  height: 44px;
+  margin-inline: auto;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  display: grid;
+  place-items: center;
+}
+.spotlight {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  pointer-events: none;
+}
+@media (max-width: 760px) {
+  .dock {
+    position: absolute;
+    width: 66px;
+    top: 303px;
+    bottom: auto;
+  }
+  .left {
+    left: 25px;
+  }
+  .right {
+    right: 25px;
+  }
+  .rig,
+  .rig > div {
+    width: 66px;
+    height: 66px;
+  }
+  .name {
+    gap: 3px;
+    font-size: 10px;
+  }
+  .name button {
+    width: 44px;
+    height: 44px;
+  }
+  .bubble {
+    width: 195px;
+    bottom: 114px;
+    font-size: 13px;
+  }
+  .menu {
+    width: 180px;
+    bottom: 0;
+  }
+  .quiet {
+    width: 76px;
+  }
+}

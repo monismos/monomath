@@ -6,9 +6,11 @@ test('dial and step survive 2D/3D changes', async ({ page }) => {
   await page.getByRole('button', { name: 'Next step', exact: true }).click();
   await page.getByRole('button', { name: 'Symbol', exact: true }).click();
   await expect(page.locator('[data-anchor-id="stage"]')).toHaveAttribute('data-step', '1');
+  await page.getByRole('region', { name: 'Predict before the reveal' }).getByRole('button', { name: '3/4', exact: true }).click();
+  await page.getByRole('button', { name: 'Check my guess', exact: true }).click();
   await expect(page.locator('[data-anchor-id="stage"]')).toHaveAttribute('data-dial', '2');
   await page.getByRole('button', { name: '3D', exact: true }).click();
-  await expect(page.locator('canvas')).toBeVisible();
+  await expect(page.locator('canvas[data-stage-canvas]')).toBeVisible();
   await expect(page.locator('[data-anchor-id="stage"]')).toHaveAttribute('data-step', '1');
   await expect(page.locator('[data-anchor-id="stage"]')).toHaveAttribute('data-dial', '2');
 });
@@ -26,9 +28,12 @@ test('step animations move the piece and focused buttons keep Space behavior', a
   await next.focus();
   await page.keyboard.press('Space');
   await expect(page.locator('[data-anchor-id="stage"]')).toHaveAttribute('data-step', '1');
+  await page.getByRole('region', { name: 'Predict before the reveal' }).getByRole('button', { name: '3/4', exact: true }).click();
+  await page.getByRole('button', { name: 'Check my guess', exact: true }).click();
   await expect(page.locator('[data-entity-id="slice-3"]')).toHaveAttribute(
     'transform',
     /translate\(422 /,
   );
   await expect(page.getByRole('button', { name: 'Play lesson', exact: true })).toBeVisible();
 });
+

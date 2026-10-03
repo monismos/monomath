@@ -14,6 +14,9 @@ export interface Settings {
   dock: 'left' | 'right';
   flatCarousel: boolean;
   speed: number;
+  tutorialComplete: boolean;
+  tutorialStep: number;
+  speech: boolean;
 }
 const defaults: Settings = {
   theme: matchMedia('(prefers-color-scheme: dark)').matches ? 'blueprint' : 'bench',
@@ -28,6 +31,9 @@ const defaults: Settings = {
   dock: 'left',
   flatCarousel: false,
   speed: 1,
+  tutorialComplete: false,
+  tutorialStep: 0,
+  speech: false,
 };
 export const useSettings = create<Settings & { set: (patch: Partial<Settings>) => void }>()(
   persist((set) => ({ ...defaults, set: (patch) => set(patch) }), {

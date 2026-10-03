@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import type { SceneSpec } from '../core/scene/spec';
 import { ScenePlayer } from '../core/scene/player';
 import { useLesson } from '../core/scene/store';
@@ -7,6 +7,11 @@ import { detectQuality, probeFPS } from '../core/perf/quality';
 import SvgStage from '../core/renderers/svg/SvgStage';
 import { Tethers } from './Tethers';
 import { Icon } from './Icon';
+import { PredictCard } from './PredictCard';
+import { useGame } from '../core/gamification/store';
+import { Mascot } from './Mascot';
+import { emitMascot } from '../core/mascots/events';
+import { sound } from '../core/audio/sounds';
 import appStyles from '../App.module.css';
 import playerStyles from './Player.module.css';
 const styles = { ...appStyles, ...playerStyles };
@@ -24,18 +29,63 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
   const [fps, setFPS] = useState<number>();
   const [flatten, setFlatten] = useState(false);
   const [lost, setLost] = useState(false);
+  const [committed, setCommitted] = useState<Record<string, boolean>>({});
+  const currentIndex = Math.min(step, spec.steps.length - 1);
+  const current = spec.steps[currentIndex];
+  const checkpointKey = `${spec.id}:${current.id}`;
+  const revealed = useGame((game) => game.events[`checkpoint:${checkpointKey}`]);
+  const blocked = !!current.predict && !committed[checkpointKey] && !revealed;
+  const viewedSteps = useRef(new Map<string, Set<number>>());
+  const recordLayer = (value: number) => {
+    set({ dial: value });
+    const labId = useLesson.getState().labId;
+    const game = useGame.getState();
+    game.record(
+      'dial',
+      `${labId}:${['thing', 'shape', 'symbol', 'code'][Math.round(value)]}`,
+      labId,
+    );
+    const used = new Set(
+      Object.values(useGame.getState().events)
+        .filter((e) => e.kind === 'dial' && e.labId === labId)
+        .map((e) => e.key),
+    );
+    if (used.size >= 4) useGame.getState().award('play', `${labId}:all-layers`, labId);
+  };
   const player = useMemo(
     () =>
       new ScenePlayer(
         spec,
-        Math.min(step, spec.steps.length - 1),
+        blocked ? Math.max(0, currentIndex - 1) : currentIndex,
         dial,
         settings.reducedMotion ? 0 : 450,
       ),
-    [spec, step, dial, settings.reducedMotion],
+    [spec, currentIndex, dial, settings.reducedMotion, blocked],
   );
   const state = player.state;
-  const current = spec.steps[state.stepIndex];
+  useEffect(() => {
+    emitMascot('step-enter');
+  }, [checkpointKey]);
+  useEffect(() => {
+    if (blocked) return;
+    const timer = setTimeout(() => {
+      const viewed = viewedSteps.current.get(spec.id) ?? new Set<number>();
+      viewed.add(currentIndex);
+      viewedSteps.current.set(spec.id, viewed);
+      if (viewed.size === spec.steps.length)
+        useGame.getState().award('watch', `${spec.id}:watch`, useLesson.getState().labId);
+    }, 1800);
+    return () => clearTimeout(timer);
+  }, [blocked, currentIndex, spec]);
+  useEffect(() => {
+    const action = (event: Event) => {
+      const action = (event as CustomEvent<{ action: string }>).detail.action;
+      if (action === 'why' || action === 'hint') setWhy(true);
+      if (action === 'formula') useLesson.getState().set({ dial: 2 });
+    };
+    window.addEventListener('monomath:guide-action', action);
+    return () => window.removeEventListener('monomath:guide-action', action);
+  }, []);
   useEffect(() => {
     player.start();
     return () => player.stop();
@@ -48,6 +98,10 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
     [set, spec.steps.length],
   );
   const select = useCallback((id: string | null) => set({ selection: id }), [set]);
+  const tetherTap = () => {
+    if (useLesson.getState().selection)
+      useGame.getState().record('tether', crypto.randomUUID(), useLesson.getState().labId);
+  };
   const onLost = useCallback(() => {
     useSettings.getState().set({ dimension: '2d' });
     setLost(true);
@@ -63,7 +117,7 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
     };
   }, []);
   useEffect(() => {
-    if (!playing) return;
+    if (!playing || blocked) return;
     const timer = window.setInterval(() => {
       const next = useLesson.getState().step + 1;
       if (next >= spec.steps.length) {
@@ -73,7 +127,7 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
       changeStep(next);
     }, 4000 / settings.speed);
     return () => clearInterval(timer);
-  }, [playing, spec.steps.length, settings.speed, changeStep]);
+  }, [playing, blocked, spec.steps.length, settings.speed, changeStep]);
   useEffect(() => {
     const key = (event: KeyboardEvent) => {
       if (document.querySelector('dialog[open]')) return;
@@ -108,6 +162,7 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
     setTimeout(
       () => {
         settings.set({ dimension });
+        useGame.getState().record('dimension', crypto.randomUUID(), useLesson.getState().labId);
         setFlatten(false);
       },
       settings.reducedMotion ? 0 : 300,
@@ -143,6 +198,7 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
             data-anchor-id="stage"
             data-step={step}
             data-dial={dial}
+            onClick={tetherTap}
           >
             <div className={styles.stageTop}>
               <span>
@@ -187,20 +243,25 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
               <div className={styles.sceneCaption}>
                 <span className={styles.sceneSmallLabel}>One whole. Equal parts.</span>
                 <Suspense fallback={<span>{current.latexAfter}</span>}>
-                  <MathText tex={current.latexAfter} selection={selection} onSelect={select} />
+                  <MathText
+                    tex={spec.steps[state.stepIndex].latexAfter}
+                    selection={selection}
+                    onSelect={select}
+                  />
                 </Suspense>
                 <span className={styles.captionHelp}>
                   {selection ? 'Same colour. Same idea.' : 'Tap a piece. Follow its symbol.'}
                 </span>
               </div>
             )}
-            {dial > 2.3 && (
+            {dial > 2.3 && !blocked && (
               <pre className={styles.codeOverlay}>
                 <span>Python</span>
                 <code>{spec.code}</code>
               </pre>
             )}
             <Tethers selection={selection} player={player} />
+            <Mascot gaze={spec.steps[state.stepIndex].gaze} domain="math" />
             {children}
             <div className={styles.stageHint}>
               <Icon name="Lightbulb" size={13} />
@@ -228,7 +289,10 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
                   aria-label={label}
                   key={label}
                   className={Math.round(dial) === i ? styles.activeLayer : ''}
-                  onClick={() => set({ dial: i })}
+                  onClick={() => {
+                    recordLayer(i);
+                    sound('tick');
+                  }}
                 >
                   {i === 0 ? (
                     <Icon name="Grid2X2" size={15} />
@@ -251,7 +315,7 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
               max="3"
               step="0.01"
               value={dial}
-              onChange={(e) => set({ dial: Number(e.target.value) })}
+              onChange={(e) => recordLayer(Number(e.target.value))}
             />
           </div>
           <div className={styles.transport} data-anchor-id="transport">
@@ -273,7 +337,7 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
             <button
               className={styles.iconButton}
               aria-label="Next step"
-              disabled={step >= spec.steps.length - 1}
+              disabled={step >= spec.steps.length - 1 || blocked}
               onClick={() => changeStep(step + 1)}
             >
               <Icon name="ChevronRight" />
@@ -348,26 +412,63 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
                 </button>
                 {i === step && (
                   <div className={styles.stepContent}>
-                    <div className={styles.stepMath}>
-                      <Suspense fallback={item.latexAfter}>
-                        <MathText tex={item.latexAfter} selection={selection} onSelect={select} />
-                      </Suspense>
-                    </div>
-                    <p>{item.say[depth]}</p>
-                    <div className={styles.stepChipRow}>
-                      <button onClick={() => setWhy(!why)}>
-                        <Icon name="Lightbulb" size={13} /> Why?
-                      </button>
-                      <button
-                        onClick={() => {
-                          changeStep(i);
-                          setReplay((v) => v + 1);
+                    {blocked && current.predict && (
+                      <PredictCard
+                        key={checkpointKey}
+                        predict={current.predict}
+                        onCommit={(correct, hinted) => {
+                          setCommitted((old) => ({ ...old, [checkpointKey]: true }));
+                          useGame
+                            .getState()
+                            .record('checkpoint', checkpointKey, useLesson.getState().labId);
+                          if (correct) {
+                            useGame
+                              .getState()
+                              .award('predict', checkpointKey, useLesson.getState().labId, hinted);
+                            emitMascot('correct');
+                            sound('success');
+                          } else emitMascot('wrong');
                         }}
-                      >
-                        <Icon name="RotateCcw" size={12} /> Replay
-                      </button>
-                    </div>
-                    {why && <p className={styles.whyCard}>{item.say.deep}</p>}
+                        onMiss={() => {
+                          emitMascot('wrong');
+                          useGame.getState().queueChallengeEcho({
+                            skillId: 'demo-fraction',
+                            key: checkpointKey,
+                            labId: useLesson.getState().labId,
+                            seed: Date.now() % 100000,
+                            prompt: 'Count equal parts of a whole.',
+                          });
+                        }}
+                      />
+                    )}
+                    {!blocked && (
+                      <>
+                        <div className={styles.stepMath} onClick={tetherTap}>
+                          <Suspense fallback={item.latexAfter}>
+                            <MathText
+                              tex={item.latexAfter}
+                              selection={selection}
+                              onSelect={select}
+                            />
+                          </Suspense>
+                        </div>
+                        <p>{item.say[depth]}</p>
+                        <div className={styles.stepChipRow}>
+                          <button onClick={() => setWhy(!why)}>
+                            <Icon name="Lightbulb" size={13} /> Why?
+                          </button>
+                          <button
+                            onClick={() => {
+                              changeStep(i);
+                              setReplay((v) => v + 1);
+                            }}
+                          >
+                            <Icon name="RotateCcw" size={12} /> Replay
+                          </button>
+                        </div>
+                        {why && <p className={styles.whyCard}>{item.say.deep}</p>}
+                      </>
+                    )}
                   </div>
                 )}
               </article>

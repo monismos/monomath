@@ -1,0 +1,81 @@
+.predict {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--mat);
+  border-radius: 7px;
+  padding: 15px;
+  color: var(--ink);
+  margin: 12px 0;
+}
+.predict > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--mat);
+}
+.predict p {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+.options {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.options button {
+  min-height: 44px;
+  min-width: 50px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 5px;
+  padding: 8px 12px;
+}
+.options button[aria-pressed='true'] {
+  background: var(--glow);
+  color: #10201c;
+  border-color: #10201c;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+.actions button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 5px;
+  font-size: 12px;
+  padding: 8px 12px;
+  background: var(--paper);
+  color: var(--ink);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.actions button:first-child {
+  background: var(--ink);
+  color: var(--surface);
+}
+.hint {
+  border-left: 2px solid var(--mat);
+  padding-left: 10px;
+  color: var(--muted);
+}
+.predict label {
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.predict input {
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  color: var(--ink);
+  background: var(--paper);
+}
