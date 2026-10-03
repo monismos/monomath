@@ -3,7 +3,7 @@
 Status: pending / in progress / verified. A milestone is verified only after its acceptance checks and `npm run check` pass.
 
 - [x] M0 Foundation — verified: tooling, two live themes, persisted settings, routing, PWA, storage, accessibility, local fonts.
-- [ ] M1 Dual-render engine — pending: shared SceneSpec, deterministic timeline, tween, 2D/3D, dial, tethers, player, quality probe.
+- [x] M1 Dual-render engine — verified: shared SceneSpec, deterministic timeline, tween, 2D/3D, dial, tethers, player, quality probe.
 - [ ] M2 Notelets and summary — pending: global hold, anchors, drafts, persistence, context restoration, accessible carousel and exports.
 - [ ] M3 Mascots and motivation — pending: one-eyed guides, local XP, gems, SRS, trophies, first-run tutorial.
 - [ ] M4 Fractions vertical slice — pending: all operations, predictions, scene-verified challenges, boss, bridges, contributor guide.
@@ -59,5 +59,6 @@ Status: pending / in progress / verified. A milestone is verified only after its
 - [ ] Terminal theme.
 
 ## Exact next actions
-M0 passed npm run check and four desktop/mobile e2e cases (including offline reload and theme persistence). Next: implement M1 SceneSpec, timeline, both renderers and the player, then verify and commit.
+M0 and M1 passed npm run check; eight production desktop/mobile e2e tests pass. Shell JS: 55.5 KB gzip; lazy Three chunk: 226.6 KB gzip. Next: M2 global hold gesture, IndexedDB notelets, anchored pins, context restoration and accessible summary.
+
 

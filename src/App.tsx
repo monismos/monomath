@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { brand } from './config/brand';
 import { strings } from './config/strings';
 import { useSettings } from './core/storage/settings';
@@ -6,6 +6,7 @@ import { applyTheme, themes } from './core/themes/themes';
 import { Icon } from './ui/Icon';
 import { Dialog } from './ui/Dialog';
 import styles from './App.module.css';
+const Workshop=lazy(()=>import('./ui/Workshop'));
 
 const domains=[{name:'Mathematics',symbol:'∑',color:'#2F6BFF'},{name:'Logic',symbol:'∧',color:'#B27B00'},{name:'Statistics',symbol:'▥',color:'#BC327B'},{name:'Physics',symbol:'↗',color:'#D74B2E'},{name:'Programming',symbol:'{ }',color:'#7B4DFF'}];
 function App() {
@@ -13,7 +14,6 @@ function App() {
   const [page,setPage]=useState(location.hash.slice(1)||'workshop');
   const [dialog,setDialog]=useState<'settings'|'help'|null>(null);
   const [menu,setMenu]=useState(false);
-  const [parts,setParts]=useState(3);
   useEffect(()=>{applyTheme(settings.theme);document.documentElement.style.fontSize=`${settings.textSize}%`;},[settings.theme,settings.textSize]);
   useEffect(()=>{const change=()=>setPage(location.hash.slice(1)||'workshop');window.addEventListener('hashchange',change);return()=>window.removeEventListener('hashchange',change);},[]);
   const navigate=(target:string)=>{location.hash=target;setPage(target);setMenu(false);};
@@ -36,8 +36,7 @@ function App() {
       <main id="main" className={styles.main}>
       {page==='map'?<><div className={styles.pageTitle}><div><h1>Your Monomap</h1><p>One small discovery leads to another.</p></div></div><div className={styles.foundationMap}><div className={styles.mapLine}/>{domains.map((domain,index)=><div key={domain.name} style={{transform:`translate(${index%2?100:-100}px, 0)`}}><span style={{color:domain.color}}>{domain.symbol}</span><h3>{domain.name}</h3><p>Coming soon</p></div>)}</div></>:<>
       <div className={styles.pageTitle}><div><div className={styles.topicLabel}><span>◒</span> Mathematics <Icon name="ChevronRight" size={13}/> Parts of a whole</div><h1>Small pieces. Big picture.</h1><p>Start with something you can see. Let the symbols follow.</p></div><span className={styles.demoBadge}><Icon name="Sparkles" size={15}/> Live demo</span></div>
-      <div className={styles.foundationBench} aria-label="Interactive fraction demo"><div className={styles.stageTop}><span><i/> Your workbench</span><span>One whole, four equal pieces</span></div><svg viewBox="0 0 700 370" role="img" aria-label={`${parts} out of 4 pieces shaded`}><defs><filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="10" floodOpacity=".16"/></filter></defs><g transform="translate(350 175)" filter="url(#shadow)">{Array.from({length:4},(_,i)=>{const a=i*Math.PI/2;const b=(i+1)*Math.PI/2;return <path key={i} d={`M 0 0 L ${120*Math.cos(a)} ${120*Math.sin(a)} A 120 120 0 0 1 ${120*Math.cos(b)} ${120*Math.sin(b)} Z`} fill={i<parts?'#FFE066':'#D4E7DF'} stroke="#1F7A6B" strokeWidth="5"/>;})}</g><text x="350" y="340" textAnchor="middle" fill="white" fontFamily="Bricolage Grotesque" fontSize="32">{parts}/4</text></svg><div className={styles.demoControl}><label htmlFor="parts">How much of the whole?</label><input id="parts" type="range" min="0" max="4" step="1" value={parts} onChange={e=>setParts(Number(e.target.value))}/><span>{parts} of 4 pieces</span></div></div>
-      <div className={styles.benchFoot}><span><Icon name="Eye" size={16}/> See it. Touch it. Then read it.</span><span>Made for curious minds.</span></div>
+      <Suspense fallback={<div className={styles.foundationBench} aria-label="Loading your workbench"/>}><Workshop/></Suspense>
       </>}
       </main>
       <footer className={styles.footer}><span>One idea. Many ways to see it.</span><span>Made with care by {brand.creator}<span className={styles.footerDot}>✳</span></span></footer>
@@ -47,3 +46,4 @@ function App() {
   </div>;
 }
 export default App;
+

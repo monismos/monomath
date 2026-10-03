@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   base: './',
+  build: { chunkSizeWarningLimit: 900 },
   plugins: [react(), VitePWA({
     registerType: 'autoUpdate',
     includeAssets: ['favicon.svg', 'icon-192.png', 'icon-512.png'],
@@ -18,3 +19,4 @@ export default defineConfig({
   })],
   test: { environment: 'jsdom', globals: true, setupFiles: './src/testSetup.ts', exclude: ['tests/e2e/**', 'node_modules/**'] },
 });
+
