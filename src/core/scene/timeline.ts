@@ -14,6 +14,6 @@ export function resolveTimeline(spec:SceneSpec,stepIndex:number,localTime=1,dial
     if(op.t==='camera')focus=op.focus;
   }
   const dial=Math.max(0,Math.min(3,dialT));const layer=Math.floor(dial);const amount=dial-layer;
-  Object.keys(entities).forEach(id=>{const base=entities[id];if(!base.layers)return;const from={...base,...base.layers[layers[layer]]};const to={...base,...base.layers[layers[Math.min(3,layer+1)]]};entities[id]=interpolateEntity(from,to,amount);});
+  Object.keys(entities).forEach(id=>{const base=entities[id];if(!base.layers)return;const initial=spec.entities.find(entity=>entity.id===id)??base;const layered=(override:Partial<Entity>|undefined):Entity=>{const entity={...base,...override};if(override?.pos)entity.pos=base.pos.map((value,i)=>value+override.pos![i]-initial.pos[i]) as Entity['pos'];return entity;};const from=layered(base.layers[layers[layer]]);const to=layered(base.layers[layers[Math.min(3,layer+1)]]);entities[id]=interpolateEntity(from,to,amount);});
   return {entities,stepIndex:index,dialT:dial,focus};
 }

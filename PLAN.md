@@ -59,6 +59,8 @@ Status: pending / in progress / verified. A milestone is verified only after its
 - [ ] Terminal theme.
 
 ## Exact next actions
-M0 and M1 passed npm run check; eight production desktop/mobile e2e tests pass. Shell JS: 55.5 KB gzip; lazy Three chunk: 226.6 KB gzip. Next: M2 global hold gesture, IndexedDB notelets, anchored pins, context restoration and accessible summary.
+M0 and M1 passed npm run check; ten production desktop/mobile e2e tests pass. Shell JS: 55.5 KB gzip; lazy Three chunk: 270.9 KB gzip. Next: M2 global hold gesture, IndexedDB notelets, anchored pins, context restoration and accessible summary.
+
+
 
 
