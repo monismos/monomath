@@ -13,17 +13,17 @@ This is a proposed verification plan derived from `AGENTS.md` and `docs/BRIEF.md
 
 ## M0 — Foundation
 
-| Acceptance case | Required observation |
-| --- | --- |
-| Fresh install and production launch | Every required npm script exists; strict typecheck, lint, unit tests and build pass; manifest, icon and service worker are served with correct content types. |
-| Live theme change | Both initial themes change DOM tokens and scene palette; readable selected/disabled/focus states; no restart required. |
-| Settings persistence | Change theme, dimension and text size, reload, and observe the same values. First-run defaults respect the system theme without replacing stored preferences. |
-| Storage unavailable | Simulated IndexedDB open/write failure leaves the lesson usable in memory and displays a clear banner; no uncaught rejection. |
-| Version migration | A fixture from the previous schema upgrades without losing settings or notelet drafts; malformed imported data is rejected before mutation. |
-| Offline shell | Visit production once, wait for service-worker readiness, reload offline, and use the shell with fonts present. Also test a direct route and an update/reload cycle. |
-| Local assets and privacy | Font requests, icons and all executable assets resolve locally. No runtime CDN, trackers, remote API, account or analytics requests. |
-| Accessibility baseline | Semantic landmarks, labelled controls, visible keyboard focus, skip link, no colour-only status, ≥44 px touch targets and ≥16 px mobile inputs. |
-| Cross-platform automation | npm scripts use Node/npm tool CLIs; CI invokes the same public scripts. Avoid shell-specific copying, deleting or environment syntax. |
+| Acceptance case                     | Required observation                                                                                                                                                 |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Fresh install and production launch | Every required npm script exists; strict typecheck, lint, unit tests and build pass; manifest, icon and service worker are served with correct content types.        |
+| Live theme change                   | Both initial themes change DOM tokens and scene palette; readable selected/disabled/focus states; no restart required.                                               |
+| Settings persistence                | Change theme, dimension and text size, reload, and observe the same values. First-run defaults respect the system theme without replacing stored preferences.        |
+| Storage unavailable                 | Simulated IndexedDB open/write failure leaves the lesson usable in memory and displays a clear banner; no uncaught rejection.                                        |
+| Version migration                   | A fixture from the previous schema upgrades without losing settings or notelet drafts; malformed imported data is rejected before mutation.                          |
+| Offline shell                       | Visit production once, wait for service-worker readiness, reload offline, and use the shell with fonts present. Also test a direct route and an update/reload cycle. |
+| Local assets and privacy            | Font requests, icons and all executable assets resolve locally. No runtime CDN, trackers, remote API, account or analytics requests.                                 |
+| Accessibility baseline              | Semantic landmarks, labelled controls, visible keyboard focus, skip link, no colour-only status, ≥44 px touch targets and ≥16 px mobile inputs.                      |
+| Cross-platform automation           | npm scripts use Node/npm tool CLIs; CI invokes the same public scripts. Avoid shell-specific copying, deleting or environment syntax.                                |
 
 ## M1 — Dual-render engine
 
@@ -99,14 +99,14 @@ Normalize fractions to a positive denominator and divide by gcd. Reject zero den
 
 The three-example minimum does not remove the explicit fraction-operation requirements. Ship the following six families, each with complete Quick/Standard/Deep text, Why, replay, ≥1 committed Predict, tethered notation, narration and the CODE layer.
 
-| Family and exact result | Concrete scene and required steps | Predict before reveal | Real alternate method |
-| --- | --- | --- | --- |
-| `3/4 + 1/6 = 11/12` | Same-size unit wholes; quarters become 12ths (`9/12`), sixths become 12ths (`2/12`); slide 9+2 equal slices into the result; demonstrate gcd 1. | “How many equal pieces should one whole use?” → 12; allow 24 as a valid common denominator when phrased that way. | Product denominator 24: `18/24 + 4/24 = 22/24 = 11/12`; show the extra cuts and subsequent grouping. |
-| `5/8 − 1/4 = 3/8` | Cut the quarter into two eighths; remove two of five selected eighths; keep the unit outline visible. | “How many eighths is 1/4?” → 2. | Remove one quarter region from a 5/8 bar, then count the three remaining eighths. |
-| `2/3 × 3/5 = 2/5` | One unit square split into 3 columns and 5 rows; two columns and three rows form six overlapping cells; `6/15` regroups into `2/5`. | “How many of the 15 cells overlap?” → 6. | Cancel-first: `(2×3)/(3×5) = 2/5`; explicitly show the matching factor 3, not cross-cancelling addition. |
-| `3/4 ÷ 1/8 = 6` | Three-quarter measuring bar; tile it with six one-eighth bars; quotient is the count of fits, not a smaller shaded area. | “How many 1/8 lengths fit?” → 6. | Reciprocal multiplication: `3/4 × 8/1 = 24/4 = 6`, tied back to how many eighths make a whole. |
-| `7/4 = 1 3/4` and inverse | Stack seven quarter pieces; four fill one pie, three fill the second; maintain each whole’s four cuts. Reverse combines one whole and three quarters into seven quarters. | “How many complete wholes can we fill?” → 1. | Integer quotient/remainder: `7 = 1×4 + 3`; inverse `1×4 + 3 = 7`. |
-| `12/18 = 2/3` | Eighteen equal cells with twelve selected; group adjacent cells in sixes into three larger equal parts, two selected; shaded area never changes. | “What size groups divide both counts?” → 6; smaller valid factors may make a partial simplification. | Euclidean gcd: `18 = 1×12 + 6`, `12 = 2×6`; divide top and bottom by 6. |
+| Family and exact result   | Concrete scene and required steps                                                                                                                                         | Predict before reveal                                                                                             | Real alternate method                                                                                    |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `3/4 + 1/6 = 11/12`       | Same-size unit wholes; quarters become 12ths (`9/12`), sixths become 12ths (`2/12`); slide 9+2 equal slices into the result; demonstrate gcd 1.                           | “How many equal pieces should one whole use?” → 12; allow 24 as a valid common denominator when phrased that way. | Product denominator 24: `18/24 + 4/24 = 22/24 = 11/12`; show the extra cuts and subsequent grouping.     |
+| `5/8 − 1/4 = 3/8`         | Cut the quarter into two eighths; remove two of five selected eighths; keep the unit outline visible.                                                                     | “How many eighths is 1/4?” → 2.                                                                                   | Remove one quarter region from a 5/8 bar, then count the three remaining eighths.                        |
+| `2/3 × 3/5 = 2/5`         | One unit square split into 3 columns and 5 rows; two columns and three rows form six overlapping cells; `6/15` regroups into `2/5`.                                       | “How many of the 15 cells overlap?” → 6.                                                                          | Cancel-first: `(2×3)/(3×5) = 2/5`; explicitly show the matching factor 3, not cross-cancelling addition. |
+| `3/4 ÷ 1/8 = 6`           | Three-quarter measuring bar; tile it with six one-eighth bars; quotient is the count of fits, not a smaller shaded area.                                                  | “How many 1/8 lengths fit?” → 6.                                                                                  | Reciprocal multiplication: `3/4 × 8/1 = 24/4 = 6`, tied back to how many eighths make a whole.           |
+| `7/4 = 1 3/4` and inverse | Stack seven quarter pieces; four fill one pie, three fill the second; maintain each whole’s four cuts. Reverse combines one whole and three quarters into seven quarters. | “How many complete wholes can we fill?” → 1.                                                                      | Integer quotient/remainder: `7 = 1×4 + 3`; inverse `1×4 + 3 = 7`.                                        |
+| `12/18 = 2/3`             | Eighteen equal cells with twelve selected; group adjacent cells in sixes into three larger equal parts, two selected; shaded area never changes.                          | “What size groups divide both counts?” → 6; smaller valid factors may make a partial simplification.              | Euclidean gcd: `18 = 1×12 + 6`, `12 = 2×6`; divide top and bottom by 6.                                  |
 
 Pies, bars and block stacks are three shape choices for the same unit and selected rational value. Switching shapes must preserve values, selected pieces, notes, step and dial. Multiplication uses the mandated area model and division the mandated measurement model rather than reusing a generic pile of blocks for every operation.
 
@@ -135,14 +135,14 @@ Use the same per-step completeness for all families. Generic repeated explanatio
 
 Use at least five families; six are recommended to cover the operations. Seed generation must produce bounded, solvable scene setups and a stable replay identity. Test valid solved state, almost-solved state, wrong whole size, overlap, duplicate piece, invalid denominator and a changed seed. Validate exact rational state independently of display mode.
 
-| Family | Example verified goal | Validator invariant |
-| --- | --- | --- |
-| Build a part | “Shade exactly 7/8 using three pieces”: `1/2 + 1/4 + 1/8`. | Three distinct non-overlapping selected pieces from the same unit sum exactly to 7/8. If requiring specific piece count, equal total alone is insufficient. |
-| Equivalent cuts | “Show 3/4 using eighths.” | Whole has eight equal cuts, six selected, exact area 3/4. A 3-of-4 picture is equal but does not satisfy the requested representation. |
-| Recuts and addition | “Build 1/3 + 1/4 and merge the result.” | Both inputs are recut into a shared valid denominator; merged non-overlapping result is 7/12; original unit scale is retained. |
-| Remove a part | “Start with 7/8 and remove 1/2.” | Exactly 4/8 removed from the original 7/8; 3/8 remains. Do not accept a newly typed 3/8 without the removal state. |
-| Overlap product | “Build the area of 3/4 × 2/3.” | A 4×3 unit grid has nine cells in the first factor, eight in the second and six in their intersection; overlap is 6/12 = 1/2. |
-| Measure / regroup | “Tile 5/6 with 1/6 bars,” or “Arrange 9/4 as mixed pies.” | Five exact fit bars with no gap/overlap, or two complete unit pies and one quarter; check the requested representation as well as rational equality. |
+| Family              | Example verified goal                                      | Validator invariant                                                                                                                                         |
+| ------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Build a part        | “Shade exactly 7/8 using three pieces”: `1/2 + 1/4 + 1/8`. | Three distinct non-overlapping selected pieces from the same unit sum exactly to 7/8. If requiring specific piece count, equal total alone is insufficient. |
+| Equivalent cuts     | “Show 3/4 using eighths.”                                  | Whole has eight equal cuts, six selected, exact area 3/4. A 3-of-4 picture is equal but does not satisfy the requested representation.                      |
+| Recuts and addition | “Build 1/3 + 1/4 and merge the result.”                    | Both inputs are recut into a shared valid denominator; merged non-overlapping result is 7/12; original unit scale is retained.                              |
+| Remove a part       | “Start with 7/8 and remove 1/2.”                           | Exactly 4/8 removed from the original 7/8; 3/8 remains. Do not accept a newly typed 3/8 without the removal state.                                          |
+| Overlap product     | “Build the area of 3/4 × 2/3.”                             | A 4×3 unit grid has nine cells in the first factor, eight in the second and six in their intersection; overlap is 6/12 = 1/2.                               |
+| Measure / regroup   | “Tile 5/6 with 1/6 bars,” or “Arrange 9/4 as mixed pies.”  | Five exact fit bars with no gap/overlap, or two complete unit pies and one quarter; check the requested representation as well as rational equality.        |
 
 Parameter bounds should favor understandable denominators (for example 2–12, lcm ≤24 for recuts, grid cells ≤36) without presenting a visual cap as a mathematical limitation. If a typed supported problem exceeds the visual budget, provide accurate grouped pieces and an explicit count, or document/reject that input honestly.
 

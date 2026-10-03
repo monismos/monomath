@@ -1,1 +1,1 @@
-export const features = { fractions: false, notelets: false, echoes: false, cameraInput: false };
+export const features = { fractions: false, notelets: true, echoes: false, cameraInput: false };

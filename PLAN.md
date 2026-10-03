@@ -4,7 +4,7 @@ Status: pending / in progress / verified. A milestone is verified only after its
 
 - [x] M0 Foundation — verified: tooling, two live themes, persisted settings, routing, PWA, storage, accessibility, local fonts.
 - [x] M1 Dual-render engine — verified: shared SceneSpec, deterministic timeline, tween, 2D/3D, dial, tethers, player, quality probe.
-- [ ] M2 Notelets and summary — pending: global hold, anchors, drafts, persistence, context restoration, accessible carousel and exports.
+- [x] M2 Notelets and summary — verified: global hold on desktop/touch, anchors, safe multi-drafts, awaited save, context restoration, ring/helix/flat/grid/list, filters, inertia, exports.
 - [ ] M3 Mascots and motivation — pending: one-eyed guides, local XP, gems, SRS, trophies, first-run tutorial.
 - [ ] M4 Fractions vertical slice — pending: all operations, predictions, scene-verified challenges, boss, bridges, contributor guide.
 - [ ] M5 Remaining MUST labs — pending, in the exact order below.
@@ -21,6 +21,7 @@ Status: pending / in progress / verified. A milestone is verified only after its
 - [ ] M7 SHOULD labs, then COULDs — pending.
 
 ## SHOULD lab backlog
+
 - [ ] Equations and balance tiles.
 - [ ] Number lines and operations.
 - [ ] Trigonometry and unit circle.
@@ -52,6 +53,7 @@ Status: pending / in progress / verified. A milestone is verified only after its
 - [ ] Async restaurant.
 
 ## COULD backlog
+
 - [ ] On-device OCR input adapter implementation.
 - [ ] Voice dictation.
 - [ ] Rapier free-play physics.
@@ -59,8 +61,5 @@ Status: pending / in progress / verified. A milestone is verified only after its
 - [ ] Terminal theme.
 
 ## Exact next actions
-M0 and M1 passed npm run check; ten production desktop/mobile e2e tests pass. Shell JS: 55.5 KB gzip; lazy Three chunk: 270.9 KB gzip. Next: M2 global hold gesture, IndexedDB notelets, anchored pins, context restoration and accessible summary.
 
-
-
-
+M0–M2 pass npm run check (13 unit tests); 24 production desktop/mobile e2e tests pass, including touch on all hold surfaces and unchanged camera position. Shell JS: 66.7 KB gzip; lazy Three chunk: 271.1 KB gzip. Next: M3 local award ledger, pure SRS scheduler, gems, daily tasks, Trophy Shelf, three one-eyed guide rigs and first-run tutorial. User additions remain required: a local Philosophy lesson authoring area and equation workspace for explicit/implicit graphs and surfaces; implement these alongside the completed learning loop, with truthful unsupported-input guidance.

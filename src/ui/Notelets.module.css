@@ -1,0 +1,588 @@
+.charge {
+  position: fixed;
+  z-index: 200;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+.charge svg {
+  width: 48px;
+  height: 48px;
+  stroke-dasharray: 126;
+  animation: charge 350ms linear;
+}
+.charge span {
+  padding: 8px;
+  background: var(--surface);
+  font-size: 12px;
+  border-radius: 5px;
+}
+.pinLayer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+}
+.pin {
+  position: absolute;
+  width: 28px;
+  height: 30px;
+  border: 1px solid #10201c25;
+  border-radius: 4px 4px 10px 4px;
+  box-shadow: 0 2px 7px #10201c25;
+  color: #10201c;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+}
+.summaryOrb {
+  position: fixed;
+  right: 26px;
+  bottom: 28px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--surface);
+  border: 3px solid var(--surface);
+  box-shadow: 0 4px 15px #10201c22;
+  display: grid;
+  place-items: center;
+  z-index: 35;
+}
+.summaryOrb > span {
+  position: absolute;
+  top: -4px;
+  right: -2px;
+  background: var(--glow);
+  color: #10201c;
+  font-size: 10px;
+  min-width: 18px;
+  min-height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.storageBanner,
+.placeHint {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: var(--ink);
+  color: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 13px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  max-width: 90%;
+  white-space: nowrap;
+}
+.placeHint button {
+  background: none;
+  border: 0;
+  color: var(--glow);
+  text-decoration: underline;
+  margin-left: 15px;
+}
+.composer {
+  position: fixed;
+  margin: 0;
+  width: 300px;
+  max-width: calc(100vw - 24px);
+  border: 1px solid #10201c20;
+  border-radius: 4px 4px 20px 4px;
+  box-shadow: 0 16px 70px #10201c44;
+  padding: 18px;
+  color: #10201c;
+  max-height: 90dvh;
+}
+.composer::backdrop {
+  background: #071d1820;
+  backdrop-filter: none;
+}
+.composer header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--display);
+  font-size: 15px;
+}
+.composer header button {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  min-width: 32px;
+  min-height: 32px;
+}
+.composer textarea {
+  display: block;
+  width: 100%;
+  min-height: 110px;
+  resize: vertical;
+  border: 0;
+  background: transparent;
+  color: #10201c;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 12px 0 8px;
+  padding: 4px;
+  outline-color: #1f7a6b;
+}
+.composer textarea::placeholder {
+  color: #4c5d52;
+}
+.composerMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
+  color: #4c5d52;
+}
+.swatches {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  margin: 18px 0;
+}
+.swatches button {
+  width: 25px;
+  height: 25px;
+  border: 1px solid #10201c35;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.swatches input {
+  width: 30px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  color: #10201c;
+  margin-left: auto;
+  text-align: center;
+}
+.composer footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.composer footer button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 0;
+  font-size: 12px;
+  min-height: 40px;
+}
+.composer footer button.saveButton {
+  background: #10201c;
+  color: white;
+  padding: 10px 12px;
+  border-radius: 6px;
+}
+.summaryIntro {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 22px;
+  line-height: 1.5;
+}
+.summaryIntro > span {
+  white-space: nowrap;
+}
+.summaryControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 1;
+  min-width: 180px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: var(--muted);
+}
+.search input {
+  background: none;
+  border: 0;
+  min-height: 44px;
+  min-width: 0;
+  width: 100%;
+  color: var(--ink);
+}
+.summaryControls > button {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  min-height: 44px;
+  background: none;
+  border: 1px solid var(--rule);
+  padding: 9px 13px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.summaryControls > button[aria-pressed='true'] {
+  background: var(--glow);
+  color: #10201c;
+}
+.summaryControls select {
+  font-size: 13px;
+  min-height: 44px;
+}
+.viewToggle {
+  display: flex;
+  gap: 8px;
+  margin: 17px 0;
+}
+.viewToggle button {
+  border: 0;
+  background: none;
+  min-height: 36px;
+  padding: 8px 13px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.viewToggle button[aria-pressed='true'] {
+  background: var(--paper);
+  color: var(--ink);
+}
+.viewToggle button:last-child {
+  margin-left: auto;
+}
+.collection {
+  min-height: 330px;
+  position: relative;
+  perspective: 1200px;
+  overflow: hidden;
+  padding: 14px 0;
+}
+.ringView {
+  height: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ringView .ring {
+  position: relative;
+  width: 270px;
+  height: 355px;
+  transform-style: preserve-3d;
+  transition: transform 500ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.noteCard {
+  width: 270px;
+  min-height: 275px;
+  padding: 20px;
+  border: 1px solid #10201c20;
+  border-radius: 4px 4px 22px 4px;
+  color: #10201c;
+  box-shadow: 0 8px 20px #10201c15;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ringView .noteCard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  transition: opacity 400ms;
+}
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cardTop > span {
+  font-size: 24px;
+}
+.cardTop button {
+  border: 0;
+  background: none;
+  min-width: 36px;
+  min-height: 36px;
+  color: #10201c;
+}
+.noteCard > p {
+  font-family: var(--display);
+  font-size: 17px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  max-height: 135px;
+  overflow: auto;
+  user-select: text;
+}
+.cardContext {
+  font-size: 10px;
+  color: #4c5d52;
+  margin-top: auto;
+}
+.cardActions {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.cardActions > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #10201c25;
+  background: #ffffff25;
+  border-radius: 6px;
+  padding: 9px 11px;
+  min-height: 36px;
+  font-size: 11px;
+}
+.cardActions > div {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+}
+.cardActions > div button {
+  border: 0;
+  background: none;
+  display: grid;
+  place-items: center;
+  min-width: 32px;
+  min-height: 32px;
+  color: #10201c;
+}
+.gridView .ring {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  padding: 10px;
+}
+.gridView .noteCard {
+  width: auto;
+}
+.listView .ring {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.listView .noteCard {
+  width: 100%;
+  min-height: 130px;
+}
+.flatView .ring {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 10px;
+}
+.flatView .noteCard {
+  flex-shrink: 0;
+  scroll-snap-align: center;
+}
+.empty {
+  padding: 40px 20px 50px;
+  text-align: center;
+}
+.emptyEye {
+  font-size: 42px;
+  color: var(--mat);
+  margin-bottom: 18px;
+}
+.empty h3 {
+  font-size: 24px;
+  font-weight: 500;
+}
+.empty p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 14px 0 20px;
+}
+.empty > button {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  background: var(--ink);
+  color: var(--surface);
+  border: 0;
+  border-radius: 7px;
+  font-size: 13px;
+}
+.carouselNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.carouselNav button {
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  min-height: 44px;
+  min-width: 44px;
+  display: grid;
+  place-items: center;
+}
+.exportRow {
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+  padding-top: 14px;
+}
+.exportRow button,
+.exportRow label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  border: 0;
+  background: none;
+  font-size: 12px;
+  min-height: 40px;
+  padding: 0;
+  color: var(--muted);
+  cursor: pointer;
+}
+.exportRow input {
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  position: absolute;
+}
+.exportRow > button:last-child {
+  margin-left: auto;
+}
+.notice {
+  font-size: 13px;
+  color: var(--mat);
+  margin-top: 10px;
+}
+.notice button {
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  margin-left: 15px;
+  min-height: 44px;
+}
+@keyframes charge {
+  from {
+    stroke-dashoffset: 126;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (max-width: 760px) {
+  .summaryOrb {
+    right: 17px;
+    bottom: 18px;
+  }
+  .summaryIntro > span {
+    display: none;
+  }
+  .summaryControls {
+    gap: 7px;
+  }
+  .summaryControls select {
+    max-width: 135px;
+  }
+  .summaryControls > button {
+    font-size: 12px;
+  }
+  .viewToggle {
+    margin-top: 14px;
+  }
+  .collection {
+    min-height: 300px;
+  }
+  .ringView {
+    height: 440px;
+  }
+  .noteCard {
+    padding: 18px;
+  }
+  .cardActions button {
+    min-height: 44px !important;
+  }
+  .composer {
+    padding: 16px;
+  }
+  .swatches button {
+    width: 30px;
+    height: 30px;
+  }
+  .composer header button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .composer footer button {
+    min-height: 44px;
+  }
+  .placeHint {
+    font-size: 12px;
+    white-space: normal;
+  }
+  .pin {
+    width: 34px;
+    height: 36px;
+  }
+  .exportRow {
+    gap: 12px;
+  }
+  .exportRow button,
+  .exportRow label {
+    min-height: 44px;
+  }
+  .exportRow > button:last-child {
+    margin-left: 0;
+  }
+}
+.pin::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+}
+.pin small:not(:empty) {
+  position: absolute;
+  right: -6px;
+  top: -6px;
+  min-width: 18px;
+  min-height: 18px;
+  border-radius: 50%;
+  background: #10201c;
+  color: white;
+  font-size: 10px;
+  display: grid;
+  place-items: center;
+}
+.thumb {
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #10201c22;
+}
+.composerMeta button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  margin-left: 5px;
+  min-width: 25px;
+  min-height: 25px;
+}

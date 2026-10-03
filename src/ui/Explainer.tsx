@@ -1,43 +1,413 @@
-import {lazy,Suspense,useCallback,useEffect,useMemo,useState} from 'react';
-import type {SceneSpec} from '../core/scene/spec';
-import {ScenePlayer} from '../core/scene/player';
-import {useLesson} from '../core/scene/store';
-import {useSettings} from '../core/storage/settings';
-import {detectQuality,probeFPS} from '../core/perf/quality';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import type { SceneSpec } from '../core/scene/spec';
+import { ScenePlayer } from '../core/scene/player';
+import { useLesson } from '../core/scene/store';
+import { useSettings } from '../core/storage/settings';
+import { detectQuality, probeFPS } from '../core/perf/quality';
 import SvgStage from '../core/renderers/svg/SvgStage';
-import {Tethers} from './Tethers';
-import {Icon} from './Icon';
+import { Tethers } from './Tethers';
+import { Icon } from './Icon';
 import appStyles from '../App.module.css';
 import playerStyles from './Player.module.css';
-const styles={...appStyles,...playerStyles};
-const ThreeStage=lazy(()=>import('../core/renderers/three/ThreeStage'));
-const MathText=lazy(()=>import('./MathText'));
-export function Explainer({spec,children}: {spec:SceneSpec;children?:React.ReactNode}) {
-  const {step,dial,selection,set}=useLesson();const settings=useSettings();
-  const [replay,setReplay]=useState(0);const [playing,setPlaying]=useState(false);const [depth,setDepth]=useState<'quick'|'standard'|'deep'>('standard');const [why,setWhy]=useState(false);const [sheet,setSheet]=useState(0);const [reset,setReset]=useState(0);const [fps,setFPS]=useState<number>();const [flatten,setFlatten]=useState(false);const [lost,setLost]=useState(false);
-  const player=useMemo(()=>new ScenePlayer(spec,Math.min(step,spec.steps.length-1),dial,settings.reducedMotion?0:450),[spec,step,dial,settings.reducedMotion]);const state=player.state;const current=spec.steps[state.stepIndex];useEffect(()=>{player.start();return()=>player.stop();},[player,replay]);
-  const changeStep=useCallback((value:number)=>{set({step:Math.max(0,Math.min(spec.steps.length-1,value))});setWhy(false);},[set,spec.steps.length]);
-  const select=useCallback((id:string|null)=>set({selection:id}),[set]);
-  const onLost=useCallback(()=>{useSettings.getState().set({dimension:'2d'});setLost(true);},[]);
-  useEffect(()=>{if(detectQuality()==='2d-only')useSettings.getState().set({dimension:'2d'});let alive=true;probeFPS().then(value=>{if(alive)setFPS(value);});return()=>{alive=false;};},[]);
-  useEffect(()=>{if(!playing)return;const timer=window.setInterval(()=>{const next=useLesson.getState().step+1;if(next>=spec.steps.length){setPlaying(false);return;}changeStep(next);},4000/settings.speed);return()=>clearInterval(timer);},[playing,spec.steps.length,settings.speed,changeStep]);
-  useEffect(()=>{const key=(event:KeyboardEvent)=>{if((event.target as HTMLElement).closest('input,textarea,select,button,a,[role=button],[contenteditable]'))return;if(event.key==='ArrowRight'){event.preventDefault();changeStep(step+1);}if(event.key==='ArrowLeft'){event.preventDefault();changeStep(step-1);}if(event.code==='Space'){event.preventDefault();setPlaying(value=>!value);}if(event.key.toLowerCase()==='d')settings.set({dimension:settings.dimension==='2d'?'3d':'2d'});if(event.key.toLowerCase()==='u')document.getElementById('unfold-dial')?.focus();};window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key);},[step,changeStep,settings]);
-  const toggleDimension=(dimension:'2d'|'3d')=>{if(dimension===settings.dimension)return;setFlatten(true);setTimeout(()=>{settings.set({dimension});setFlatten(false);},settings.reducedMotion?0:300);};
+const styles = { ...appStyles, ...playerStyles };
+const ThreeStage = lazy(() => import('../core/renderers/three/ThreeStage'));
+const MathText = lazy(() => import('./MathText'));
+export function Explainer({ spec, children }: { spec: SceneSpec; children?: React.ReactNode }) {
+  const { step, dial, selection, set } = useLesson();
+  const settings = useSettings();
+  const [replay, setReplay] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [depth, setDepth] = useState<'quick' | 'standard' | 'deep'>('standard');
+  const [why, setWhy] = useState(false);
+  const [sheet, setSheet] = useState(0);
+  const [reset, setReset] = useState(0);
+  const [fps, setFPS] = useState<number>();
+  const [flatten, setFlatten] = useState(false);
+  const [lost, setLost] = useState(false);
+  const player = useMemo(
+    () =>
+      new ScenePlayer(
+        spec,
+        Math.min(step, spec.steps.length - 1),
+        dial,
+        settings.reducedMotion ? 0 : 450,
+      ),
+    [spec, step, dial, settings.reducedMotion],
+  );
+  const state = player.state;
+  const current = spec.steps[state.stepIndex];
+  useEffect(() => {
+    player.start();
+    return () => player.stop();
+  }, [player, replay]);
+  const changeStep = useCallback(
+    (value: number) => {
+      set({ step: Math.max(0, Math.min(spec.steps.length - 1, value)) });
+      setWhy(false);
+    },
+    [set, spec.steps.length],
+  );
+  const select = useCallback((id: string | null) => set({ selection: id }), [set]);
+  const onLost = useCallback(() => {
+    useSettings.getState().set({ dimension: '2d' });
+    setLost(true);
+  }, []);
+  useEffect(() => {
+    if (detectQuality() === '2d-only') useSettings.getState().set({ dimension: '2d' });
+    let alive = true;
+    probeFPS().then((value) => {
+      if (alive) setFPS(value);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+  useEffect(() => {
+    if (!playing) return;
+    const timer = window.setInterval(() => {
+      const next = useLesson.getState().step + 1;
+      if (next >= spec.steps.length) {
+        setPlaying(false);
+        return;
+      }
+      changeStep(next);
+    }, 4000 / settings.speed);
+    return () => clearInterval(timer);
+  }, [playing, spec.steps.length, settings.speed, changeStep]);
+  useEffect(() => {
+    const key = (event: KeyboardEvent) => {
+      if (document.querySelector('dialog[open]')) return;
+      if (
+        (event.target as HTMLElement).closest(
+          'input,textarea,select,button,a,[role=button],[contenteditable]',
+        )
+      )
+        return;
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        changeStep(step + 1);
+      }
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        changeStep(step - 1);
+      }
+      if (event.code === 'Space') {
+        event.preventDefault();
+        setPlaying((value) => !value);
+      }
+      if (event.key.toLowerCase() === 'd')
+        settings.set({ dimension: settings.dimension === '2d' ? '3d' : '2d' });
+      if (event.key.toLowerCase() === 'u') document.getElementById('unfold-dial')?.focus();
+    };
+    window.addEventListener('keydown', key);
+    return () => window.removeEventListener('keydown', key);
+  }, [step, changeStep, settings]);
+  const toggleDimension = (dimension: '2d' | '3d') => {
+    if (dimension === settings.dimension) return;
+    setFlatten(true);
+    setTimeout(
+      () => {
+        settings.set({ dimension });
+        setFlatten(false);
+      },
+      settings.reducedMotion ? 0 : 300,
+    );
+  };
 
-  return <><div className={styles.playerHeading}><div className={styles.lessonTabs}><span className={styles.selectedTab}><Icon name="Layers" size={15}/> Explore the idea</span><span className={styles.lessonType}>A hands-on lesson</span></div><div className={styles.dimension} aria-label="Scene dimension"><button onClick={()=>toggleDimension('2d')} aria-pressed={settings.dimension==='2d'}>2D</button><button aria-label="3D" onClick={()=>toggleDimension('3d')} aria-pressed={settings.dimension==='3d'}>3D <span>✧</span></button></div></div>
-  <div className={styles.player} data-anchor-id="player"><div className={styles.sceneColumn}><div className={`${styles.stage} ${flatten?styles.flattening:''}`} data-anchor-id="stage" data-step={step} data-dial={dial}>
-  <div className={styles.stageTop}><span><i/> Your workbench</span><div className={styles.stageTools}><button aria-label="Reset view" onClick={()=>setReset(v=>v+1)}><Icon name="RotateCcw" size={16}/></button><button aria-label="Flatten scene" onClick={()=>toggleDimension('2d')}><Icon name="Expand" size={16}/></button></div></div>
-  <div className={styles.stageSurface}>{settings.dimension==='3d'?<Suspense fallback={<SvgStage player={player} state={state} selection={selection} onSelect={select}/>}><ThreeStage player={player} state={state} selection={selection} onSelect={select} flat={flatten} reset={reset} onLost={onLost}/></Suspense>:<SvgStage player={player} state={state} selection={selection} onSelect={select}/>}</div>
-  {dial<2.5&&<div className={styles.sceneCaption}><span className={styles.sceneSmallLabel}>One whole. Equal parts.</span><Suspense fallback={<span>{current.latexAfter}</span>}><MathText tex={current.latexAfter} selection={selection} onSelect={select}/></Suspense><span className={styles.captionHelp}>{selection?'Same colour. Same idea.':'Tap a piece. Follow its symbol.'}</span></div>}
-  {dial>2.3&&<pre className={styles.codeOverlay}><span>Python</span><code>{spec.code}</code></pre>}
-  <Tethers selection={selection} player={player}/>
-  {children}<div className={styles.stageHint}><Icon name="Lightbulb" size={13}/>{settings.dimension==='3d'?'Drag to look around · scroll to zoom':'Tap a piece to connect it to the notation'}</div><div className="sr-only">{Object.values(state.entities).map(entity=><button key={entity.id} onClick={()=>select(entity.tether??entity.id)}>{entity.text?.plain??`${entity.color} ${entity.kind}`}</button>)}</div></div>
-  <div className={styles.unfoldPanel} data-anchor-id="unfold"><div className={styles.unfoldLabel}><Icon name="Layers" size={16}/><strong>Unfold the idea</strong><span>From something real to something written</span></div><div className={styles.dialLabels}>{['Thing','Shape','Symbol','Code'].map((label,i)=><button aria-label={label} key={label} className={Math.round(dial)===i?styles.activeLayer:''} onClick={()=>set({dial:i})}>{i===0?<Icon name="Grid2X2" size={15}/>:i===1?<Icon name="Layers" size={15}/>:i===2?<span>𝑥</span>:<Icon name="Code2" size={15}/>} {label}</button>)}</div><input id="unfold-dial" aria-label="Unfold Dial" type="range" min="0" max="3" step="0.01" value={dial} onChange={e=>set({dial:Number(e.target.value)})}/></div>
-  <div className={styles.transport} data-anchor-id="transport"><button className={styles.iconButton} aria-label="Previous step" disabled={step===0} onClick={()=>changeStep(step-1)}><Icon name="ChevronLeft"/></button><button className={styles.playButton} aria-label={playing?'Pause lesson':'Play lesson'} onClick={()=>setPlaying(!playing)}><Icon name={playing?'Pause':'Play'} size={16}/></button><button className={styles.iconButton} aria-label="Next step" disabled={step>=spec.steps.length-1} onClick={()=>changeStep(step+1)}><Icon name="ChevronRight"/></button><input aria-label="Seek step" type="range" min="0" max={spec.steps.length-1} step="1" value={step} onChange={e=>changeStep(Number(e.target.value))}/><span>{step+1} / {spec.steps.length}</span><button className={styles.speedButton} aria-label="Change playback speed" onClick={()=>settings.set({speed:settings.speed===1?2:settings.speed===2?.5:1})}>{settings.speed}×</button></div></div>
-  <aside className={`${styles.stepPanel} ${styles[`sheet${sheet}`]}`} data-anchor-id="steps" aria-label="Worked solution"><button className={styles.sheetHandle} aria-label="Change step sheet height" onClick={()=>setSheet((sheet+1)%3)}><span/><Icon name="ChevronDown" size={16}/></button><div className={styles.stepPanelHeader}><div><Icon name="BookOpen" size={17}/><h2>A little at a time</h2></div><span>{spec.steps.length} steps to understanding</span></div><div className={styles.depthTabs}>{(['quick','standard','deep'] as const).map(value=><button key={value} aria-pressed={depth===value} onClick={()=>setDepth(value)}>{value[0].toUpperCase()+value.slice(1)}</button>)}</div><div className={styles.steps}>{spec.steps.map((item,i)=><article key={item.id} className={`${styles.stepCard} ${i===step?styles.currentStep:''}`} data-anchor-id={`step-${item.id}`}><button className={styles.stepSelect} onClick={()=>changeStep(i)} aria-expanded={i===step}><span className={styles.stepNumber}>{i<step?<Icon name="Check" size={13}/>:i+1}</span><span>{item.title}</span><Icon name="ChevronDown" size={14}/></button>{i===step&&<div className={styles.stepContent}><div className={styles.stepMath}><Suspense fallback={item.latexAfter}><MathText tex={item.latexAfter} selection={selection} onSelect={select}/></Suspense></div><p>{item.say[depth]}</p><div className={styles.stepChipRow}><button onClick={()=>setWhy(!why)}><Icon name="Lightbulb" size={13}/> Why?</button><button onClick={()=>{changeStep(i);setReplay(v=>v+1);}}><Icon name="RotateCcw" size={12}/> Replay</button></div>{why&&<p className={styles.whyCard}>{item.say.deep}</p>}</div>}</article>)}</div><div className={styles.notebookFoot}><Icon name="Sparkles" size={15}/><p>Understanding takes a few turns.<br/>There’s no rush.</p></div></aside></div>
-  <div className={styles.benchFoot}><span><Icon name="StickyNote" size={14}/> Your next thought has a place here.</span><span>{fps?`${fps} fps · `:''}{settings.dimension.toUpperCase()} workbench</span></div>{lost&&<div className={styles.errorBanner}>Your 3D view paused. Your lesson is safe in 2D. <button onClick={()=>{settings.set({dimension:'3d'});setLost(false);}}>Try 3D again</button></div>}<div className="sr-only" aria-live="polite">{current.aria}</div></>;
+  return (
+    <>
+      <div className={styles.playerHeading}>
+        <div className={styles.lessonTabs}>
+          <span className={styles.selectedTab}>
+            <Icon name="Layers" size={15} /> Explore the idea
+          </span>
+          <span className={styles.lessonType}>A hands-on lesson</span>
+        </div>
+        <div className={styles.dimension} aria-label="Scene dimension">
+          <button onClick={() => toggleDimension('2d')} aria-pressed={settings.dimension === '2d'}>
+            2D
+          </button>
+          <button
+            aria-label="3D"
+            onClick={() => toggleDimension('3d')}
+            aria-pressed={settings.dimension === '3d'}
+          >
+            3D <span>✧</span>
+          </button>
+        </div>
+      </div>
+      <div className={styles.player} data-anchor-id="player">
+        <div className={styles.sceneColumn}>
+          <div
+            className={`${styles.stage} ${flatten ? styles.flattening : ''}`}
+            data-anchor-id="stage"
+            data-step={step}
+            data-dial={dial}
+          >
+            <div className={styles.stageTop}>
+              <span>
+                <i /> Your workbench
+              </span>
+              <div className={styles.stageTools}>
+                <button aria-label="Reset view" onClick={() => setReset((v) => v + 1)}>
+                  <Icon name="RotateCcw" size={16} />
+                </button>
+                <button aria-label="Flatten scene" onClick={() => toggleDimension('2d')}>
+                  <Icon name="Expand" size={16} />
+                </button>
+              </div>
+            </div>
+            <div className={styles.stageSurface}>
+              {settings.dimension === '3d' ? (
+                <Suspense
+                  fallback={
+                    <SvgStage
+                      player={player}
+                      state={state}
+                      selection={selection}
+                      onSelect={select}
+                    />
+                  }
+                >
+                  <ThreeStage
+                    player={player}
+                    state={state}
+                    selection={selection}
+                    onSelect={select}
+                    flat={flatten}
+                    reset={reset}
+                    onLost={onLost}
+                  />
+                </Suspense>
+              ) : (
+                <SvgStage player={player} state={state} selection={selection} onSelect={select} />
+              )}
+            </div>
+            {dial < 2.5 && (
+              <div className={styles.sceneCaption}>
+                <span className={styles.sceneSmallLabel}>One whole. Equal parts.</span>
+                <Suspense fallback={<span>{current.latexAfter}</span>}>
+                  <MathText tex={current.latexAfter} selection={selection} onSelect={select} />
+                </Suspense>
+                <span className={styles.captionHelp}>
+                  {selection ? 'Same colour. Same idea.' : 'Tap a piece. Follow its symbol.'}
+                </span>
+              </div>
+            )}
+            {dial > 2.3 && (
+              <pre className={styles.codeOverlay}>
+                <span>Python</span>
+                <code>{spec.code}</code>
+              </pre>
+            )}
+            <Tethers selection={selection} player={player} />
+            {children}
+            <div className={styles.stageHint}>
+              <Icon name="Lightbulb" size={13} />
+              {settings.dimension === '3d'
+                ? 'Drag to look around · scroll to zoom'
+                : 'Tap a piece to connect it to the notation'}
+            </div>
+            <div className="sr-only">
+              {Object.values(state.entities).map((entity) => (
+                <button key={entity.id} onClick={() => select(entity.tether ?? entity.id)}>
+                  {entity.text?.plain ?? `${entity.color} ${entity.kind}`}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className={styles.unfoldPanel} data-anchor-id="unfold">
+            <div className={styles.unfoldLabel}>
+              <Icon name="Layers" size={16} />
+              <strong>Unfold the idea</strong>
+              <span>From something real to something written</span>
+            </div>
+            <div className={styles.dialLabels}>
+              {['Thing', 'Shape', 'Symbol', 'Code'].map((label, i) => (
+                <button
+                  aria-label={label}
+                  key={label}
+                  className={Math.round(dial) === i ? styles.activeLayer : ''}
+                  onClick={() => set({ dial: i })}
+                >
+                  {i === 0 ? (
+                    <Icon name="Grid2X2" size={15} />
+                  ) : i === 1 ? (
+                    <Icon name="Layers" size={15} />
+                  ) : i === 2 ? (
+                    <span>𝑥</span>
+                  ) : (
+                    <Icon name="Code2" size={15} />
+                  )}{' '}
+                  {label}
+                </button>
+              ))}
+            </div>
+            <input
+              id="unfold-dial"
+              aria-label="Unfold Dial"
+              type="range"
+              min="0"
+              max="3"
+              step="0.01"
+              value={dial}
+              onChange={(e) => set({ dial: Number(e.target.value) })}
+            />
+          </div>
+          <div className={styles.transport} data-anchor-id="transport">
+            <button
+              className={styles.iconButton}
+              aria-label="Previous step"
+              disabled={step === 0}
+              onClick={() => changeStep(step - 1)}
+            >
+              <Icon name="ChevronLeft" />
+            </button>
+            <button
+              className={styles.playButton}
+              aria-label={playing ? 'Pause lesson' : 'Play lesson'}
+              onClick={() => setPlaying(!playing)}
+            >
+              <Icon name={playing ? 'Pause' : 'Play'} size={16} />
+            </button>
+            <button
+              className={styles.iconButton}
+              aria-label="Next step"
+              disabled={step >= spec.steps.length - 1}
+              onClick={() => changeStep(step + 1)}
+            >
+              <Icon name="ChevronRight" />
+            </button>
+            <input
+              aria-label="Seek step"
+              type="range"
+              min="0"
+              max={spec.steps.length - 1}
+              step="1"
+              value={step}
+              onChange={(e) => changeStep(Number(e.target.value))}
+            />
+            <span>
+              {step + 1} / {spec.steps.length}
+            </span>
+            <button
+              className={styles.speedButton}
+              aria-label="Change playback speed"
+              onClick={() =>
+                settings.set({ speed: settings.speed === 1 ? 2 : settings.speed === 2 ? 0.5 : 1 })
+              }
+            >
+              {settings.speed}×
+            </button>
+          </div>
+        </div>
+        <aside
+          className={`${styles.stepPanel} ${styles[`sheet${sheet}`]}`}
+          data-anchor-id="steps"
+          aria-label="Worked solution"
+        >
+          <button
+            className={styles.sheetHandle}
+            aria-label="Change step sheet height"
+            onClick={() => setSheet((sheet + 1) % 3)}
+          >
+            <span />
+            <Icon name="ChevronDown" size={16} />
+          </button>
+          <div className={styles.stepPanelHeader}>
+            <div>
+              <Icon name="BookOpen" size={17} />
+              <h2>A little at a time</h2>
+            </div>
+            <span>{spec.steps.length} steps to understanding</span>
+          </div>
+          <div className={styles.depthTabs}>
+            {(['quick', 'standard', 'deep'] as const).map((value) => (
+              <button key={value} aria-pressed={depth === value} onClick={() => setDepth(value)}>
+                {value[0].toUpperCase() + value.slice(1)}
+              </button>
+            ))}
+          </div>
+          <div className={styles.steps}>
+            {spec.steps.map((item, i) => (
+              <article
+                key={item.id}
+                className={`${styles.stepCard} ${i === step ? styles.currentStep : ''}`}
+                data-anchor-id={`step-${item.id}`}
+              >
+                <button
+                  className={styles.stepSelect}
+                  onClick={() => changeStep(i)}
+                  aria-expanded={i === step}
+                >
+                  <span className={styles.stepNumber}>
+                    {i < step ? <Icon name="Check" size={13} /> : i + 1}
+                  </span>
+                  <span>{item.title}</span>
+                  <Icon name="ChevronDown" size={14} />
+                </button>
+                {i === step && (
+                  <div className={styles.stepContent}>
+                    <div className={styles.stepMath}>
+                      <Suspense fallback={item.latexAfter}>
+                        <MathText tex={item.latexAfter} selection={selection} onSelect={select} />
+                      </Suspense>
+                    </div>
+                    <p>{item.say[depth]}</p>
+                    <div className={styles.stepChipRow}>
+                      <button onClick={() => setWhy(!why)}>
+                        <Icon name="Lightbulb" size={13} /> Why?
+                      </button>
+                      <button
+                        onClick={() => {
+                          changeStep(i);
+                          setReplay((v) => v + 1);
+                        }}
+                      >
+                        <Icon name="RotateCcw" size={12} /> Replay
+                      </button>
+                    </div>
+                    {why && <p className={styles.whyCard}>{item.say.deep}</p>}
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
+          <div className={styles.notebookFoot}>
+            <Icon name="Sparkles" size={15} />
+            <p>
+              Understanding takes a few turns.
+              <br />
+              There’s no rush.
+            </p>
+          </div>
+        </aside>
+      </div>
+      <div className={styles.benchFoot}>
+        <span>
+          <Icon name="StickyNote" size={14} /> Your next thought has a place here.
+        </span>
+        <span>
+          {fps ? `${fps} fps · ` : ''}
+          {settings.dimension.toUpperCase()} workbench
+        </span>
+      </div>
+      {lost && (
+        <div className={styles.errorBanner}>
+          Your 3D view paused. Your lesson is safe in 2D.{' '}
+          <button
+            onClick={() => {
+              settings.set({ dimension: '3d' });
+              setLost(false);
+            }}
+          >
+            Try 3D again
+          </button>
+        </div>
+      )}
+      <div className="sr-only" aria-live="polite">
+        {current.aria}
+      </div>
+    </>
+  );
 }
-
-
-
-

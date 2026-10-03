@@ -1,15 +1,18 @@
 # Monomath design
 
 ## Visual thesis
+
 A learner's maker bench: quiet paper tools around a vivid, tactile cutting mat. The scene is the first screen and the main activity. The identity is an open eye, not a generic education dashboard.
 
 ## Compact tokens
+
 Paper `#F5F7F6`; Ink `#10201C`; Mat `#1F7A6B`; Cobalt `#2F6BFF`; Glow `#FFE066`; Rule `#D7DEDA`.
 Domain accents are semantic extensions: amber logic, magenta statistics, vermilion physics, violet code. All meaning also uses labels, patterns, or symbols.
 
 Typography: Bricolage Grotesque for the wordmark and headings; Atkinson Hyperlegible for readable controls and body; JetBrains Mono for code. Body 16px; controls 14px; secondary text 12px; display 32–44px. All fonts are locally bundled. Comfortable line length is 65 characters.
 
 ## Desktop layout
+
 ```
 +-----------------+---------------------------------------------------+
 | eye monomath    | breadcrumb                 local XP  theme gear    |
@@ -26,9 +29,11 @@ Typography: Bricolage Grotesque for the wordmark and headings; Atkinson Hyperleg
 | help / prefs   | previous   play   seek   next              note orb |
 +-----------------+---------------------------------------------------+
 ```
+
 The sidebar is a tool rail, the stage has the largest area, and the step panel resembles a notebook with fine rules. The bench uses measurement ticks and material shadows rather than decorative cards.
 
 ## Mobile layout
+
 ```
 +--------------------------------+
 | eye monomath     map  2D/3D gear |
@@ -42,16 +47,21 @@ The sidebar is a tool rail, the stage has the largest area, and the step panel r
 | step sheet: peek / half / full  |
 +--------------------------------+
 ```
+
 Controls are at least 44px. The sidebar becomes a drawer. The step panel uses three snap heights. Every drag also has buttons or keyboard controls.
 
 ## Hierarchy and material
+
 The shell is flat with thin borders. Only the stage and active paper notelets carry shadows. Buttons have 8px corners, notebook panels 12px, stage 18px; no repeated floating rounded cards. Display text is dark and unaccented. The stage grid supports measurement, with low visual contrast behind the objects.
 
 ## Motion and interaction
+
 Only the eye opens on arrival. Other movement responds to play, drag, dial, step, or mascot interaction. Durations are 250–600ms with reduced-motion support. Hover and focus reveal actual tethers; they do not arbitrarily lift cards. 2D and 3D consume the same coordinates and share state.
 
 ## Critique and revisions
+
 Rejected a cream/serif/terracotta aesthetic because it implies a reading site. Replaced it with cool paper and readable grotesques. Rejected a near-black neon dashboard because it competes with the objects. Replaced identical shadow cards with a flat tool rail, ruled notebook, and elevated mat. Rejected spaced uppercase eyebrows and generic hero copy: the first screen is a functioning fraction scene. Numbers appear only on sequential solution steps. Domain colour lives primarily in manipulatives and small labelled gem marks.
 
 ## Secondary themes
+
 Mono, Blueprint, Chalkboard, Neon Grid, Observatory, and High Contrast retain the geometry and hierarchy. Contrast is checked separately from appearance. A theme never changes scene semantics.
