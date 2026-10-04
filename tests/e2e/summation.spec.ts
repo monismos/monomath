@@ -70,7 +70,7 @@ test('inclusive Hopper, pairing, code and dimensions preserve the worked context
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/#map');
   await expect(
-    page.getByRole('button', { name: 'Functions and graphs: Coming soon' }),
+    page.getByRole('button', { name: 'Distributions and Galton: Coming soon' }),
   ).toBeDisabled();
   await page.getByRole('button', { name: 'Σ Summation: Open lab' }).click();
   await page

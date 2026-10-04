@@ -83,7 +83,7 @@ test('affine vertices, signed area and both dimensions share the same lesson', a
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/#map');
   await expect(
-    page.getByRole('button', { name: 'Functions and graphs: Coming soon' }),
+    page.getByRole('button', { name: 'Distributions and Galton: Coming soon' }),
   ).toBeDisabled();
   await page.getByRole('button', { name: 'Matrices: Open lab' }).click();
   await page.getByRole('button', { name: 'Lattice', exact: true }).click();

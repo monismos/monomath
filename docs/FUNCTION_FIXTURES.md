@@ -1,0 +1,7 @@
+# Functions teaching contract
+
+Bound input to 160 characters, integer polynomial coefficients ±12, degree at most 3, and definite-integral bounds −4…4. Sine/exponential coefficients are finite integers ±4, frequency 1…3; surfaces use coefficients ±4. Accept y=2*x+1, x^2-4*x+3=0, derivative(3*x^2+2*x), integral(x^2,0,3), y=2*sin(x)+1, y=exp(x), and z=x^2+y^2. Reject unsupported teaching syntax with a direct route to the existing general graph workspace.
+
+Fixtures: line slope2/intercept1; quadratic roots1/3 and vertex(2,−1), with factoring, completing-square strips/corner tiles, and formula; derivative6x+2; exact integral9, midpoint sums approaching9, signed area below zero; sine slope/period; exponential slope; surface slice y=s, height x²+s². Independent mathjs numeric evaluation and differentiation verify values and slopes; polynomial antiderivatives verify areas.
+
+Five seeded proofs require actual coefficient/point construction, root markers, a tangent through its trace point with the correct slope, a rectangle partition with each entered height and signed sum, or a surface slice through the stated point. A claim alone never verifies a model. Boss connects slope, two plotted points and Python. Predictions, all text depths, alternative methods, complete context including zoom/slice/rectangles, Echoes, both tether directions, touch, 2D/3D and offline notelets must pass before unlocking.

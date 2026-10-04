@@ -327,6 +327,7 @@ export default function MatrixLab() {
           spec={scene}
           domain="math"
           echoSkillId="matrices"
+          watchCredit={v.mode === 'watch'}
           mascotScript={script}
           caption={
             problem.kind === 'solve'
@@ -579,7 +580,7 @@ export default function MatrixLab() {
           <details key={bridge.id}>
             <summary>{bridge.title}</summary>
             <p>{bridge.description}</p>
-            {['fractions', 'summation'].includes(bridge.labId) ? (
+            {['fractions', 'summation', 'functions'].includes(bridge.labId) ? (
               <button
                 onClick={() => {
                   useLesson
@@ -588,7 +589,12 @@ export default function MatrixLab() {
                   location.hash = bridge.labId;
                 }}
               >
-                Open {bridge.labId === 'summation' ? 'the Hopper' : 'Fractions'}
+                Open{' '}
+                {bridge.labId === 'summation'
+                  ? 'the Hopper'
+                  : bridge.labId === 'functions'
+                    ? 'Functions and graphs'
+                    : 'Fractions'}
               </button>
             ) : (
               <span className={styles.comingSoon}>Coming soon</span>

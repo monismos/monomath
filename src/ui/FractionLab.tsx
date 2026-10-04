@@ -358,6 +358,7 @@ export default function FractionLab() {
         <Explainer
           spec={v.mode === 'watch' ? watch! : built}
           echoSkillId="fractions"
+          watchCredit={v.mode === 'watch'}
           mascotScript={mascotScript}
           onActivate={v.mode === 'watch' ? undefined : toggle}
           caption={

@@ -53,6 +53,11 @@ test('proof checks actual overlap and boss connects symbols, pieces and code', a
   await proof.getByRole('combobox', { name: 'Challenge', exact: true }).selectOption('multiply');
   await proof.getByRole('button', { name: 'Check my pieces', exact: true }).click();
   await expect(proof.getByRole('status')).toContainText('Keep exploring');
+  // The one-step proof is not a completed Watch lesson, even after its dwell timer.
+  await page.waitForTimeout(2100);
+  await expect(page.locator('summary').filter({ hasText: 'Learning progress' })).toContainText(
+    '0 XP',
+  );
   const columns = proof.getByRole('button', { name: /^Column \d+$/ }),
     rows = proof.getByRole('button', { name: /^Row \d+$/ });
   for (let i = 0; i < (await columns.count()) - 1; i++) await columns.nth(i).click();

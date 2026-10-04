@@ -325,6 +325,7 @@ export default function LogicLab() {
         <Explainer
           spec={scene}
           echoSkillId="logic"
+          watchCredit={variant.mode === 'watch'}
           domain="logic"
           mascotScript={mascotScript}
           caption={variant.mode === 'watch' ? 'The same worlds become a truth set on Shape.' : goal}

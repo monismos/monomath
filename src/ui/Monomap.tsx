@@ -18,7 +18,8 @@ const available = (id: string) =>
   (id === 'sets' && features.sets) ||
   (id === 'logic' && features.logic) ||
   (id === 'summation' && features.summation) ||
-  (id === 'matrices' && features.matrices);
+  (id === 'matrices' && features.matrices) ||
+  (id === 'functions' && features.functions);
 export default function Monomap() {
   return (
     <section className={styles.map} aria-labelledby="monomap-title">

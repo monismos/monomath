@@ -28,11 +28,13 @@ function Piece({
   selection,
   onSelect,
   onActivate,
+  onStagePoint,
 }: {
   entity: Entity;
   selection: string | null;
   onSelect: (id: string | null) => void;
   onActivate?: (id: string) => void;
+  onStagePoint?: (point: [number, number, number]) => void;
 }) {
   const group = useRef<Group>(null);
   const material = useRef<MeshStandardMaterial>(null);
@@ -133,7 +135,12 @@ function Piece({
   const events = {
     onPointerOver: () => onSelect(entity.tether ?? entity.id),
     onPointerOut: () => onSelect(null),
-    onClick: () => (onActivate ? onActivate(entity.id) : onSelect(entity.tether ?? entity.id)),
+    onClick: (event: { point: Vector3 }) => {
+      if (onActivate) onActivate(entity.id);
+      else onSelect(entity.tether ?? entity.id);
+      if (['trace', 'tangent', 'surface', 'slice'].includes(entity.id))
+        onStagePoint?.(event.point.toArray() as [number, number, number]);
+    },
     onPointerDown: (event: { point: Vector3 }) => {
       const p = group.current?.worldToLocal(event.point.clone());
       if (p) setStageHit({ entityId: entity.id, p: p.toArray() as [number, number, number] });
@@ -377,14 +384,15 @@ function InstancedPieces({
   );
 }
 function CameraController({ flat, reset }: { flat: boolean; reset: number }) {
-  const { camera, invalidate } = useThree();
+  const { camera, invalidate, size } = useThree();
+  const fit = Math.max(1, (1.2 * size.height) / Math.max(1, size.width));
   const target = useRef(new Vector3(0, 6, 7));
   const active = useRef(true);
   useEffect(() => {
-    target.current.set(0, flat ? 11 : 6, flat ? 0.02 : 7);
+    target.current.set(0, (flat ? 11 : 6) * fit, (flat ? 0.02 : 7) * fit);
     active.current = true;
     invalidate();
-  }, [flat, reset, invalidate]);
+  }, [flat, reset, invalidate, fit]);
   useFrame(() => {
     if (!active.current) return;
     camera.position.lerp(target.current, 0.14);
@@ -400,11 +408,22 @@ interface Props {
   selection: string | null;
   onSelect: (id: string | null) => void;
   onActivate?: (id: string) => void;
+  onStagePoint?: (point: [number, number, number]) => void;
   flat: boolean;
   reset: number;
   onLost: () => void;
 }
-function Scene({ state, player, selection, onSelect, onActivate, flat, reset, onLost }: Props) {
+function Scene({
+  state,
+  player,
+  selection,
+  onSelect,
+  onActivate,
+  onStagePoint,
+  flat,
+  reset,
+  onLost,
+}: Props) {
   const { gl, invalidate, camera } = useThree();
   gl.domElement.dataset.stageCanvas = 'true';
   useFrame(() => {
@@ -502,6 +521,7 @@ function Scene({ state, player, selection, onSelect, onActivate, flat, reset, on
             selection={selection}
             onSelect={onSelect}
             onActivate={onActivate}
+            onStagePoint={onStagePoint}
           />
         ))}
       <CameraController flat={flat} reset={reset} />

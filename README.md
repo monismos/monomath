@@ -2,6 +2,8 @@
 
 See it, touch it, then read it. Monomath is a local learning workshop for mathematics, logic, statistics, physics, and programming. The complete product specification is in [docs/BRIEF.md](docs/BRIEF.md); the build status is in [PLAN.md](PLAN.md).
 
+Website: [Monomath](https://monismos.github.io/monomath/). Source: [monismos/monomath](https://github.com/monismos/monomath).
+
 ## Run
 
 Node 22 or newer is recommended. On Windows, macOS, or Linux:
@@ -23,7 +25,9 @@ Open **Fractions lab** for exact worked operations, three representations, predi
 
 **Matrices** turns 2×2/3×3 grids into deformed lattices, basis vectors and unit squares or cubes. It includes exact addition, transpose, row-by-column multiplication, determinant, 2×2 inverse and linear systems, including singular cases. Six construction proof families, Boss, Echoes and Python/NumPy connect the same values. Real eigenvector directions are labelled as approximate. Saved matrix contexts restore offline.
 
-The **Equation workspace** draws supported real curves, implicit planar relations, height surfaces and constant values. It includes parameter controls, viewport movement, point inspection, numerical slopes, tables and surface slices. General implicit 3D surfaces, arbitrary programs, inequalities and symbolic calculus are currently unsupported; the UI explains input limits. Discontinuities create gaps rather than false connecting strokes.
+**Functions and graphs** connects lines, quadratic roots, sine/exponential curves, polynomial derivatives and signed definite integrals to one graph table. Trace points, adjustable tangents, zoom, midpoint rectangles and a surface slice share their 2D/3D geometry. Seven examples, three quadratic methods with literal square tiles, five construction proof families, Boss and Echoes explain a bounded teaching grammar. Broader numeric equations open in the Equation workspace. Both labs restore saved context offline.
+
+The **Equation workspace** draws supported real curves, implicit planar relations, height surfaces and constant values. It includes parameter controls, viewport movement, point inspection, numerical slopes, tables and surface slices. The workspace does not support general implicit 3D surfaces, arbitrary programs, inequalities or symbolic calculus; the UI explains input limits. The Functions teaching lab supplies the bounded polynomial derivative and integral explanations. Discontinuities create gaps rather than false connecting strokes.
 
 **Philosophy** is your lesson authoring space: write Markdown, save drafts, read, search, add private reflections, and export/import lessons. Browser-authored lessons stay on that device. To include them in your GitHub deployment, export them and follow `src/content/philosophy/README.md` to put them in the source lesson list. Private reflections are excluded from lesson exports.
 

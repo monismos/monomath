@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState, useRef } from 'react';
-import type { SceneSpec } from '../core/scene/spec';
+import type { SceneSpec, Vec3 } from '../core/scene/spec';
 import { palette, entityVisible } from '../core/scene/spec';
 import { ScenePlayer } from '../core/scene/player';
 import { useLesson } from '../core/scene/store';
@@ -29,6 +29,9 @@ export function Explainer({
   onMethod,
   domain = 'math',
   mascotScript,
+  onStagePoint,
+  onStageZoom,
+  watchCredit = true,
 }: {
   spec: SceneSpec;
   children?: React.ReactNode;
@@ -38,6 +41,9 @@ export function Explainer({
   onMethod?: () => void;
   domain?: 'math' | 'logic' | 'stats' | 'physics' | 'code';
   mascotScript?: MascotScript;
+  onStagePoint?: (point: Vec3) => void;
+  onStageZoom?: (factor: number) => void;
+  watchCredit?: boolean;
 }) {
   const { step, dial, selection, set } = useLesson();
   const settings = useSettings();
@@ -111,7 +117,7 @@ export function Explainer({
     emitMascot('step-enter');
   }, [checkpointKey]);
   useEffect(() => {
-    if (blocked) return;
+    if (blocked || !watchCredit) return;
     const timer = setTimeout(() => {
       const viewed = viewedSteps.current.get(spec.id) ?? new Set<number>();
       viewed.add(currentIndex);
@@ -120,7 +126,7 @@ export function Explainer({
         useGame.getState().award('watch', `${spec.id}:watch`, useLesson.getState().labId);
     }, 1800);
     return () => clearTimeout(timer);
-  }, [blocked, currentIndex, spec]);
+  }, [blocked, currentIndex, spec, watchCredit]);
   useEffect(() => {
     const action = (event: Event) => {
       const action = (event as CustomEvent<{ action: string }>).detail.action;
@@ -275,6 +281,8 @@ export function Explainer({
                       selection={selection}
                       onSelect={select}
                       onActivate={onActivate}
+                      onStagePoint={onStagePoint}
+                      onStageZoom={onStageZoom}
                     />
                   }
                 >
@@ -284,6 +292,7 @@ export function Explainer({
                     selection={selection}
                     onSelect={select}
                     onActivate={onActivate}
+                    onStagePoint={onStagePoint}
                     flat={flatten}
                     reset={reset}
                     onLost={onLost}
@@ -296,6 +305,8 @@ export function Explainer({
                   selection={selection}
                   onSelect={select}
                   onActivate={onActivate}
+                  onStagePoint={onStagePoint}
+                  onStageZoom={onStageZoom}
                 />
               )}
             </div>

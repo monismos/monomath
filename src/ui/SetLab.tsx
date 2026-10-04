@@ -458,6 +458,7 @@ export default function SetLab() {
           spec={v.mode === 'watch' ? watch : built}
           domain="logic"
           echoSkillId="sets"
+          watchCredit={v.mode === 'watch'}
           mascotScript={mascotScript}
           onActivate={activate}
           caption={v.mode === 'watch' ? 'One element. Several memberships.' : target}
@@ -745,6 +746,18 @@ export default function SetLab() {
                 }}
               >
                 Open Truth Lanterns <Icon name="ArrowUpRight" size={14} />
+              </button>
+            ) : ['functions', 'summation'].includes(bridge.labId) ? (
+              <button
+                onClick={() => {
+                  useLesson
+                    .getState()
+                    .set({ labId: '', variant: undefined, step: 0, selection: null });
+                  location.hash = bridge.labId;
+                }}
+              >
+                Open {bridge.labId === 'functions' ? 'Functions and graphs' : 'the Hopper'}{' '}
+                <Icon name="ArrowUpRight" size={14} />
               </button>
             ) : (
               <span className={styles.comingSoon}>Coming soon on the Monomap</span>

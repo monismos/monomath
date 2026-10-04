@@ -18,7 +18,7 @@
 - M4: use exact rational equivalence for Fractions Try-first; avoid claiming a general symbolic CAS from numerical sampling.
 - M4: cap manipulative cut counts at 24 and unit areas at four; large exact inputs keep a truthful numeric explanation, and division counts measuring units instead of original whole pies.
 - User workspaces: Philosophy and equations are independent requested additions; an equation plot does not unlock the pending Functions teaching lab.
-- Graph parser: mathjs exceeds 30 KB gzip but supplies a maintained AST parser and notation conversion; ship it solely in a lazy local worker, interpret only an allowlisted numeric DTO, and precache it for offline study.
+- Graph parser: mathjs exceeds 30 KB gzip but supplies a maintained AST parser and notation conversion; load it lazily for the worker and bounded Functions teaching solver, interpret only an allowlisted numeric DTO, and precache it for offline study.
 - Philosophy: browser lessons must be exported into the typed source lesson list to travel with a GitHub push; personal reflections stay outside public lesson exports.
 
 - 2026-10-03: This request builds the local repository; deployment remains an optional documented step, with no external backend or runtime requests.
@@ -38,3 +38,14 @@
 - Matrices uses a closed 2×2/3×3 integer grammar (−6…6), exact rational elimination, and approximate labelled real eigenspaces; affine vertices are shared by SVG and Three.
 
 - Matrices scene uses short basis labels with exact coordinates in the construction controls; eigenvalue captions sit above the lattice, and an explicit Cell blocks view remains visible at every dial position.
+
+- Functions teaching accepts bounded degree≤3 polynomials, a·sin(bx)+c, a·exp(bx)+c, quadratic root equations, polynomial derivatives/integrals and z=a·x²+b·y²+c; the general equation workspace retains broader numeric input.
+- Closed Functions scenes use at most 256 curve/surface samples and shared mesh primitives; arbitrary sampling continues in the existing budgeted Web Worker, with no new dependencies.
+
+- Functions shares the existing mathjs whitelist parser (about 200 KB gzip) as a separate lazy dependency: the required numeric grammar and MathML/TeX formatting justify its size; a lightweight seed/number module keeps Echo registration from loading that parser at startup.
+
+- Functions screenshot QA: normalize square equations before displaying them, use exact fraction TeX, label the signed strips/corner, and keep unbound preview notation outside the active tether tokens.
+- Portrait 3D stages increase camera distance with aspect ratio so graph surfaces and labels fit the mobile workbench; resizing preserves the lesson state.
+
+- Regression QA: observation credit applies only in Watch mode; lingering on a proof construction cannot earn the Observe facet or Watch XP.
+- 2026-10-04 user authorization: publish the current working project now; use the authenticated monismos account, create the public monomath repository and enable its existing GitHub Pages Actions deployment.

@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef } from 'react';
-import type { Entity, ResolvedState } from '../../scene/spec';
+import type { Entity, ResolvedState, Vec3 } from '../../scene/spec';
 import { palette, entityVisible, entityCenter } from '../../scene/spec';
 import { worldToScreen } from '../projection';
 import type { ScenePlayer } from '../../scene/player';
@@ -32,15 +32,38 @@ export default function SvgStage({
   onSelect,
   player,
   onActivate,
+  onStagePoint,
+  onStageZoom,
 }: {
   state: ResolvedState;
   selection: string | null;
   onSelect: (id: string | null) => void;
   player: ScenePlayer;
   onActivate?: (id: string) => void;
+  onStagePoint?: (point: Vec3) => void;
+  onStageZoom?: (factor: number) => void;
 }) {
   const ref = useRef<SVGSVGElement>(null);
   const shadowId = useId();
+  const drag = useRef<{ x: number; y: number; id: number }>();
+  const touches = useRef(new Map<number, { x: number; y: number }>());
+  const pinch = useRef(0);
+  const point = (x: number, y: number) => {
+    const matrix = ref.current?.getScreenCTM();
+    if (!matrix) return;
+    const p = new DOMPoint(x, y).matrixTransform(matrix.inverse());
+    onStagePoint?.([(p.x - 350) / 72, 0, (235 - p.y) / 60]);
+  };
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || !onStageZoom) return;
+    const wheel = (event: WheelEvent) => {
+      event.preventDefault();
+      onStageZoom(Math.exp(-event.deltaY * 0.002));
+    };
+    node.addEventListener('wheel', wheel, { passive: false });
+    return () => node.removeEventListener('wheel', wheel);
+  }, [onStageZoom]);
   useEffect(() => {
     const ids = Object.keys(state.entities);
     const update = () => {
@@ -114,7 +137,61 @@ export default function SvgStage({
       viewBox="0 0 700 440"
       aria-label="Interactive 2D workbench"
       role="group"
-      style={{ width: '100%', height: '100%', overflow: 'visible' }}
+      onClick={(event) => {
+        const id = (event.target as Element)
+          .closest('[data-entity-id]')
+          ?.getAttribute('data-entity-id');
+        if (onStagePoint && (!id || ['trace', 'tangent'].includes(id)))
+          point(event.clientX, event.clientY);
+      }}
+      onPointerDown={(event) => {
+        if (!onStagePoint && !onStageZoom) return;
+        touches.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+        if (touches.current.size === 2) {
+          const [a, b] = [...touches.current.values()];
+          pinch.current = Math.hypot(a.x - b.x, a.y - b.y);
+        }
+        if (
+          (event.target as Element).closest('[data-entity-id="trace"], [data-entity-id="tangent"]')
+        ) {
+          drag.current = { x: event.clientX, y: event.clientY, id: event.pointerId };
+          event.currentTarget.setPointerCapture(event.pointerId);
+        }
+      }}
+      onPointerMove={(event) => {
+        if (touches.current.has(event.pointerId))
+          touches.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+        if (touches.current.size === 2 && onStageZoom) {
+          const [a, b] = [...touches.current.values()],
+            distance = Math.hypot(a.x - b.x, a.y - b.y);
+          if (pinch.current > 0) onStageZoom(distance / pinch.current);
+          pinch.current = distance;
+          return;
+        }
+        const start = drag.current;
+        if (
+          start &&
+          start.id === event.pointerId &&
+          Math.hypot(event.clientX - start.x, event.clientY - start.y) > 8
+        )
+          point(event.clientX, event.clientY);
+      }}
+      onPointerUp={(event) => {
+        touches.current.delete(event.pointerId);
+        pinch.current = 0;
+        drag.current = undefined;
+      }}
+      onPointerCancel={(event) => {
+        touches.current.delete(event.pointerId);
+        pinch.current = 0;
+        drag.current = undefined;
+      }}
+      style={{
+        width: '100%',
+        height: '100%',
+        overflow: 'visible',
+        touchAction: onStagePoint || onStageZoom ? 'none' : undefined,
+      }}
     >
       <defs>
         <filter id={shadowId}>

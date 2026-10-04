@@ -43,6 +43,13 @@ export function createSetsDefinition(scenes: SceneSpec[]): SetsDefinition {
           'Give each member a 1 when it passes the set predicate and 0 otherwise. Summing these indicators counts the selected set.',
       },
       {
+        id: 'sets-functions',
+        labId: 'functions',
+        title: 'One output becomes a graph',
+        description:
+          'A function relation assigns one output to each input. A graph places those input-output pairs on the same coordinate table.',
+      },
+      {
         id: 'sets-code',
         labId: 'memory',
         title: 'Rows follow the same operations',

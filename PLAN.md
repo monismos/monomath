@@ -12,7 +12,7 @@ Status: pending / in progress / verified. A milestone is verified only after its
   - [x] Propositional logic — verified locally: bounded formulas and arguments, truth lanterns, wired gates, Venn truth sets, six proof families, three-phase Boss, Echoes and complete notelet context.
   - [x] Summation — verified locally: exact finite and double sums, animated Hopper, pairing, population mean/variance/SD, six seeded proof families, Boss, Python/R/SQL, Echoes and offline context restoration.
   - [x] Matrices — verified locally: exact 2×2/3×3 operations, affine lattice/square/cube, basis images, real eigenspaces, row-column animation, inverse and singular systems, six construction families, Boss, Echoes and offline notelet context.
-  - [ ] Functions and graphs — pending.
+  - [x] Functions and graphs — verified locally: lines, quadratics, sine/exponential curves, polynomial derivatives/integrals, trace/tangent/zoom, signed rectangles, surfaces/slices, literal square tiles, five construction families, Boss, Echoes and offline notelets.
   - [ ] Distributions and Galton board — pending.
   - [ ] Kinematics — pending.
   - [ ] Memory, types, and control flow — pending.
@@ -62,13 +62,15 @@ Status: pending / in progress / verified. A milestone is verified only after its
 
 ## Exact next actions
 
-M0–M4, Sets, Logic, Summation, Matrices and the user workspaces pass the current local checks (475 unit/component tests) and 72 production desktop/mobile e2e tests at 1440×1000 and 360×800. Shell JS is about 77.6 KB gzip; shared Three dependencies 220.4 KB plus stage48.2 KB; Matrices about 10.6 KB plus solver/challenge8.0 KB and shared exact fractions6.06 KB. WebGL checks cover 96 blocks/slices, Summation's largest grid/dataset and maximum 3×3 composition/plane scenes within 150 calls / 200,000 triangles. Philosophy authoring and the bounded equation workspace include offline operation and complete notelet restoration.
+M0–M4, Sets, Logic, Summation, Matrices, Functions and the user workspaces pass the current local checks (533 unit/component tests) and 84 production desktop/mobile e2e tests at 1440×1000 and 360×800. Shell JS is about 77.8 KB gzip; shared Three dependencies 220.4 KB plus stage48.3 KB; Functions20.9 KB plus the separate lazy mathjs parser192.3 KB. WebGL checks cover 96 blocks/slices, Summation's largest grid/dataset, maximum 3×3 composition/plane scenes and Functions surfaces within 150 calls / 200,000 triangles. Philosophy authoring and the bounded equation workspace include offline operation and complete notelet restoration. Observation credit now requires Watch mode, so lingering on a proof does not award Watch XP.
 
-Sets, Logic, Summation and Matrices have passed their local gates and are unlocked on the Monomap. Next implement Functions and graphs in this order:
+Sets, Logic, Summation, Matrices and Functions have passed their local gates and are unlocked on the Monomap. The user authorized publication of this working checkpoint to monismos/monomath with its GitHub Pages Actions workflow. Complete that deployment and verify the hosted site before starting the next lab.
 
-1. Specify and test bounded linear/quadratic, sine/exponential, polynomial derivative and definite-integral teaching problems. Use independent mathjs fixtures for roots, slopes and areas; keep the existing general equation workspace available.
-2. Reuse the graph parser/sampling worker and shared affine mesh primitives where useful. Build linked parameter controls, point/trace ball, zoom, movable tangent, Riemann rectangles with n, and a surface/slice view. The 2D/3D teaching scene must preserve step, dial, selection and stable ids.
-3. Author y=2x+1, x²−4x+3=0 with factoring, literal completing-square tiles and the quadratic formula, d/dx(3x²+2x), and the integral of x² from 0 to 3. Add all text depths, Predict, Try-first, at least five seeded actual-construction proofs, a three-part Boss, Echoes, code and Bridges.
-4. Validate bounded input and complete notelet context including parameters, trace, tangent, rectangle count and slice. Run oracle/content/component tests, `npm run check`, production desktop/touch e2e, offline reload and geometry budgets before unlocking and committing Functions.
+Next implement Distributions and Galton in this order:
 
-Distributions, Kinematics, Memory and Algorithms follow Functions in the listed M5 order. M6 still requires the constellation map, five remaining themes, AAA contrast, settings/string-table completeness, Lighthouse and physical-device FPS. Headless Chromium ReadPixels performance notices are recorded separately from application warnings. M7 remains pending.
+1. Specify and test bounded binomial/coin/dice-sum distributions with exact probabilities, independent combinatorial/mathjs fixtures and deterministic seeded sampling. Distinguish theoretical probability from a finite observed frequency and normal approximations.
+2. Build one shared Galton pegboard/histogram scene: peg, bias and ball-count sliders, deterministic fall paths, live empirical bins, a labelled normal overlay and a selected inclusive probability band. Keep SVG/Three ids, dial layers and timeline deterministic and meet 150 calls / 200,000 triangles.
+3. Author at least three worked examples with all text depths, Predict, Try-first, code and Bridges. Supply five seeded actual-construction proofs, a three-part Boss, Echoes and the required mascot dialogue.
+4. Validate complete bounded context including parameters, seed, band, cursor, mode and construction. Run oracle/content/component tests, npm run check, desktop/touch browser tests, offline notelet restoration and scene budgets before unlocking and committing Distributions.
+
+Kinematics, Memory and Algorithms follow Distributions in the listed M5 order. M6 still requires the constellation map, five remaining themes, AAA contrast, settings/string-table completeness, Lighthouse and physical-device FPS. Headless Chromium ReadPixels performance notices are recorded separately from application warnings. M7 remains pending.

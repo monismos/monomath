@@ -379,6 +379,7 @@ export default function SummationLab() {
           spec={scene}
           domain="stats"
           echoSkillId="summation"
+          watchCredit={variant.mode === 'watch'}
           mascotScript={mascotScript}
           caption={
             solution.metrics
@@ -609,7 +610,7 @@ export default function SummationLab() {
           <details key={bridge.id}>
             <summary>{bridge.title}</summary>
             <p>{bridge.description}</p>
-            {['fractions', 'logic'].includes(bridge.labId) ? (
+            {['fractions', 'logic', 'functions'].includes(bridge.labId) ? (
               <button
                 onClick={() => {
                   useLesson
@@ -618,7 +619,12 @@ export default function SummationLab() {
                   location.hash = bridge.labId;
                 }}
               >
-                Open {bridge.labId === 'logic' ? 'Truth Lanterns' : 'Fractions'}
+                Open{' '}
+                {bridge.labId === 'logic'
+                  ? 'Truth Lanterns'
+                  : bridge.labId === 'functions'
+                    ? 'Functions and graphs'
+                    : 'Fractions'}
               </button>
             ) : (
               <span className={styles.comingSoon}>Coming soon</span>

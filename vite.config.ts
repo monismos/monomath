@@ -4,7 +4,15 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   base: './',
-  build: { chunkSizeWarningLimit: 900 },
+  build: {
+    chunkSizeWarningLimit: 900,
+    rollupOptions: {
+      output: {
+        manualChunks: (id) =>
+          id.replace(/\\/g, '/').includes('/node_modules/mathjs/') ? 'math-parser' : undefined,
+      },
+    },
+  },
   plugins: [
     react(),
     VitePWA({

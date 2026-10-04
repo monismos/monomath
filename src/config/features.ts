@@ -4,6 +4,7 @@ export const features = {
   logic: true,
   summation: true,
   matrices: true,
+  functions: true,
   notelets: true,
   echoes: true,
   cameraInput: false,
