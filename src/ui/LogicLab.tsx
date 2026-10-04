@@ -53,15 +53,13 @@ export default function LogicLab() {
   const checkpointEvents = useGame((game) => game.events);
   useEffect(() => {
     if (useLesson.getState().labId !== 'logic')
-      useLesson
-        .getState()
-        .set({
-          labId: 'logic',
-          problem: examples[0],
-          variant: JSON.stringify(initialLogicVariant()),
-          step: 0,
-          selection: null,
-        });
+      useLesson.getState().set({
+        labId: 'logic',
+        problem: examples[0],
+        variant: JSON.stringify(initialLogicVariant()),
+        step: 0,
+        selection: null,
+      });
   }, []);
   const input = lesson.labId === 'logic' ? lesson.problem : examples[0];
   const parsed = useMemo(() => parseLogicInput(input), [input]);
@@ -84,14 +82,12 @@ export default function LogicLab() {
     ? ['valid', 'invalid']
     : ['tautology', 'contradiction', 'contingent'];
   const write = (patch: Partial<LogicVariant>, context: Partial<LessonContext> = {}) => {
-    useLesson
-      .getState()
-      .set({
-        labId: 'logic',
-        problem: input,
-        variant: JSON.stringify({ ...variant, ...patch }),
-        ...context,
-      });
+    useLesson.getState().set({
+      labId: 'logic',
+      problem: input,
+      variant: JSON.stringify({ ...variant, ...patch }),
+      ...context,
+    });
     setStatus('');
   };
   const updateBuild = (patch: Partial<LogicBuildState>) =>
@@ -152,15 +148,13 @@ export default function LogicLab() {
       setStatus(
         'Keep exploring. Check the exact marked rows and the complete formula; a hint can help.',
       );
-      useGame
-        .getState()
-        .queueChallengeEcho({
-          skillId: 'logic',
-          key: active.id,
-          labId: 'logic',
-          seed: variant.seed,
-          prompt: active.prompt,
-        });
+      useGame.getState().queueChallengeEcho({
+        skillId: 'logic',
+        key: active.id,
+        labId: 'logic',
+        seed: variant.seed,
+        prompt: active.prompt,
+      });
       return;
     }
     emitMascot('correct');
@@ -337,11 +331,9 @@ export default function LogicLab() {
           onActivate={(id) => {
             if (/^world-\d+$/.test(id)) chooseWorld(id);
             else
-              useLesson
-                .getState()
-                .set({
-                  selection: scene.entities.find((entity) => entity.id === id)?.tether ?? id,
-                });
+              useLesson.getState().set({
+                selection: scene.entities.find((entity) => entity.id === id)?.tether ?? id,
+              });
           }}
           onMethod={
             variant.mode === 'watch'
@@ -567,6 +559,14 @@ export default function LogicLab() {
                 }}
               >
                 Open Sets
+              </button>
+            ) : bridge.labId === 'summation' ? (
+              <button
+                onClick={() => {
+                  location.hash = 'summation';
+                }}
+              >
+                Open the Hopper
               </button>
             ) : (
               <em className={styles.comingSoon}>Coming soon</em>

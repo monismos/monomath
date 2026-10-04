@@ -61,3 +61,17 @@ it('accepts the Logic route and its bounded world/circuit context', () => {
     }),
   ).toBe(true);
 });
+it('accepts the Summation route and keeps its manipulated Hopper context', () => {
+  expect(
+    validNote({
+      ...note,
+      context: {
+        ...note.context,
+        route: 'summation',
+        labId: 'summation',
+        problem: 'sum(i=1..5,2i+1)',
+        variant: '{"mode":"prove","cursor":2,"language":"sql"}',
+      },
+    }),
+  ).toBe(true);
+});

@@ -40,6 +40,7 @@ export type Op =
   | { t: 'camera'; focus: string[]; angle?: 'front' | 'iso' | 'top' };
 export interface Predict {
   kind: 'choice' | 'number' | 'drag' | 'toggle';
+  inputMode?: 'decimal' | 'text';
   prompt: string;
   options?: string[];
   check: (answer: unknown) => boolean;

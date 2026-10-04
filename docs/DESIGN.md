@@ -1,5 +1,7 @@
 # Monomath design
 
+Summation extends the maker bench with a magenta index walker, amber term blocks and a white accumulator stack. Dataset views use a literal balance beam and scaled square tiles; their labels carry exact values and units. Compact term controls sit below the shared stage, with large touch targets and no floating dashboard cards. Pairing, grid order and variance views respond to learner controls. Every geometric scale is shared within the scene so area and height comparisons stay truthful.
+
 ## Visual thesis
 
 A learner's maker bench: quiet paper tools around a vivid, tactile cutting mat. The scene is the first screen and the main activity. The identity is an open eye, not a generic education dashboard.

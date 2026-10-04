@@ -1,5 +1,10 @@
 # Decisions
 
+- M5 Summation: initialize pending SDF glyph geometry with zero instances; its first layout supplies the finite glyph count, preventing unbounded triangle counters during 3D text loading.
+
+- M5 Summation: accept bounded integer quadratic terms, finite double sums and small integer datasets; retain exact rational mean/population variance and label standard deviation as an approximation.
+- M5 Summation: proof input changes the actual term blocks, included terms, balance pin and deviation-square areas; a correct total alone cannot complete a proof.
+
 - M5 Logic: use a closed Boolean AST capped at four variables, sixteen nodes and three premises; exact world enumeration provides classification and argument validity without executing learner code.
 - M5 Logic: proof validators require the exact marked truth set or counter-world set and the classification; typed answers alone do not prove a construction.
 - M5 Logic: the Shape view groups worlds by the first two variables; additional variables remain explicit in the table and world labels rather than implying a higher-dimensional Venn diagram.

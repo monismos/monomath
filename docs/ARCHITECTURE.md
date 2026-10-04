@@ -18,6 +18,8 @@ The equation workspace uses a separate `GraphSpec` shared by SVG and Three. A lo
 
 Philosophy uses validated typed lessons and a versioned IndexedDB workspace with draft/reflection journals. Safe Markdown is rendered as React elements. Exports contain public lesson fields; reflections remain private and local. Bundled source lessons merge with authored lessons and source tombstones. There is no server synchronization.
 
+Summation normalizes a closed integer quadratic polynomial into six monomials, enumerates bounded inclusive ranges and keeps dataset mean/population variance as reduced rational numbers. Its timeline moves contributions into a Hopper, folds pairs, visits double-grid cells in either order, and reveals balance/squares/ring after Predict. Proof fields feed actual geometry and exact validators; adaptive shared scales keep incorrect constructions inside the stage. A versioned variant records family, seed, build, method, visual choice, language, cursor, Try-first and Boss phase. Fraction-entry predictions request a text keyboard so touch learners can enter a slash.
+
 ## Local persistence
 
 Settings and the validated version-one progress DTO use localStorage through Zustand. Notelets and individual drafts use IndexedDB through `idb`, with a memory fallback and a visible storage warning. The composer waits for note persistence and draft deletion before closing. Imports validate the complete consumed context before mutation. Raw JSON never replaces store methods.

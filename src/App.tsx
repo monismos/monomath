@@ -25,6 +25,7 @@ const EquationWorkspace = lazy(() => import('./ui/EquationWorkspace'));
 const FractionLab = lazy(() => import('./ui/FractionLab'));
 const SetLab = lazy(() => import('./ui/SetLab'));
 const LogicLab = lazy(() => import('./ui/LogicLab'));
+const SummationLab = lazy(() => import('./ui/SummationLab'));
 const Monomap = lazy(() => import('./ui/Monomap'));
 
 const domains = [
@@ -164,6 +165,15 @@ function App() {
               Truth Lanterns
             </button>
           )}
+          {features.summation && (
+            <button
+              onClick={() => navigate('summation')}
+              className={page === 'summation' ? styles.navActive : ''}
+            >
+              <Icon name="Layers" />
+              Summation Hopper
+            </button>
+          )}
         </nav>
         <div className={styles.railSection}>Explore a little</div>
         <div className={styles.domains}>
@@ -171,9 +181,11 @@ function App() {
             <div key={domain.name}>
               <span style={{ color: domain.color }}>{domain.symbol}</span>
               {domain.name}
-              {domain.name !== 'Mathematics' && domain.name !== 'Logic' && (
-                <Icon name="LockKeyhole" size={13} />
-              )}
+              {domain.name !== 'Mathematics' &&
+                domain.name !== 'Logic' &&
+                (domain.name !== 'Statistics' || !features.summation) && (
+                  <Icon name="LockKeyhole" size={13} />
+                )}
             </div>
           ))}
         </div>
@@ -227,7 +239,9 @@ function App() {
                           ? 'Sets'
                           : page === 'logic'
                             ? 'Truth Lanterns'
-                            : 'Fractions'}
+                            : page === 'summation'
+                              ? 'Summation Hopper'
+                              : 'Fractions'}
             </strong>
           </div>
           <div className={styles.topActions}>
@@ -305,6 +319,10 @@ function App() {
             ) : page === 'logic' ? (
               <Suspense fallback={<p>Opening Truth Lanterns…</p>}>
                 <LogicLab />
+              </Suspense>
+            ) : page === 'summation' ? (
+              <Suspense fallback={<p>Opening the Hopper…</p>}>
+                <SummationLab />
               </Suspense>
             ) : page === 'echoes' ? (
               <Suspense fallback={<p>Opening your Echoes…</p>}>

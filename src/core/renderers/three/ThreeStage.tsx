@@ -39,6 +39,7 @@ function Piece({
     color: string | Color;
     text: string;
     sync: (callback?: () => void) => void;
+    geometry?: { instanceCount: number };
   } | null>(null);
   const { camera, gl, invalidate } = useThree();
   const geometry = useMemo(() => {
@@ -133,7 +134,12 @@ function Piece({
         <Text
           ref={(value: typeof text.current) => {
             text.current = value;
-            if (value) value.gpuAccelerateSDF = false;
+            if (value) {
+              value.gpuAccelerateSDF = false;
+              // Troika starts with an unbounded instance count before its first glyph layout.
+              if (value.geometry && !Number.isFinite(value.geometry.instanceCount))
+                value.geometry.instanceCount = 0;
+            }
           }}
           font={localFont}
           fontSize={0.26}

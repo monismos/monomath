@@ -46,7 +46,7 @@ export function PredictCard({
           <input
             aria-label="Prediction answer"
             value={answer}
-            inputMode={predict.kind === 'number' ? 'decimal' : 'text'}
+            inputMode={predict.inputMode ?? (predict.kind === 'number' ? 'decimal' : 'text')}
             onChange={(e) => setAnswer(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && answer) check();
@@ -61,7 +61,7 @@ export function PredictCard({
           Check my guess
           <Icon name="Check" size={14} />
         </button>
-        <button onClick={() => hint === 3 ? onCommit(false,true) : setHint(hint + 1)}>
+        <button onClick={() => (hint === 3 ? onCommit(false, true) : setHint(hint + 1))}>
           {hint < 3 ? 'A little hint' : 'Reveal and learn'}
         </button>
       </div>
