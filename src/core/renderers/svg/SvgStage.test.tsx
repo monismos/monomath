@@ -97,4 +97,40 @@ describe('SVG entity interaction', () => {
     fireEvent.click(piece);
     expect(activate.mock.calls).toEqual([['piece'], ['piece'], ['piece']]);
   });
+  it('updates visible and accessible labels when the timeline reveals a value without a React frame render', () => {
+    const player = new ScenePlayer(
+      {
+        ...spec,
+        entities: [
+          {
+            id: 'label',
+            kind: 'label',
+            pos: [0, 0, 0],
+            color: 'paper',
+            text: { plain: 'Predict first' },
+          },
+        ],
+      },
+      0,
+      0,
+      0,
+    );
+    let draw = () => {};
+    vi.spyOn(player, 'subscribe').mockImplementation((callback) => {
+      draw = callback;
+      return () => {};
+    });
+    const { container } = render(
+      <SvgStage state={player.state} player={player} selection={null} onSelect={vi.fn()} />,
+    );
+    act(() => {
+      player.state.entities.label.text = { plain: 'T ✓' };
+      draw();
+    });
+    expect(container.querySelector('[data-entity-id="label"] text')).toHaveTextContent('T ✓');
+    expect(container.querySelector('[data-entity-id="label"]')).toHaveAttribute(
+      'aria-label',
+      'T ✓',
+    );
+  });
 });

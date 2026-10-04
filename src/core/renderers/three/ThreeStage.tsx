@@ -37,8 +37,10 @@ function Piece({
     gpuAccelerateSDF: boolean;
     fillOpacity: number;
     color: string | Color;
+    text: string;
+    sync: (callback?: () => void) => void;
   } | null>(null);
-  const { camera, gl } = useThree();
+  const { camera, gl, invalidate } = useThree();
   const geometry = useMemo(() => {
     if (entity.kind !== 'slice') return undefined;
     const [start, end] = entity.arc ?? [0, Math.PI / 2];
@@ -82,6 +84,10 @@ function Piece({
     if (text.current) {
       text.current.fillOpacity = entity.opacity ?? 1;
       text.current.color = palette[entity.color] ?? palette.whole;
+      if (text.current.text !== (entity.text?.plain ?? '')) {
+        text.current.text = entity.text?.plain ?? '';
+        text.current.sync(invalidate);
+      }
     }
     const projected = group.current.getWorldPosition(new Vector3()).project(camera);
     const rect = gl.domElement.getBoundingClientRect();

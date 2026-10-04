@@ -5,11 +5,13 @@ export default function CodeSnippet({
   selection,
   onSelect,
   bindings = { left: 'left', right: 'right', result: 'result' },
+  colors,
 }: {
   code: string;
   selection: string | null;
   onSelect: (id: string | null) => void;
   bindings?: Record<string, string>;
+  colors?: Record<string, string>;
 }) {
   return (
     <code>
@@ -23,6 +25,11 @@ export default function CodeSnippet({
                 <button
                   key={i}
                   className={`tk-${bindings[part]} ${styles.token}`}
+                  style={
+                    colors?.[bindings[part]]
+                      ? { borderBottom: `2px solid ${colors[bindings[part]]}` }
+                      : undefined
+                  }
                   aria-pressed={selection === bindings[part]}
                   onPointerEnter={() => onSelect(bindings[part])}
                   onPointerLeave={() => onSelect(null)}

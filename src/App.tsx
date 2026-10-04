@@ -24,6 +24,7 @@ const Philosophy = lazy(() => import('./ui/Philosophy'));
 const EquationWorkspace = lazy(() => import('./ui/EquationWorkspace'));
 const FractionLab = lazy(() => import('./ui/FractionLab'));
 const SetLab = lazy(() => import('./ui/SetLab'));
+const LogicLab = lazy(() => import('./ui/LogicLab'));
 const Monomap = lazy(() => import('./ui/Monomap'));
 
 const domains = [
@@ -154,6 +155,15 @@ function App() {
               Sets lab
             </button>
           )}
+          {features.logic && (
+            <button
+              onClick={() => navigate('logic')}
+              className={page === 'logic' ? styles.navActive : ''}
+            >
+              <Icon name="Network" />
+              Truth Lanterns
+            </button>
+          )}
         </nav>
         <div className={styles.railSection}>Explore a little</div>
         <div className={styles.domains}>
@@ -161,7 +171,9 @@ function App() {
             <div key={domain.name}>
               <span style={{ color: domain.color }}>{domain.symbol}</span>
               {domain.name}
-              {domain.name !== 'Mathematics' && <Icon name="LockKeyhole" size={13} />}
+              {domain.name !== 'Mathematics' && domain.name !== 'Logic' && (
+                <Icon name="LockKeyhole" size={13} />
+              )}
             </div>
           ))}
         </div>
@@ -213,7 +225,9 @@ function App() {
                         ? 'Equation workspace'
                         : page === 'sets'
                           ? 'Sets'
-                          : 'Fractions'}
+                          : page === 'logic'
+                            ? 'Truth Lanterns'
+                            : 'Fractions'}
             </strong>
           </div>
           <div className={styles.topActions}>
@@ -287,6 +301,10 @@ function App() {
             ) : page === 'sets' ? (
               <Suspense fallback={<p>Opening Sets…</p>}>
                 <SetLab />
+              </Suspense>
+            ) : page === 'logic' ? (
+              <Suspense fallback={<p>Opening Truth Lanterns…</p>}>
+                <LogicLab />
               </Suspense>
             ) : page === 'echoes' ? (
               <Suspense fallback={<p>Opening your Echoes…</p>}>

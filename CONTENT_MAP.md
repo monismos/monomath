@@ -7,7 +7,7 @@ This file describes shipped behavior, not the product backlog as if it were comp
 | Hello Blocks / Fractions introduction | Verified M1–M3                     | Opens the full Fractions lab through navigation                     |
 | Fractions and parts of a whole        | Verified M4 locally                | Sets, Functions, Summation (locked); Equation workspace (available) |
 | Sets                                  | Verified M5 locally                | Logic, SQL, Functions, Fractions                                    |
-| Propositional logic                   | Coming soon                        | Sets, Programming                                                   |
+| Propositional logic                   | Verified M5 locally                | Sets (available), Summation, Memory (locked); curated Boolean code  |
 | Σ Summation                           | Coming soon                        | Fractions, Functions, Loops, Distributions                          |
 | Matrices and transformations          | Coming soon                        | Functions, Linear systems, Vectors                                  |
 | Functions and graphs teaching lab     | Coming soon                        | Summation, Kinematics, Matrices                                     |
@@ -18,7 +18,7 @@ This file describes shipped behavior, not the product backlog as if it were comp
 | Equation workspace (user addition)    | Verified desktop/mobile acceptance | Fractions → constant value or function                              |
 | Philosophy authoring (user addition)  | Verified desktop/mobile acceptance | Author-defined references                                           |
 
-Sets accepts bounded finite expressions and set-builder predicates, with Venn/Euler, sieve, power-set and ordered-pair/function views. Its code Bridge is curated Python/SQL and never executes learner input. The equation workspace supports bounded real curves, implicit planar relations, height surfaces, constants and up to four parameters. It provides numerical views, not a general symbolic solver. It does not complete the Functions teaching lab's Riemann rectangles, factoring or integral explainers. Philosophy starts empty so Airator can author the lessons; private reflections are never exported with public lessons.
+Sets accepts bounded finite expressions and set-builder predicates, with Venn/Euler, sieve, power-set and ordered-pair/function views. Logic accepts up to four variables and sixteen AST nodes, including arguments with up to three premises. It visualizes exact truth tables, the selected world's gates and counter-worlds; Shape groups by the first two variables while retaining all assignments in labels. Six seeded proof families check the exact marked world set and classification. Curated Python/SQL never executes learner input. The equation workspace supports bounded real curves, implicit planar relations, height surfaces, constants and up to four parameters. It provides numerical views, not a general symbolic solver. It does not complete the Functions teaching lab's Riemann rectangles, factoring or integral explainers. Philosophy starts empty so Airator can author the lessons; private reflections are never exported with public lessons.
 
 ## Remaining SHOULD labs
 

@@ -14,7 +14,9 @@ const labs = [
   ['algorithms', 'Algorithms and recursion', 'Programming', '↺'],
 ];
 const available = (id: string) =>
-  (id === 'fractions' && features.fractions) || (id === 'sets' && features.sets);
+  (id === 'fractions' && features.fractions) ||
+  (id === 'sets' && features.sets) ||
+  (id === 'logic' && features.logic);
 export default function Monomap() {
   return (
     <section className={styles.map} aria-labelledby="monomap-title">

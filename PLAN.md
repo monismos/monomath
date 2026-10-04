@@ -9,7 +9,7 @@ Status: pending / in progress / verified. A milestone is verified only after its
 - [x] M4 Fractions vertical slice — verified locally: six worked families, alternate methods, predictions, pie/bar/stack, eight seeded proof families, three-part Boss, fresh Echoes, lab dialogue, graph Bridge and contributor guide. Physical-phone and complete-product Lighthouse audits remain M6 gates.
 - [ ] M5 Remaining MUST labs — in progress, in the exact order below.
   - [x] Sets — verified locally: bounded parser/solver, Venn/Euler/sieve, power set and relation views, four worked examples, seeded challenges, Boss, SQL Bridge, Echoes, context restoration and desktop/touch e2e.
-  - [ ] Propositional logic — pending.
+  - [x] Propositional logic — verified locally: bounded formulas and arguments, truth lanterns, wired gates, Venn truth sets, six proof families, three-phase Boss, Echoes and complete notelet context.
   - [ ] Summation — pending.
   - [ ] Matrices — pending.
   - [ ] Functions and graphs — pending.
@@ -62,6 +62,6 @@ Status: pending / in progress / verified. A milestone is verified only after its
 
 ## Exact next actions
 
-M0–M4, Sets and the user workspaces pass the current local checks (291 unit/component tests) and 44 production desktop/mobile e2e tests at 1440×1000 and 360×800. Shell JS: 76.9 KB gzip; shared Three dependencies 220.4 KB plus stage48.0 KB; Fractions 11.5 KB plus shared challenge/solver7.8 KB; Sets 33.8 KB plus its shared scene/solver chunks. WebGL stress checks cover 96 blocks and pie slices within draw-call/triangle budgets. Philosophy authoring and the bounded equation workspace are implemented, including offline worker use and complete graph notelet context restoration.
+M0–M4, Sets, Logic and the user workspaces pass the current local checks (351 unit/component tests) and 50 production desktop/mobile e2e tests at 1440×1000 and 360×800. Shell JS: 77.23 KB gzip; shared Three dependencies 220.44 KB plus stage48.03 KB; Logic 8.14 KB plus shared solver/challenge5.22 KB. WebGL stress checks cover 96 blocks and pie slices within draw-call/triangle budgets. Philosophy authoring and the bounded equation workspace are implemented, including offline worker use and complete graph notelet context restoration.
 
-Sets has passed its local gate and is unlocked on the Monomap. Next implement Propositional logic, then Summation, followed by the remaining M5 order. M6 still requires the constellation map, five remaining themes, AAA contrast, settings completeness, Lighthouse and physical-device FPS. M7 remains pending.
+Sets and Logic have passed their local gates and are unlocked on the Monomap. Next implement Summation: bounded exact finite sums, an index walker and accumulating hopper, Gauss pairing, row/column double sums, mean balance and deviation squares; then add all text depths, predictions, six seeded proof families, Boss, Echoes and notelet context, and pass the full gate before unlocking it. Matrices follows. M6 still requires the constellation map, five remaining themes, AAA contrast, settings completeness, Lighthouse and physical-device FPS. M7 remains pending.

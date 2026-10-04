@@ -1,5 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import type { SceneSpec } from '../core/scene/spec';
+import { palette } from '../core/scene/spec';
 import { ScenePlayer } from '../core/scene/player';
 import { useLesson } from '../core/scene/store';
 import { useSettings } from '../core/storage/settings';
@@ -52,10 +53,18 @@ export function Explainer({
   const [committed, setCommitted] = useState<Record<string, boolean>>({});
   const currentIndex = Math.min(step, spec.steps.length - 1);
   const current = spec.steps[currentIndex];
+  const tokenColors = useMemo(
+    () =>
+      Object.fromEntries(
+        current.tethers.map((tether) => [tether.token, palette[tether.color] ?? palette.paper]),
+      ),
+    [current],
+  );
   const checkpointKey = `${spec.id}:${current.id}`;
   const revealed = useGame((game) => game.events[`checkpoint:${checkpointKey}`]);
   const blocked = !!current.predict && !committed[checkpointKey] && !revealed;
   const viewedSteps = useRef(new Map<string, Set<number>>());
+  const accessibleEntities = useRef<HTMLDivElement>(null);
   const recordLayer = (value: number) => {
     set({ dial: value });
     const labId = useLesson.getState().labId;
@@ -83,6 +92,21 @@ export function Explainer({
     [spec, currentIndex, dial, settings.reducedMotion, settings.speed, blocked],
   );
   const state = player.state;
+  useEffect(() => {
+    const update = () =>
+      accessibleEntities.current
+        ?.querySelectorAll<HTMLButtonElement>('[data-accessible-entity]')
+        .forEach((button) => {
+          const entity = player.state.entities[button.dataset.accessibleEntity!];
+          const visible = !!entity && (entity.opacity ?? 1) > 0.01;
+          button.setAttribute('aria-hidden', String(!visible));
+          button.tabIndex = visible ? 0 : -1;
+          button.disabled = !visible;
+          if (entity) button.textContent = entity.text?.plain ?? `${entity.color} ${entity.kind}`;
+        });
+    update();
+    return player.subscribe(update);
+  }, [player]);
   useEffect(() => {
     emitMascot('step-enter');
   }, [checkpointKey]);
@@ -112,10 +136,18 @@ export function Explainer({
   }, [player, replay]);
   const changeStep = useCallback(
     (value: number) => {
-      set({ step: Math.max(0, Math.min(spec.steps.length - 1, value)) });
+      const target = Math.max(0, Math.min(spec.steps.length - 1, value));
+      const pending = spec.steps.findIndex(
+        (item, index) =>
+          index <= target &&
+          !!item.predict &&
+          !committed[`${spec.id}:${item.id}`] &&
+          !useGame.getState().events[`checkpoint:${spec.id}:${item.id}`],
+      );
+      set({ step: pending < 0 ? target : Math.min(target, pending) });
       setWhy(false);
     },
-    [set, spec.steps.length],
+    [set, spec, committed],
   );
   const select = useCallback((id: string | null) => set({ selection: id }), [set]);
   const tetherTap = () => {
@@ -273,6 +305,7 @@ export function Explainer({
                 <Suspense fallback={<span>{current.latexAfter}</span>}>
                   <MathText
                     tex={spec.steps[state.stepIndex].latexAfter}
+                    colors={tokenColors}
                     selection={selection}
                     onSelect={select}
                   />
@@ -291,6 +324,7 @@ export function Explainer({
                     selection={selection}
                     onSelect={select}
                     bindings={spec.codeBindings}
+                    colors={tokenColors}
                   />
                 </Suspense>
               </pre>
@@ -304,10 +338,14 @@ export function Explainer({
                 ? 'Drag to look around · scroll to zoom'
                 : 'Tap a piece to connect it to the notation'}
             </div>
-            <div className="sr-only">
+            <div className="sr-only" ref={accessibleEntities}>
               {Object.values(state.entities).map((entity) => (
                 <button
                   key={entity.id}
+                  data-accessible-entity={entity.id}
+                  aria-hidden={(entity.opacity ?? 1) <= 0.01}
+                  disabled={(entity.opacity ?? 1) <= 0.01}
+                  tabIndex={(entity.opacity ?? 1) <= 0.01 ? -1 : 0}
                   onClick={() =>
                     onActivate ? onActivate(entity.id) : select(entity.tether ?? entity.id)
                   }
@@ -487,6 +525,7 @@ export function Explainer({
                           <Suspense fallback={item.latexAfter}>
                             <MathText
                               tex={item.latexAfter}
+                              colors={tokenColors}
                               selection={selection}
                               onSelect={select}
                             />

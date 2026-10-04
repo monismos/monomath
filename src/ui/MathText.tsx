@@ -4,10 +4,12 @@ export default function MathText({
   tex,
   selection,
   onSelect,
+  colors,
 }: {
   tex: string;
   selection?: string | null;
   onSelect?: (id: string | null) => void;
+  colors?: Record<string, string>;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
@@ -20,11 +22,17 @@ export default function MathText({
         trust: (context) => context.command === '\\htmlClass' || context.command === '\\htmlData',
         strict: 'ignore',
       });
+      ref.current.querySelectorAll<HTMLElement>('[class*=tk-]').forEach((node) => {
+        const id = [...node.classList].find((name) => name.startsWith('tk-'))?.slice(3);
+        node.style.borderBottom = id && colors?.[id] ? `2px solid ${colors[id]}` : '';
+        node.style.borderRadius = '4px';
+        node.style.backgroundColor = id && id === selection ? '#FFE06660' : '';
+      });
     });
     return () => {
       alive = false;
     };
-  }, [tex]);
+  }, [tex, colors, selection]);
   useEffect(() => {
     ref.current?.querySelectorAll<HTMLElement>('[class*=tk-]').forEach((node) => {
       node.style.borderRadius = '4px';

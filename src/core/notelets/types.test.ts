@@ -47,3 +47,17 @@ it('preserves the Sets route and its bounded manipulated lesson context', () => 
     validNote({ ...note, context: { ...note.context, route: 'sets', variant: 'x'.repeat(10000) } }),
   ).toBe(false);
 });
+it('accepts the Logic route and its bounded world/circuit context', () => {
+  expect(
+    validNote({
+      ...note,
+      context: {
+        ...note.context,
+        route: 'logic',
+        labId: 'logic',
+        problem: 'p → q; q ⊢ p',
+        variant: '{"mode":"prove","world":"world-2","method":"gate-circuit"}',
+      },
+    }),
+  ).toBe(true);
+});

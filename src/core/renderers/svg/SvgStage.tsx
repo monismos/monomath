@@ -52,6 +52,10 @@ export default function SvgStage({
         node.setAttribute('tabindex', entity.kind === 'label' || !visible ? '-1' : '0');
         node.setAttribute('transform', transform(entity));
         node.setAttribute('opacity', String(entity.opacity ?? 1));
+        node.setAttribute('aria-label', entity.text?.plain ?? `${entity.color} ${entity.kind}`);
+        const textNode = node.querySelector('text');
+        if (textNode && textNode.textContent !== entity.text?.plain)
+          textNode.textContent = entity.text?.plain ?? '';
         const rect = node.getBoundingClientRect();
         const matrix = (node as SVGGElement).getScreenCTM?.();
         const origin =

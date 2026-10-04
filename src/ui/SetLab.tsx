@@ -738,6 +738,14 @@ export default function SetLab() {
               >
                 Open Fractions <Icon name="ArrowUpRight" size={14} />
               </button>
+            ) : bridge.labId === 'logic' ? (
+              <button
+                onClick={() => {
+                  location.hash = 'logic';
+                }}
+              >
+                Open Truth Lanterns <Icon name="ArrowUpRight" size={14} />
+              </button>
             ) : (
               <span className={styles.comingSoon}>Coming soon on the Monomap</span>
             )}

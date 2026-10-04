@@ -1,5 +1,11 @@
 # Decisions
 
+- M5 Logic: use a closed Boolean AST capped at four variables, sixteen nodes and three premises; exact world enumeration provides classification and argument validity without executing learner code.
+- M5 Logic: proof validators require the exact marked truth set or counter-world set and the classification; typed answers alone do not prove a construction.
+- M5 Logic: the Shape view groups worlds by the first two variables; additional variables remain explicit in the table and world labels rather than implying a higher-dimensional Venn diagram.
+- M5 Logic: generate curated SQL predicates for non-NULL Boolean columns, translating implication to NOT/OR and equivalence to equality; never present Unicode pseudo-SQL as runnable code.
+- M5 Logic: keep scene ids stable across methods, block direct seeks past unresolved Predicts, and exclude hidden future labels from the accessible mirror so the reveal gate works for every learner.
+
 - M4: keep the short welcome demo and expose the full Fractions lab separately; its checkpoints and experiments have their own bounded context.
 - M4: use exact rational equivalence for Fractions Try-first; avoid claiming a general symbolic CAS from numerical sampling.
 - M4: cap manipulative cut counts at 24 and unit areas at four; large exact inputs keep a truthful numeric explanation, and division counts measuring units instead of original whole pies.
