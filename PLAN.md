@@ -64,7 +64,7 @@ Status: pending / in progress / verified. A milestone is verified only after its
 
 M0–M4, Sets, Logic, Summation, Matrices, Functions and the user workspaces pass the current local checks (533 unit/component tests) and 84 production desktop/mobile e2e tests at 1440×1000 and 360×800. Shell JS is about 77.8 KB gzip; shared Three dependencies 220.4 KB plus stage48.3 KB; Functions20.9 KB plus the separate lazy mathjs parser192.3 KB. WebGL checks cover 96 blocks/slices, Summation's largest grid/dataset, maximum 3×3 composition/plane scenes and Functions surfaces within 150 calls / 200,000 triangles. Philosophy authoring and the bounded equation workspace include offline operation and complete notelet restoration. Observation credit now requires Watch mode, so lingering on a proof does not award Watch XP.
 
-Sets, Logic, Summation, Matrices and Functions have passed their local gates and are unlocked on the Monomap. The user authorized publication of this working checkpoint to monismos/monomath with its GitHub Pages Actions workflow. Complete that deployment and verify the hosted site before starting the next lab.
+Sets, Logic, Summation, Matrices and Functions have passed their local gates and are unlocked on the Monomap. The working checkpoint is published at https://monismos.github.io/monomath/ from monismos/monomath, using its GitHub Pages Actions workflow. Hosted desktop/360px mobile checks verify Functions, the equation worker, Philosophy, scoped service-worker registration and offline reload with no application warnings/errors or external runtime requests. The user requested this publication before work on the next lab.
 
 Next implement Distributions and Galton in this order:
 
