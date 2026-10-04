@@ -26,6 +26,7 @@ const FractionLab = lazy(() => import('./ui/FractionLab'));
 const SetLab = lazy(() => import('./ui/SetLab'));
 const LogicLab = lazy(() => import('./ui/LogicLab'));
 const SummationLab = lazy(() => import('./ui/SummationLab'));
+const MatrixLab = lazy(() => import('./ui/MatrixLab'));
 const Monomap = lazy(() => import('./ui/Monomap'));
 
 const domains = [
@@ -174,6 +175,15 @@ function App() {
               Summation Hopper
             </button>
           )}
+          {features.matrices && (
+            <button
+              onClick={() => navigate('matrices')}
+              className={page === 'matrices' ? styles.navActive : ''}
+            >
+              <Icon name="Layers" />
+              Matrices
+            </button>
+          )}
         </nav>
         <div className={styles.railSection}>Explore a little</div>
         <div className={styles.domains}>
@@ -241,7 +251,9 @@ function App() {
                             ? 'Truth Lanterns'
                             : page === 'summation'
                               ? 'Summation Hopper'
-                              : 'Fractions'}
+                              : page === 'matrices'
+                                ? 'Matrices'
+                                : 'Fractions'}
             </strong>
           </div>
           <div className={styles.topActions}>
@@ -323,6 +335,10 @@ function App() {
             ) : page === 'summation' ? (
               <Suspense fallback={<p>Opening the Hopper…</p>}>
                 <SummationLab />
+              </Suspense>
+            ) : page === 'matrices' ? (
+              <Suspense fallback={<p>Opening the matrix bench…</p>}>
+                <MatrixLab />
               </Suspense>
             ) : page === 'echoes' ? (
               <Suspense fallback={<p>Opening your Echoes…</p>}>

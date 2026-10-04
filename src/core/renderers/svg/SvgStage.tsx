@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef } from 'react';
 import type { Entity, ResolvedState } from '../../scene/spec';
-import { palette } from '../../scene/spec';
+import { palette, entityVisible, entityCenter } from '../../scene/spec';
 import { worldToScreen } from '../projection';
 import type { ScenePlayer } from '../../scene/player';
 import { projectedEntities, anchorProjectors } from '../anchors';
@@ -19,6 +19,13 @@ function entityPath(entity: Entity) {
   const end = [radius * Math.cos(b), radius * Math.sin(b)];
   return `M 0 0 L ${start[0]} ${start[1]} A ${radius} ${radius} 0 ${b - a > Math.PI ? 1 : 0} 1 ${end[0]} ${end[1]} Z`;
 }
+const facePoints = (entity: Entity, face: number[]) =>
+  face
+    .map((index) => {
+      const point = entity.points![index];
+      return `${point[0] * 72},${-point[2] * 72 - point[1] * 43.2}`;
+    })
+    .join(' ');
 export default function SvgStage({
   state,
   selection,
@@ -46,21 +53,31 @@ export default function SvgStage({
           node.setAttribute('tabindex', '-1');
           return;
         }
-        const visible = (entity.opacity ?? 1) > 0.01;
+        const visible = entityVisible(entity);
         node.style.pointerEvents = visible ? 'auto' : 'none';
         node.setAttribute('aria-hidden', String(!visible));
         node.setAttribute('tabindex', entity.kind === 'label' || !visible ? '-1' : '0');
         node.setAttribute('transform', transform(entity));
         node.setAttribute('opacity', String(entity.opacity ?? 1));
         node.setAttribute('aria-label', entity.text?.plain ?? `${entity.color} ${entity.kind}`);
+        if (entity.points && entity.faces)
+          node.querySelectorAll<SVGPolygonElement>('[data-face]').forEach((polygon) => {
+            polygon.setAttribute(
+              'points',
+              facePoints(entity, entity.faces![Number(polygon.dataset.face)]),
+            );
+          });
         const textNode = node.querySelector('text');
         if (textNode && textNode.textContent !== entity.text?.plain)
           textNode.textContent = entity.text?.plain ?? '';
         const rect = node.getBoundingClientRect();
         const matrix = (node as SVGGElement).getScreenCTM?.();
+        const center = entityCenter(entity);
         const origin =
           matrix && typeof DOMPoint !== 'undefined'
-            ? new DOMPoint(0, 0).matrixTransform(matrix)
+            ? new DOMPoint(center[0] * 72, -center[2] * 72 - center[1] * 43.2).matrixTransform(
+                matrix,
+              )
             : null;
         projectedEntities.set(
           entity.id,
@@ -108,7 +125,7 @@ export default function SvgStage({
         .sort((a, b) => a.pos[1] - b.pos[1])
         .map((entity) => {
           const fill = palette[entity.color] ?? palette.whole;
-          const visible = (entity.opacity ?? 1) > 0.01;
+          const visible = entityVisible(entity);
           return (
             <g
               key={entity.id}
@@ -143,7 +160,19 @@ export default function SvgStage({
               }}
               style={{ cursor: 'pointer', pointerEvents: visible ? 'auto' : 'none' }}
             >
-              {entity.kind === 'slice' ? (
+              {entity.kind === 'mesh' && entity.points && entity.faces ? (
+                entity.faces.map((face, index) => (
+                  <polygon
+                    key={index}
+                    data-face={index}
+                    points={facePoints(entity, face)}
+                    fill={fill}
+                    fillOpacity={0.7}
+                    stroke={selection === (entity.tether ?? entity.id) ? '#FFE066' : '#ffffff90'}
+                    strokeWidth={selection === (entity.tether ?? entity.id) ? 3 : 1}
+                  />
+                ))
+              ) : entity.kind === 'slice' ? (
                 <path
                   d={entityPath(entity)}
                   fill={fill}

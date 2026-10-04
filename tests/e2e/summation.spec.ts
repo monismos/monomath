@@ -69,7 +69,9 @@ test('inclusive Hopper, pairing, code and dimensions preserve the worked context
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/#map');
-  await expect(page.getByRole('button', { name: 'Matrices: Coming soon' })).toBeDisabled();
+  await expect(
+    page.getByRole('button', { name: 'Functions and graphs: Coming soon' }),
+  ).toBeDisabled();
   await page.getByRole('button', { name: 'Σ Summation: Open lab' }).click();
   await page
     .getByRole('region', { name: 'Problem bar' })

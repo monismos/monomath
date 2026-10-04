@@ -1,5 +1,8 @@
 # Decisions
 
+- M5 Matrices: use normalized tween windows for deterministic product spawn/move/merge, shared affine vertices for both renderers, and short syntax/digit keypad keys to preserve the 360 px viewport.
+- M5 Matrices: record Chromium headless ReadPixels GPU performance notices separately; fail tests on every application error or warning and leave physical-device performance to M6.
+
 - M5 Summation: initialize pending SDF glyph geometry with zero instances; its first layout supplies the finite glyph count, preventing unbounded triangle counters during 3D text loading.
 
 - M5 Summation: accept bounded integer quadratic terms, finite double sums and small integer datasets; retain exact rational mean/population variance and label standard deviation as an approximation.
@@ -32,3 +35,6 @@
 - M3: completed Predict reveals persist separately from XP, so hinted reveals restore correctly after notelet Jump without awarding credit.
 - GitHub Pages uses relative assets, hash routes and an Actions workflow; the user will push and enable Pages in repository settings.
 - M5 Sets: use a finite, closed parser over U with exact membership operations; render SQL and Python as curated descriptions with shared token bindings, and keep complements relative to the displayed universe.
+- Matrices uses a closed 2×2/3×3 integer grammar (−6…6), exact rational elimination, and approximate labelled real eigenspaces; affine vertices are shared by SVG and Three.
+
+- Matrices scene uses short basis labels with exact coordinates in the construction controls; eigenvalue captions sit above the lattice, and an explicit Cell blocks view remains visible at every dial position.

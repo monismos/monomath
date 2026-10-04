@@ -3,6 +3,9 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, RoundedBox, Text } from '@react-three/drei';
 import {
   Color,
+  BufferGeometry,
+  Float32BufferAttribute,
+  DoubleSide,
   DynamicDrawUsage,
   ExtrudeGeometry,
   InstancedBufferAttribute,
@@ -16,7 +19,7 @@ import type { Group, InstancedMesh, MeshStandardMaterial } from 'three';
 import type { ThreeEvent } from '@react-three/fiber';
 import type { Entity, ResolvedState } from '../../scene/spec';
 import type { ScenePlayer } from '../../scene/player';
-import { palette } from '../../scene/spec';
+import { palette, entityVisible, entityCenter } from '../../scene/spec';
 import { projectedEntities, anchorProjectors } from '../anchors';
 import { useStageHold, setStageHit } from '../../notelets/stageHit';
 import localFont from '@fontsource/bricolage-grotesque/files/bricolage-grotesque-latin-600-normal.woff';
@@ -43,6 +46,17 @@ function Piece({
   } | null>(null);
   const { camera, gl, invalidate } = useThree();
   const geometry = useMemo(() => {
+    if (entity.kind === 'mesh' && entity.points && entity.faces) {
+      const geometry = new BufferGeometry();
+      geometry.setAttribute('position', new Float32BufferAttribute(entity.points.flat(), 3));
+      geometry.setIndex(
+        entity.faces.flatMap((face) =>
+          face.slice(1, -1).flatMap((_, index) => [face[0], face[index + 1], face[index + 2]]),
+        ),
+      );
+      geometry.computeVertexNormals();
+      return geometry;
+    }
     if (entity.kind !== 'slice') return undefined;
     const [start, end] = entity.arc ?? [0, Math.PI / 2];
     const radius = entity.size?.[0] ?? 1;
@@ -76,11 +90,18 @@ function Piece({
     group.current.position.set(...entity.pos);
     group.current.scale.set(...(entity.scale ?? [1, 1, 1]));
     group.current.rotation.set(...(entity.rot ?? [0, 0, 0]));
-    group.current.visible = (entity.opacity ?? 1) > 0.01;
+    group.current.visible = entityVisible(entity);
     if (material.current) {
       material.current.color.set(palette[entity.color] ?? palette.whole);
       material.current.opacity = entity.opacity ?? 1;
       material.current.emissiveIntensity = selected ? 0.3 : (entity.glow ?? 0);
+    }
+    if (entity.kind === 'mesh' && geometry && entity.points) {
+      const position = geometry.getAttribute('position');
+      entity.points.forEach((point, index) => position.setXYZ(index, ...point));
+      position.needsUpdate = true;
+      geometry.computeVertexNormals();
+      geometry.computeBoundingSphere();
     }
     if (text.current) {
       text.current.fillOpacity = entity.opacity ?? 1;
@@ -90,7 +111,9 @@ function Piece({
         text.current.sync(invalidate);
       }
     }
-    const projected = group.current.getWorldPosition(new Vector3()).project(camera);
+    const projected = group.current
+      .localToWorld(new Vector3(...entityCenter(entity)))
+      .project(camera);
     const rect = gl.domElement.getBoundingClientRect();
     projectedEntities.set(entity.id, {
       x: rect.left + ((projected.x + 1) * rect.width) / 2,
@@ -126,6 +149,7 @@ function Piece({
       metalness={0.01}
       emissive="#FFE066"
       emissiveIntensity={selected ? 0.3 : (entity.glow ?? 0)}
+      side={entity.kind === 'mesh' ? DoubleSide : undefined}
     />
   );
   return (
@@ -150,6 +174,10 @@ function Piece({
         >
           {entity.text?.plain ?? ''}
         </Text>
+      ) : entity.kind === 'mesh' ? (
+        <mesh geometry={geometry} receiveShadow>
+          {surface}
+        </mesh>
       ) : entity.kind === 'slice' ? (
         <mesh geometry={geometry} rotation={[-Math.PI / 2, 0, 0]} castShadow receiveShadow>
           {surface}

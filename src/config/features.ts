@@ -3,6 +3,7 @@ export const features = {
   sets: true,
   logic: true,
   summation: true,
+  matrices: true,
   notelets: true,
   echoes: true,
   cameraInput: false,

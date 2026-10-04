@@ -67,3 +67,6 @@ Rejected a cream/serif/terracotta aesthetic because it implies a reading site. R
 ## Secondary themes
 
 Mono, Blueprint, Chalkboard, Neon Grid, Observatory, and High Contrast retain the geometry and hierarchy. Contrast is checked separately from appearance. A theme never changes scene semantics.
+
+## Matrices bench
+A paper matrix editor sits beside the established workbench. Cell buttons reveal the row and column that produce them. The lattice and unit square/cube deform by the same column images, with orientation described in words and arrows. The shape layer reveals basis coordinates; the symbol layer keeps those tethers; the code layer connects nested loops or NumPy. Proofs edit the actual output matrix or basis coordinates using full-size controls below the stage. Avoid a dashboard of decorative charts: each visible cell and vector represents a calculated or learner-entered value. Controls remain legible at 360 px, with no drag-only requirement.

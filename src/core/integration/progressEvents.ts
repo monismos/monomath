@@ -12,6 +12,7 @@ export function installProgressEvents() {
   let disposeSets: (() => void) | undefined;
   let disposeLogic: (() => void) | undefined;
   let disposeSummation: (() => void) | undefined;
+  let disposeMatrices: (() => void) | undefined;
   let active = true;
   import('../../labs/math/fractions/echo').then((module) => {
     if (active) disposeFractions = module.installFractionEchoes();
@@ -24,6 +25,9 @@ export function installProgressEvents() {
   });
   import('../../labs/stats/summation/echo').then((module) => {
     if (active) disposeSummation = module.installSummationEchoes();
+  });
+  import('../../labs/math/matrices/echo').then((module) => {
+    if (active) disposeMatrices = module.installMatrixEchoes();
   });
   registerEchoProvider('demo-fraction', (seed) => {
     const denominator = 4 + (seed % 5);
@@ -89,6 +93,7 @@ export function installProgressEvents() {
     disposeSets?.();
     disposeLogic?.();
     disposeSummation?.();
+    disposeMatrices?.();
     unsubscribe();
     settingsChanged();
     gameChanged();

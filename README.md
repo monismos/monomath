@@ -21,6 +21,8 @@ Open **Fractions lab** for exact worked operations, three representations, predi
 
 **Summation Hopper** walks inclusive finite sums, pairs terms, and fills double-sum grids by rows or columns. Datasets unfold into a mean balance beam, exact population-variance square areas and a standard-deviation ring. Six proof families and a three-part Boss check your actual construction. Python, R and SQL are curated study snippets. The lab and its saved notelet context work offline.
 
+**Matrices** turns 2×2/3×3 grids into deformed lattices, basis vectors and unit squares or cubes. It includes exact addition, transpose, row-by-column multiplication, determinant, 2×2 inverse and linear systems, including singular cases. Six construction proof families, Boss, Echoes and Python/NumPy connect the same values. Real eigenvector directions are labelled as approximate. Saved matrix contexts restore offline.
+
 The **Equation workspace** draws supported real curves, implicit planar relations, height surfaces and constant values. It includes parameter controls, viewport movement, point inspection, numerical slopes, tables and surface slices. General implicit 3D surfaces, arbitrary programs, inequalities and symbolic calculus are currently unsupported; the UI explains input limits. Discontinuities create gaps rather than false connecting strokes.
 
 **Philosophy** is your lesson authoring space: write Markdown, save drafts, read, search, add private reflections, and export/import lessons. Browser-authored lessons stay on that device. To include them in your GitHub deployment, export them and follow `src/content/philosophy/README.md` to put them in the source lesson list. Private reflections are excluded from lesson exports.

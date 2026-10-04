@@ -1,0 +1,262 @@
+.lab {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 12px 0 48px;
+  color: var(--ink);
+}
+.heading {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0 18px;
+}
+.heading > span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.heading h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.05;
+}
+.heading p {
+  margin: 0;
+  color: var(--muted);
+}
+.toolbar,
+.views,
+.actions,
+.method {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.toolbar {
+  justify-content: space-between;
+  margin: 14px 0;
+}
+.toolbar > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.views {
+  margin: 12px 0;
+}
+.toolbar button,
+.views button,
+.method button,
+.actions button,
+.bridges button {
+  min-height: 44px;
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: var(--paper);
+  color: inherit;
+  cursor: pointer;
+}
+.toolbar button[aria-pressed='true'],
+.views button[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.selectLabel,
+.answer {
+  display: grid;
+  gap: 5px;
+  font-weight: 650;
+}
+.selectLabel select,
+.answer select,
+.answer input,
+.terms input:not([type='checkbox']) {
+  min-height: 44px;
+  border: 1px solid color-mix(in srgb, var(--ink) 24%, transparent);
+  border-radius: 9px;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 16px;
+  background: var(--paper);
+  color: inherit;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.answer {
+  margin: 12px 0;
+  max-width: 300px;
+}
+.method {
+  justify-content: space-between;
+  margin: 14px 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 8%, var(--paper));
+}
+.method p {
+  margin: 0;
+}
+.proof,
+.bridges {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--ink) 15%, transparent);
+  border-radius: 18px;
+  background: var(--paper);
+}
+.proof h2,
+.bridges h2 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+.proofHeading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: end;
+}
+.proof > p,
+.givens {
+  color: var(--muted);
+  max-width: 75ch;
+}
+.terms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.terms article {
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+  border-radius: 8px;
+  background: var(--bg);
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+.terms article.selectedTerm {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.terms label {
+  display: grid;
+  gap: 5px;
+}
+.terms .include {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 44px;
+  cursor: pointer;
+}
+.include input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--accent);
+}
+.inspect {
+  min-height: 44px;
+  padding: 8px 2px;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.terms p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+.givens {
+  font-size: 0.88rem;
+}
+.actions {
+  margin-top: 14px;
+}
+.hint {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, #ffe066 30%, var(--paper));
+}
+.codeChoices {
+  display: grid;
+  gap: 10px;
+  border: 0;
+  margin: 14px 0;
+  padding: 0;
+}
+.codeChoices label {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  cursor: pointer;
+}
+.codeChoices input {
+  min-width: 22px;
+  width: 22px;
+  height: 22px;
+  accent-color: var(--accent);
+}
+.codeChoices code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  background: #17221f;
+  color: #ecf7ef;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 0.85rem;
+}
+.bridges {
+  display: grid;
+  gap: 10px;
+}
+.bridges details {
+  border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  padding: 10px 0;
+}
+.bridges summary,
+.scope summary {
+  font-weight: 700;
+  cursor: pointer;
+}
+.comingSoon {
+  color: var(--muted);
+}
+.scope {
+  padding: 12px 16px;
+  border: 1px solid color-mix(in srgb, var(--ink) 15%, transparent);
+  border-radius: 12px;
+}
+button:disabled {
+  cursor: default;
+}
+@media (max-width: 700px) {
+  .toolbar {
+    align-items: stretch;
+  }
+  .toolbar > div {
+    width: 100%;
+  }
+  .toolbar button {
+    flex: 1 1 auto;
+  }
+  .method {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .terms {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .proof,
+  .bridges {
+    padding: 14px;
+  }
+}

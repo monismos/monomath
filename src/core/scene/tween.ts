@@ -17,5 +17,7 @@ export function interpolateEntity(a: Entity, b: Partial<Entity>, t: number): Ent
     if (b[key]) result[key] = vector(a[key] ?? (key === 'scale' ? [1, 1, 1] : [0, 0, 0]), b[key]!);
   for (const key of ['opacity', 'glow'] as const)
     if (b[key] !== undefined) result[key] = mix(a[key] ?? (key === 'opacity' ? 1 : 0), b[key]!);
+  if (b.points && a.points && b.points.length === a.points.length)
+    result.points = a.points.map((point, i) => vector(point, b.points![i]));
   return result;
 }

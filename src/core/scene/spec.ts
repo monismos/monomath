@@ -17,6 +17,7 @@ export interface Entity {
     | 'crate'
     | 'token'
     | 'label'
+    | 'mesh'
     | 'group';
   pos: Vec3;
   rot?: Vec3;
@@ -30,11 +31,13 @@ export interface Entity {
   tether?: string;
   parent?: string;
   arc?: [number, number];
+  points?: Vec3[];
+  faces?: number[][];
 }
 export type Op =
   | { t: 'add'; entity: Entity }
   | { t: 'remove'; id: string }
-  | { t: 'tween'; id: string; to: Partial<Entity>; ms?: number; ease?: Ease }
+  | { t: 'tween'; id: string; to: Partial<Entity>; ms?: number; ease?: Ease; at?: [number, number] }
   | { t: 'morph'; from: string; to: string }
   | { t: 'pulse'; ids: string[] }
   | { t: 'camera'; focus: string[]; angle?: 'front' | 'iso' | 'top' };
@@ -87,3 +90,13 @@ export const palette: Record<string, string> = {
   code: '#A58AFF',
 };
 export const layers: Layer[] = ['thing', 'shape', 'symbol', 'code'];
+export const entityVisible = (entity: Entity) =>
+  (entity.opacity ?? 1) > 0.01 &&
+  (!entity.scale || entity.scale.some((value) => Math.abs(value) > 0.01));
+export const entityCenter = (entity: Entity): Vec3 =>
+  entity.points?.length
+    ? ([0, 1, 2].map(
+        (axis) =>
+          entity.points!.reduce((sum, point) => sum + point[axis], 0) / entity.points!.length,
+      ) as Vec3)
+    : [0, 0, 0];

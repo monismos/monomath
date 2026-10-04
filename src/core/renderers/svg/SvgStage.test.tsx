@@ -38,6 +38,50 @@ const spec: SceneSpec = {
   code: '',
 };
 describe('SVG entity interaction', () => {
+  it('updates affine mesh vertices and removes zero-scale layers from the tab order', () => {
+    const player = new ScenePlayer(
+      {
+        ...spec,
+        entities: [
+          {
+            id: 'unit',
+            kind: 'mesh',
+            pos: [0, 0, 0],
+            color: 'mint',
+            points: [
+              [0, 0, 0],
+              [1, 0, 0],
+              [1, 0, 1],
+            ],
+            faces: [[0, 1, 2]],
+            scale: [0, 0, 0],
+            tether: 'C',
+          },
+        ],
+      },
+      0,
+      0,
+      0,
+    );
+    let draw = () => {};
+    vi.spyOn(player, 'subscribe').mockImplementation((callback) => {
+      draw = callback;
+      return () => {};
+    });
+    const { container } = render(
+      <SvgStage state={player.state} player={player} selection={null} onSelect={vi.fn()} />,
+    );
+    const entity = container.querySelector('[data-entity-id="unit"]')!,
+      face = entity.querySelector('polygon')!;
+    expect(entity).toHaveAttribute('tabindex', '-1');
+    act(() => {
+      player.state.entities.unit.scale = [1, 1, 1];
+      player.state.entities.unit.points![2] = [2, 0, 1];
+      draw();
+    });
+    expect(entity).toHaveAttribute('tabindex', '0');
+    expect(face).toHaveAttribute('points', '0,0 72,0 144,-72');
+  });
   it('keeps hidden and removed pieces outside the tab order throughout animation and rerenders', () => {
     const player = new ScenePlayer(spec, 0, 0, 0);
     let draw = () => {};

@@ -55,6 +55,7 @@ export function validNote(value: unknown): value is Notelet {
       'sets',
       'logic',
       'summation',
+      'matrices',
       'map',
       'trophies',
       'echoes',

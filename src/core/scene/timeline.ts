@@ -17,8 +17,15 @@ export function resolveTimeline(
       const t = i === index ? Math.max(0, Math.min(1, localTime)) : 1;
       if (op.t === 'add') entities[op.entity.id] = { ...op.entity };
       if (op.t === 'remove' && t >= 1) delete entities[op.id];
-      if (op.t === 'tween' && entities[op.id])
-        entities[op.id] = interpolateEntity(entities[op.id], op.to, easing(t, op.ease));
+      if (op.t === 'tween' && entities[op.id]) {
+        const [start, end] = op.at ?? [0, 1];
+        if (t >= start)
+          entities[op.id] = interpolateEntity(
+            entities[op.id],
+            op.to,
+            easing(Math.max(0, Math.min(1, (t - start) / Math.max(0.001, end - start))), op.ease),
+          );
+      }
       if (op.t === 'morph') {
         if (entities[op.from]) entities[op.from].opacity = 1 - t;
         if (entities[op.to]) entities[op.to].opacity = t;

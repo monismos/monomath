@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import type { ScenePlayer } from '../core/scene/player';
 import { projectedEntities } from '../core/renderers/anchors';
+import { entityVisible } from '../core/scene/spec';
 export function Tethers({ selection, player }: { selection: string | null; player: ScenePlayer }) {
   const ref = useRef<SVGSVGElement>(null);
   useEffect(() => {
@@ -10,7 +11,9 @@ export function Tethers({ selection, player }: { selection: string | null; playe
       if (!svg || !selection) return;
       const container = svg.parentElement!;
       const token = container.querySelector<HTMLElement>(`.tk-${CSS.escape(selection)}`);
-      const entity = Object.values(player.state.entities).find((e) => e.tether === selection);
+      const entity = Object.values(player.state.entities).find(
+        (e) => e.tether === selection && entityVisible(e),
+      );
       const endpoint = entity && projectedEntities.get(entity.id);
       if (token && endpoint) {
         const parent = container.getBoundingClientRect();

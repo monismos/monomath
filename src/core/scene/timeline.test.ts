@@ -44,3 +44,24 @@ it('a pulse has a visible middle and an exact resting endpoint', () => {
   expect(resolveTimeline(demo, 2, 0.5, 0).entities['slice-0'].glow).toBe(1);
   expect(resolveTimeline(demo, 2, 1, 0).entities['slice-0'].glow).toBeCloseTo(0);
 });
+it('sequential tween windows spawn, move and merge within one seekable step', () => {
+  const sequence: SceneSpec = {
+    ...spec,
+    entities: [{ id: 'a', kind: 'block', pos: [0, 0, 0], color: 'whole', opacity: 0 }],
+    steps: [
+      {
+        ...spec.steps[0],
+        ops: [
+          { t: 'tween', id: 'a', to: { opacity: 1 }, at: [0, 0.2] },
+          { t: 'tween', id: 'a', to: { pos: [2, 0, 0] }, at: [0.2, 0.8] },
+          { t: 'tween', id: 'a', to: { opacity: 0 }, at: [0.8, 1] },
+        ],
+      },
+    ],
+  };
+  expect(resolveTimeline(sequence, 0, 0).entities.a.opacity).toBe(0);
+  expect(resolveTimeline(sequence, 0, 0.5).entities.a.opacity).toBe(1);
+  expect(resolveTimeline(sequence, 0, 0.5).entities.a.pos[0]).toBeCloseTo(1);
+  expect(resolveTimeline(sequence, 0, 1).entities.a).toMatchObject({ pos: [2, 0, 0], opacity: 0 });
+  expect(resolveTimeline(sequence, 0, 0.5)).toEqual(resolveTimeline(sequence, 0, 0.5));
+});

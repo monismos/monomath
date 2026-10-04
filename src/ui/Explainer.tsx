@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import type { SceneSpec } from '../core/scene/spec';
-import { palette } from '../core/scene/spec';
+import { palette, entityVisible } from '../core/scene/spec';
 import { ScenePlayer } from '../core/scene/player';
 import { useLesson } from '../core/scene/store';
 import { useSettings } from '../core/storage/settings';
@@ -98,7 +98,7 @@ export function Explainer({
         ?.querySelectorAll<HTMLButtonElement>('[data-accessible-entity]')
         .forEach((button) => {
           const entity = player.state.entities[button.dataset.accessibleEntity!];
-          const visible = !!entity && (entity.opacity ?? 1) > 0.01;
+          const visible = !!entity && entityVisible(entity);
           button.setAttribute('aria-hidden', String(!visible));
           button.tabIndex = visible ? 0 : -1;
           button.disabled = !visible;
@@ -343,9 +343,9 @@ export function Explainer({
                 <button
                   key={entity.id}
                   data-accessible-entity={entity.id}
-                  aria-hidden={(entity.opacity ?? 1) <= 0.01}
-                  disabled={(entity.opacity ?? 1) <= 0.01}
-                  tabIndex={(entity.opacity ?? 1) <= 0.01 ? -1 : 0}
+                  aria-hidden={!entityVisible(entity)}
+                  disabled={!entityVisible(entity)}
+                  tabIndex={entityVisible(entity) ? 0 : -1}
                   onClick={() =>
                     onActivate ? onActivate(entity.id) : select(entity.tether ?? entity.id)
                   }

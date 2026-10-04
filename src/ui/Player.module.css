@@ -132,6 +132,10 @@
   font-size: 25px;
   pointer-events: auto;
   min-height: 38px;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 3px 0;
 }
 .sceneSmallLabel {
   font-size: 11px;
