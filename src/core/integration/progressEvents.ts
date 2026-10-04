@@ -8,6 +8,11 @@ import { sound } from '../audio/sounds';
 import { levelForXP } from '../gamification/logic';
 let reminded = false;
 export function installProgressEvents() {
+  let disposeFractions: (() => void) | undefined;
+  let active = true;
+  import('../../labs/math/fractions/echo').then((module) => {
+    if (active) disposeFractions = module.installFractionEchoes();
+  });
   registerEchoProvider('demo-fraction', (seed) => {
     const denominator = 4 + (seed % 5);
     const numerator = 1 + (Math.floor(seed / 5) % (denominator - 1));
@@ -67,6 +72,8 @@ export function installProgressEvents() {
   window.addEventListener('monomath:note-saved', saved);
   window.addEventListener('monomath:bond', bond);
   return () => {
+    active = false;
+    disposeFractions?.();
     unsubscribe();
     settingsChanged();
     gameChanged();

@@ -6,7 +6,7 @@ Status: pending / in progress / verified. A milestone is verified only after its
 - [x] M1 Dual-render engine — verified: shared SceneSpec, deterministic timeline, tween, 2D/3D, dial, tethers, player, quality probe.
 - [x] M2 Notelets and summary — verified: global hold on desktop/touch, anchors, safe multi-drafts, awaited save, context restoration, ring/helix/flat/grid/list, filters, inertia, exports.
 - [x] M3 Mascots and motivation — verified: five one-eyed guides, live gaze, quiet/off, cosmetic application, local XP ledger, facets, daily tasks, streak/freeze, fake-clock-tested SRS, Trophy Shelf and tutorial.
-- [ ] M4 Fractions vertical slice — pending: all operations, predictions, scene-verified challenges, boss, bridges, contributor guide.
+- [x] M4 Fractions vertical slice — verified locally: six worked families, alternate methods, predictions, pie/bar/stack, eight seeded proof families, three-part Boss, fresh Echoes, lab dialogue, graph Bridge and contributor guide. Physical-phone and complete-product Lighthouse audits remain M6 gates.
 - [ ] M5 Remaining MUST labs — pending, in the exact order below.
   - [ ] Sets — pending.
   - [ ] Propositional logic — pending.
@@ -62,4 +62,6 @@ Status: pending / in progress / verified. A milestone is verified only after its
 
 ## Exact next actions
 
-M0–M3 pass npm run check (42 unit/component tests); 26 production desktop/mobile e2e tests pass, including the connected prediction/notelet/Echo flow. Shell JS: 75.3 KB gzip; lazy shared Three dependencies: 221.1 KB gzip plus stage50.5 KB. Next: M4 Fractions solver and six worked families, same-value pie/bar/stack models, seeded scene proof validators and multi-part Boss, generic Problem Bar and contributor guide. User additions remain required: a local Philosophy lesson authoring area and equation workspace for explicit/implicit graphs and surfaces; implement these beside the completed learning loop, with truthful unsupported-input guidance. Remaining MUST labs stay locked until their full definition of done verifies, in the listed M5 order.
+M0–M4 and the user workspaces pass npm run check (227 unit/component tests) and all 40 production desktop/mobile e2e tests at 1440×1000 and 360×800. Shell JS: 76.9 KB gzip; shared Three dependencies 220.4 KB plus stage48.0 KB; Fractions 11.5 KB plus shared challenge/solver7.8 KB. WebGL stress checks cover 96 blocks and pie slices within draw-call/triangle budgets. Philosophy authoring and the bounded equation workspace are implemented, including offline worker use and complete graph notelet context restoration.
+
+Next, implement Sets before starting any later M5 lab: (1) closed set-expression/predicate parser and exact finite-set solver; (2) Venn/Euler token manipulation, subset nesting, sieve, power-set cube and product/relation/function grid from shared SceneSpecs; (3) four required worked examples with depths/Predicts, five seeded scene proofs and Boss, SQL Bridge, dialogue and Echo provider; (4) content/oracle/validator tests and desktop/touch notelet/2D–3D/dial checks, then unlock its gem. Follow with Propositional logic, Summation and the remaining M5 order. M6 still requires the constellation map, five remaining themes, AAA contrast, settings completeness, Lighthouse and physical-device FPS. M7 remains pending.

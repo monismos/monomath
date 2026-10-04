@@ -1,6 +1,7 @@
 import type { Vec3 } from '../scene/spec';
 import type { LessonContext } from '../scene/store';
 import type { ThemeId } from '../themes/themes';
+import { validGraphContext, type GraphContext } from '../graphing/workspaceStore';
 export const noteColors = {
   sun: '#FFE78E',
   mint: '#C2E7D5',
@@ -23,6 +24,7 @@ export interface Notelet {
     screen: string;
     dimension: '2d' | '3d';
     theme: ThemeId;
+    graph?: GraphContext;
   };
   anchor: {
     type: 'screen' | 'world';
@@ -47,12 +49,15 @@ export function validNote(value: unknown): value is Notelet {
     Number.isFinite(n.createdAt) &&
     Number.isFinite(n.updatedAt) &&
     !!n.context &&
-    ['workshop', 'map', 'trophies', 'echoes', 'philosophy', 'equations'].includes(
+    ['workshop', 'fractions', 'map', 'trophies', 'echoes', 'philosophy', 'equations'].includes(
       n.context.route,
     ) &&
     typeof n.context.problem === 'string' &&
     typeof n.context.labId === 'string' &&
     typeof n.context.screen === 'string' &&
+    (n.context.variant === undefined ||
+      (typeof n.context.variant === 'string' && n.context.variant.length < 10000)) &&
+    (n.context.graph === undefined || validGraphContext(n.context.graph)) &&
     (n.context.selection === null || typeof n.context.selection === 'string') &&
     ['bench', 'blueprint', 'mono', 'chalkboard', 'neon', 'observatory', 'contrast'].includes(
       n.context.theme,

@@ -10,6 +10,7 @@ import type { Domain, MascotConfig } from '../core/mascots/config';
 import { subscribeMascot } from '../core/mascots/events';
 import type { MascotEvent } from '../core/mascots/events';
 import { DialogueQueue, facts, tips } from '../core/mascots/dialogue/lines';
+import type { MascotScript } from '../core/mascots/dialogue/lines';
 import { blinkAt, eventExpression, neutralPose, targetLook } from '../core/mascots/pose';
 import type { GuidePose } from '../core/mascots/pose';
 import { addBondMinute, getBond } from '../core/mascots/bond';
@@ -30,7 +31,15 @@ class RigBoundary extends Component<
   }
 }
 
-export function Mascot({ gaze = [], domain = 'math' }: { gaze?: string[]; domain?: Domain }) {
+export function Mascot({
+  gaze = [],
+  domain = 'math',
+  script,
+}: {
+  gaze?: string[];
+  domain?: Domain;
+  script?: MascotScript;
+}) {
   const mode = useSettings((state) => state.mascot);
   const config = resolveGuide(mode, domain);
   return config ? (
@@ -40,6 +49,7 @@ export function Mascot({ gaze = [], domain = 'math' }: { gaze?: string[]; domain
       gaze={gaze}
       domain={domain}
       quiet={mode === 'quiet'}
+      script={script}
     />
   ) : null;
 }
@@ -49,11 +59,13 @@ function ActiveMascot({
   gaze,
   domain,
   quiet,
+  script,
 }: {
   config: MascotConfig;
   gaze: string[];
   domain: Domain;
   quiet: boolean;
+  script?: MascotScript;
 }) {
   const settings = useSettings();
   const cosmetic = useGame((state) => state.cosmetics.selected);
@@ -74,6 +86,8 @@ function ActiveMascot({
   });
   const gazeRef = useRef(gaze);
   gazeRef.current = gaze;
+  const scriptRef = useRef(script);
+  scriptRef.current = script;
   const gazeKey = gaze.join('|');
   const queue = useRef(new DialogueQueue());
   const [bubble, setBubble] = useState('');
@@ -92,7 +106,7 @@ function ActiveMascot({
 
   const speak = useCallback((event: MascotEvent) => {
     if (!visibleRef.current) return;
-    const line = queue.current.next(event, Date.now());
+    const line = queue.current.next(event, Date.now(), scriptRef.current?.[event]);
     if (!line) return;
     setBubble(line);
     const next = eventExpression(event);

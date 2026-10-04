@@ -2,16 +2,17 @@ import type { Notelet } from './types';
 import { useLesson } from '../scene/store';
 import { useSettings } from '../storage/settings';
 import { useNotes } from './store';
+import { restoreGraphContext } from '../graphing/workspaceStore';
 export function restoreNoteContext(note: Notelet) {
-  useLesson
-    .getState()
-    .set({
-      step: note.context.step,
-      dial: note.context.dial,
-      selection: note.context.selection,
-      problem: note.context.problem,
-      labId: note.context.labId,
-    });
+  if (note.context.graph) restoreGraphContext(note.context.graph);
+  useLesson.getState().set({
+    step: note.context.step,
+    dial: note.context.dial,
+    selection: note.context.selection,
+    problem: note.context.problem,
+    labId: note.context.labId,
+    variant: note.context.variant,
+  });
   useSettings.getState().set({ dimension: note.context.dimension, theme: note.context.theme });
   location.hash = note.context.route;
   useNotes.getState().set({ summary: false });

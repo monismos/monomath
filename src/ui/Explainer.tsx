@@ -11,13 +11,33 @@ import { PredictCard } from './PredictCard';
 import { useGame } from '../core/gamification/store';
 import { Mascot } from './Mascot';
 import { emitMascot } from '../core/mascots/events';
+import type { MascotScript } from '../core/mascots/dialogue/lines';
 import { sound } from '../core/audio/sounds';
 import appStyles from '../App.module.css';
 import playerStyles from './Player.module.css';
 const styles = { ...appStyles, ...playerStyles };
 const ThreeStage = lazy(() => import('../core/renderers/three/ThreeStage'));
 const MathText = lazy(() => import('./MathText'));
-export function Explainer({ spec, children }: { spec: SceneSpec; children?: React.ReactNode }) {
+const CodeSnippet = lazy(() => import('./CodeSnippet'));
+export function Explainer({
+  spec,
+  children,
+  onActivate,
+  echoSkillId = 'demo-fraction',
+  caption = 'One whole. Equal parts.',
+  onMethod,
+  domain = 'math',
+  mascotScript,
+}: {
+  spec: SceneSpec;
+  children?: React.ReactNode;
+  onActivate?: (id: string) => void;
+  echoSkillId?: string;
+  caption?: string;
+  onMethod?: () => void;
+  domain?: 'math' | 'logic' | 'stats' | 'physics' | 'code';
+  mascotScript?: MascotScript;
+}) {
   const { step, dial, selection, set } = useLesson();
   const settings = useSettings();
   const [replay, setReplay] = useState(0);
@@ -58,9 +78,9 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
         spec,
         blocked ? Math.max(0, currentIndex - 1) : currentIndex,
         dial,
-        settings.reducedMotion ? 0 : 450,
+        settings.reducedMotion ? 0 : 450 / settings.speed,
       ),
-    [spec, currentIndex, dial, settings.reducedMotion, blocked],
+    [spec, currentIndex, dial, settings.reducedMotion, settings.speed, blocked],
   );
   const state = player.state;
   useEffect(() => {
@@ -222,6 +242,7 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
                       state={state}
                       selection={selection}
                       onSelect={select}
+                      onActivate={onActivate}
                     />
                   }
                 >
@@ -230,18 +251,25 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
                     state={state}
                     selection={selection}
                     onSelect={select}
+                    onActivate={onActivate}
                     flat={flatten}
                     reset={reset}
                     onLost={onLost}
                   />
                 </Suspense>
               ) : (
-                <SvgStage player={player} state={state} selection={selection} onSelect={select} />
+                <SvgStage
+                  player={player}
+                  state={state}
+                  selection={selection}
+                  onSelect={select}
+                  onActivate={onActivate}
+                />
               )}
             </div>
             {dial < 2.5 && (
               <div className={styles.sceneCaption}>
-                <span className={styles.sceneSmallLabel}>One whole. Equal parts.</span>
+                <span className={styles.sceneSmallLabel}>{caption}</span>
                 <Suspense fallback={<span>{current.latexAfter}</span>}>
                   <MathText
                     tex={spec.steps[state.stepIndex].latexAfter}
@@ -257,11 +285,13 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
             {dial > 2.3 && !blocked && (
               <pre className={styles.codeOverlay}>
                 <span>Python</span>
-                <code>{spec.code}</code>
+                <Suspense fallback={<code>{spec.code}</code>}>
+                  <CodeSnippet code={spec.code} selection={selection} onSelect={select} />
+                </Suspense>
               </pre>
             )}
             <Tethers selection={selection} player={player} />
-            <Mascot gaze={spec.steps[state.stepIndex].gaze} domain="math" />
+            <Mascot gaze={spec.steps[state.stepIndex].gaze} domain={domain} script={mascotScript} />
             {children}
             <div className={styles.stageHint}>
               <Icon name="Lightbulb" size={13} />
@@ -271,7 +301,12 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
             </div>
             <div className="sr-only">
               {Object.values(state.entities).map((entity) => (
-                <button key={entity.id} onClick={() => select(entity.tether ?? entity.id)}>
+                <button
+                  key={entity.id}
+                  onClick={() =>
+                    onActivate ? onActivate(entity.id) : select(entity.tether ?? entity.id)
+                  }
+                >
                   {entity.text?.plain ?? `${entity.color} ${entity.kind}`}
                 </button>
               ))}
@@ -432,11 +467,11 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
                         onMiss={() => {
                           emitMascot('wrong');
                           useGame.getState().queueChallengeEcho({
-                            skillId: 'demo-fraction',
+                            skillId: echoSkillId,
                             key: checkpointKey,
                             labId: useLesson.getState().labId,
                             seed: Date.now() % 100000,
-                            prompt: 'Count equal parts of a whole.',
+                            prompt: 'Return to this idea with a fresh problem.',
                           });
                         }}
                       />
@@ -457,6 +492,7 @@ export function Explainer({ spec, children }: { spec: SceneSpec; children?: Reac
                           <button onClick={() => setWhy(!why)}>
                             <Icon name="Lightbulb" size={13} /> Why?
                           </button>
+                          {onMethod && <button onClick={onMethod}>Show another method</button>}
                           <button
                             onClick={() => {
                               changeStep(i);

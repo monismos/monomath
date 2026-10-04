@@ -15,6 +15,12 @@ Open the URL printed by Vite. `npm run check` runs strict TypeScript, ESLint, un
 
 The app has no accounts, analytics, server, AI calls, or runtime CDN requests. Fonts are bundled. Settings and progress stay on your device. PWA installability requires HTTPS or localhost.
 
+Open **Fractions lab** for exact worked operations, three representations, predictions, scene-based proofs and a three-part Boss. The welcome Workshop keeps a short interactive introduction.
+
+The **Equation workspace** draws supported real curves, implicit planar relations, height surfaces and constant values. It includes parameter controls, viewport movement, point inspection, numerical slopes, tables and surface slices. General implicit 3D surfaces, arbitrary programs, inequalities and symbolic calculus are currently unsupported; the UI explains input limits. Discontinuities create gaps rather than false connecting strokes.
+
+**Philosophy** is your lesson authoring space: write Markdown, save drafts, read, search, add private reflections, and export/import lessons. Browser-authored lessons stay on that device. To include them in your GitHub deployment, export them and follow `src/content/philosophy/README.md` to put them in the source lesson list. Private reflections are excluded from lesson exports.
+
 ## Deploy
 
 `npm run build` produces static files in `dist/`. Routes use hash navigation, which works on Vercel, Netlify, and GitHub Pages without a rewrite. Vercel: build command `npm run build`, output `dist`. Netlify: the included netlify.toml sets the same values. GitHub Pages: upload the contents of dist; relative asset paths support a repository subdirectory.

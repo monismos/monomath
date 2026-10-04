@@ -15,7 +15,8 @@ export function PredictCard({
   const [attempted, setAttempted] = useState(false);
   const [hint, setHint] = useState(0);
   const check = () => {
-    const correct = predict.check(predict.kind === 'number' ? Number(answer) : answer);
+    const numeric = /^[-+]?\d+(?:\.\d+)?$/.test(answer.trim());
+    const correct = predict.check(predict.kind === 'number' && numeric ? Number(answer) : answer);
     setAttempted(true);
     if (correct) onCommit(true, hint > 0);
     else onMiss();

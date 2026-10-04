@@ -29,7 +29,7 @@ export class ScenePlayer {
         else this.state.entities[id] = value;
       });
       Object.keys(this.state.entities).forEach((id) => {
-        if (!next.entities[id]) delete this.state.entities[id];
+        if (!next.entities[id]) { this.state.entities[id].opacity = 0; delete this.state.entities[id]; }
       });
       this.listeners.forEach((callback) => callback());
       if (t < 1 && !document.hidden) this.frame = requestAnimationFrame(animate);

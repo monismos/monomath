@@ -29,6 +29,19 @@ describe('one-eyed guide contract', () => {
     expect(queue.claim(dialogueCooldown + 100)).toBe(false);
     expect(queue.next('correct', dialogueCooldown * 2)).toBe(dialogue.correct[2]);
   });
+  it('rotates lab dialogue without letting overrides bypass the global cooldown', () => {
+    const queue = new DialogueQueue();
+    const lines: [string, string, string] = [
+      'Keep the whole fixed.',
+      'Count each equal part.',
+      'Compare the exact amounts.',
+    ];
+    expect(queue.next('hint-1', 0, lines)).toBe(lines[0]);
+    expect(queue.next('wrong', 7999, lines)).toBeNull();
+    expect(queue.next('hint-1', 8000, lines)).toBe(lines[1]);
+    expect(queue.next('correct', 16000)).toBe(dialogue.correct[0]);
+    expect(queue.next('hint-1', 24000, lines)).toBe(lines[2]);
+  });
   it('uses bounded screen coordinates and semantic reactions', () => {
     expect(targetLook({ x: 0, y: 0 }, { x: 999, y: -999 })).toEqual({ x: 1, y: -1 });
     expect(targetLook({ x: 10, y: 10 }, { x: 10, y: 10 })).toEqual({ x: 0, y: 0 });

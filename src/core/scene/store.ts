@@ -5,6 +5,7 @@ export interface LessonContext {
   selection: string | null;
   problem: string;
   labId: string;
+  variant?: string;
 }
 export const useLesson = create<LessonContext & { set: (patch: Partial<LessonContext>) => void }>(
   (set) => ({

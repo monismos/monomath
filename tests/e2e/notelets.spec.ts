@@ -16,6 +16,7 @@ test('hold on a button saves a note without firing its click; context survives r
   await page.getByRole('button', { name: '2D', exact: true }).click();
   await page.getByRole('button', { name: 'Symbol', exact: true }).click();
   const button = page.getByRole('button', { name: 'Next step', exact: true });
+  await button.scrollIntoViewIfNeeded();
   const rect = (await button.boundingBox())!;
   if (isMobile) {
     await button.dispatchEvent('pointerdown', {
@@ -75,11 +76,14 @@ for (const count of [1, 2, 7, 40])
       },
       anchor: { type: 'screen', nx: 0.5, ny: 0.5 },
     }));
-    await page.getByRole('dialog',{name:'Your little collection of understanding'}).locator('input[type=file]').setInputFiles({
-      name: 'notes.json',
-      mimeType: 'application/json',
-      buffer: Buffer.from(JSON.stringify({ version: 1, notes })),
-    });
+    await page
+      .getByRole('dialog', { name: 'Your little collection of understanding' })
+      .locator('input[type=file]')
+      .setInputFiles({
+        name: 'notes.json',
+        mimeType: 'application/json',
+        buffer: Buffer.from(JSON.stringify({ version: 1, notes })),
+      });
     await expect(
       page.getByRole('region', { name: 'Notelet carousel' }).getByRole('article'),
     ).toHaveCount(Math.min(count, 15));

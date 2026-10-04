@@ -1,0 +1,32 @@
+.line {
+  display: block;
+  white-space: pre;
+}
+.number {
+  display: inline-block;
+  width: 2em;
+  color: #b5c9c1;
+  user-select: none;
+}
+.keyword {
+  color: #f9db79;
+}
+.numeric {
+  color: #d0b9ff;
+}
+.comment {
+  color: #bdd7cc;
+}
+.token {
+  font: inherit;
+  color: inherit;
+  min-height: 0;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+}
+.token[aria-pressed='true'] {
+  color: #10201c;
+  background: #ffe066;
+}

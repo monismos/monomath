@@ -12,6 +12,8 @@ import { stageHit, setStageHit, useStageHold } from '../core/notelets/stageHit';
 import { projectedEntities, anchorProjectors } from '../core/renderers/anchors';
 import { carouselRadius, visibleIndices, wrapIndex } from '../core/notelets/carousel';
 import { Dialog } from './Dialog';
+import { getGraphContext, getRenderedGraphContext } from '../core/graphing/workspaceStore';
+import { restoreNoteContext } from '../core/notelets/context';
 import { Icon } from './Icon';
 
 import styles from './Notelets.module.css';
@@ -19,6 +21,12 @@ function captureNote(x: number, y: number, target: Element | null): Notelet {
   const settings = useSettings.getState();
   const lesson = useLesson.getState();
   const stage = target?.closest('[data-anchor-id="stage"]');
+  const graph =
+    lesson.labId === 'equations'
+      ? stage
+        ? getRenderedGraphContext()
+        : getGraphContext()
+      : undefined;
   const entityId =
     target?.closest('[data-entity-id]')?.getAttribute('data-entity-id') ?? stageHit?.entityId;
   let localPoint = stageHit?.p;
@@ -63,8 +71,10 @@ function captureNote(x: number, y: number, target: Element | null): Notelet {
       step: lesson.step,
       dial: lesson.dial,
       selection: lesson.selection,
-      problem: lesson.problem,
+      problem: graph?.source ?? lesson.problem,
       labId: lesson.labId,
+      variant: lesson.variant,
+      graph,
       route: location.hash.slice(1) || 'workshop',
       screen:
         target?.closest<HTMLElement>('dialog[data-screen]')?.dataset.screen ??
@@ -77,8 +87,8 @@ function captureNote(x: number, y: number, target: Element | null): Notelet {
       anchorId: target?.closest('[data-anchor-id]')?.getAttribute('data-anchor-id') ?? undefined,
       entityId: stage ? entityId : undefined,
       p: localPoint,
-      nx: x / innerWidth,
-      ny: y / innerHeight,
+      nx: Math.max(0, Math.min(1, x / innerWidth)),
+      ny: Math.max(0, Math.min(1, y / innerHeight)),
     },
   };
 }
@@ -409,6 +419,7 @@ export default function Notelets() {
                   (note.anchor.type !== 'world' ||
                     (note.context.step === lesson.step &&
                       note.context.problem === lesson.problem &&
+                      note.context.variant === lesson.variant &&
                       note.context.labId === lesson.labId)),
               )
               .map((note, i) => (
@@ -657,31 +668,7 @@ function Summary() {
       });
   }, [index, flat, view, settings.reducedMotion]);
   const move = (delta: number) => setActive(wrapIndex(index + delta, filtered.length));
-  const jump = (note: Notelet) => {
-    useLesson.getState().set({
-      step: note.context.step,
-      dial: note.context.dial,
-      selection: note.context.selection,
-      problem: note.context.problem,
-      labId: note.context.labId,
-    });
-    settings.set({ dimension: note.context.dimension, theme: note.context.theme });
-    location.hash = note.context.route;
-    useNotes.getState().set({ summary: false });
-    window.dispatchEvent(
-      new CustomEvent('monomath:context', { detail: { screen: note.context.screen } }),
-    );
-    setTimeout(
-      () =>
-        document
-          .querySelector(`[data-note-id="${CSS.escape(note.id)}"]`)
-          ?.animate(
-            [{ transform: 'scale(1)' }, { transform: 'scale(1.6)' }, { transform: 'scale(1)' }],
-            { duration: 1200 },
-          ),
-      300,
-    );
-  };
+  const jump = restoreNoteContext;
   return (
     <Dialog
       wide

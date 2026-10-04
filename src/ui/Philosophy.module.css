@@ -1,0 +1,694 @@
+.workspace {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+.heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.cue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--mat);
+  font-size: 13px;
+  margin-bottom: 9px;
+}
+.heading h1 {
+  font-size: 42px;
+  letter-spacing: -1.5px;
+  font-weight: 600;
+}
+.heading p {
+  font-size: 15px;
+  line-height: 1.5;
+  margin-top: 9px;
+  color: var(--muted);
+  max-width: 60ch;
+}
+.workspace button {
+  min-height: 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 10px 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 13px;
+}
+.workspace .primary {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+  font-weight: 700;
+}
+.heading > button {
+  margin-top: 25px;
+  white-space: nowrap;
+}
+.libraryTools {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.search {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  flex: 1;
+  min-width: 150px;
+  border: 1px solid var(--rule);
+  padding: 0 12px;
+  background: var(--surface);
+  border-radius: 8px;
+}
+.search input {
+  border: 0;
+  background: transparent;
+  min-width: 0;
+  width: 100%;
+  min-height: 44px;
+  color: var(--ink);
+}
+.search svg {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 27px;
+  align-items: start;
+}
+.library {
+  min-width: 0;
+}
+.libraryCount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 15px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.card {
+  border-left: 2px solid var(--rule);
+  margin: 0 0 12px;
+  padding-left: 12px;
+}
+.workspace .card button {
+  display: block;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  width: 100%;
+  padding: 12px 3px;
+}
+.card h2 {
+  font-size: 18px;
+  line-height: 1.25;
+  font-weight: 600;
+  word-break: break-word;
+}
+.card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+  margin-top: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card span {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 11px;
+}
+.card small {
+  display: block;
+  font-size: 11px;
+  margin-top: 5px;
+  color: var(--mat);
+  word-break: break-word;
+}
+.selected {
+  border-left-color: var(--mat);
+  background: color-mix(in srgb, var(--mat) 4%, transparent);
+}
+.page {
+  min-width: 0;
+  border: 1px solid var(--rule);
+  border-radius: 4px 18px 18px 4px;
+  background: var(--surface);
+  min-height: 560px;
+  overflow: hidden;
+}
+.empty {
+  padding: 70px 40px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 18px;
+}
+.paperMark {
+  width: 64px;
+  height: 72px;
+  background: color-mix(in srgb, var(--mat) 9%, var(--surface));
+  border: 1px solid var(--rule);
+  border-radius: 3px 15px 3px 3px;
+  display: grid;
+  place-items: center;
+  font: 500 39px var(--display);
+  color: var(--mat);
+  transform: rotate(-5deg);
+  margin: 0 0 4px;
+}
+.empty h2 {
+  font-size: 31px;
+  line-height: 1.1;
+  font-weight: 500;
+  max-width: 17ch;
+  letter-spacing: -0.7px;
+}
+.empty p {
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 15px;
+  max-width: 51ch;
+}
+.empty > span {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.reader {
+  padding: 38px 38px 0;
+}
+.readingMeta {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+.reader h2 {
+  font-size: 34px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  word-break: break-word;
+}
+.readerActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 21px 0 28px;
+}
+.workspace .readerActions button {
+  font-size: 11px;
+  padding-inline: 10px;
+}
+.question {
+  margin: 0 0 28px;
+  padding: 14px 0 14px 20px;
+  border-left: 3px solid var(--mat);
+  font: 500 20px/1.5 var(--display);
+}
+.prose {
+  line-height: 1.8;
+  font-size: 17px;
+  max-width: 70ch;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+.prose p {
+  margin-bottom: 20px;
+}
+.prose h2 {
+  font-size: 26px;
+  line-height: 1.3;
+  margin: 30px 0 15px;
+}
+.prose h3 {
+  font-size: 23px;
+  line-height: 1.3;
+  margin: 27px 0 13px;
+}
+.prose h4 {
+  font-family: var(--display);
+  font-size: 20px;
+  margin: 24px 0 12px;
+}
+.prose ul,
+.prose ol {
+  padding-left: 25px;
+  margin: 0 0 22px;
+}
+.prose li {
+  padding-left: 4px;
+  margin: 5px 0;
+}
+.prose blockquote {
+  margin: 15px 0 23px;
+  border-left: 2px solid var(--rule);
+  padding: 8px 0 8px 20px;
+  color: var(--muted);
+}
+.tags {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 29px 0 0;
+}
+.tags li {
+  padding: 5px 9px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.references {
+  margin-top: 32px;
+  border-top: 1px solid var(--rule);
+  padding-top: 23px;
+}
+.references h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+.references ul {
+  font-size: 13px;
+  line-height: 1.7;
+  padding-left: 20px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.references a {
+  display: inline;
+}
+.references a svg {
+  display: inline;
+  vertical-align: middle;
+}
+.reflection {
+  margin: 38px -38px 0;
+  padding: 27px 38px;
+  border-top: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--mat) 3%, var(--surface));
+}
+.reflection h3 {
+  font-size: 20px;
+  font-weight: 500;
+}
+.reflection p {
+  line-height: 1.5;
+  font-size: 13px;
+  color: var(--muted);
+  margin: 7px 0 16px;
+}
+.reflection textarea {
+  width: 100%;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  padding: 13px;
+  resize: vertical;
+  min-height: 130px;
+  line-height: 1.6;
+}
+.reflection > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+.reflection span {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.reflection button {
+  white-space: nowrap;
+}
+.editor {
+  padding: 28px;
+}
+.editorHeader {
+  margin-bottom: 22px;
+}
+.editorHeader h2 {
+  font-size: 25px;
+  font-weight: 500;
+}
+.editorHeader span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+.editor label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 19px;
+}
+.editor label > span {
+  font-weight: 400;
+  color: var(--muted);
+}
+.editor input,
+.editor textarea {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 11px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--ink);
+  line-height: 1.5;
+  font-weight: 400;
+}
+.editor input {
+  min-height: 44px;
+}
+.editor textarea {
+  resize: vertical;
+}
+.editor .bodyInput {
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+}
+.editor small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-top: 6px;
+  font-weight: 400;
+}
+.editorPair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.editorActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.footer {
+  border-top: 1px solid var(--rule);
+  margin-top: 30px;
+  padding-top: 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.footer p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.footer > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.file {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+.drafts {
+  border-top: 1px solid var(--rule);
+  margin-top: 25px;
+  padding-top: 18px;
+}
+.drafts h2 {
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.drafts > div {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.workspace .drafts button:first-child {
+  flex: 1;
+  display: block;
+  text-align: left;
+  border: 0;
+  background: none;
+  padding: 9px 0;
+  overflow-wrap: anywhere;
+}
+.drafts small {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.workspace .drafts button:last-child {
+  padding: 10px;
+  border: 0;
+  background: none;
+}
+.smallEmpty {
+  font-size: 13px;
+  color: var(--muted);
+  padding-block: 18px;
+}
+.smallEmpty button {
+  margin-top: 12px;
+}
+.warning {
+  padding: 13px 16px;
+  border: 1px solid #9e6700;
+  border-radius: 8px;
+  background: #fff0bc;
+  color: #463000;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  border-radius: 8px;
+  margin-bottom: 18px;
+  font-size: 13px;
+}
+.notice > span {
+  flex: 1;
+}
+.workspace .notice button:last-child {
+  border: 0;
+}
+.loading {
+  padding: 60px 25px;
+  color: var(--muted);
+}
+.confirm {
+  margin-top: 20px;
+  border: 2px solid var(--mat);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 22px;
+}
+.confirm h2 {
+  font-size: 20px;
+  overflow-wrap: anywhere;
+}
+.confirm p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 12px 0 18px;
+}
+.confirm label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.confirm input {
+  flex-shrink: 0;
+}
+.confirm > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 18px;
+}
+.workspace .danger {
+  background: #9e342c;
+  color: white;
+  border-color: #9e342c;
+}
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 210px minmax(0, 1fr);
+    gap: 18px;
+  }
+  .reader {
+    padding: 28px 24px 0;
+  }
+  .reflection {
+    margin-inline: -24px;
+    padding-inline: 24px;
+  }
+  .editor {
+    padding: 24px;
+  }
+}
+@media (max-width: 760px) {
+  .workspace {
+    padding-bottom: 30px;
+  }
+  .heading {
+    display: block;
+    margin-bottom: 20px;
+  }
+  .heading h1 {
+    font-size: 36px;
+  }
+  .heading p {
+    font-size: 14px;
+  }
+  .heading > button {
+    margin-top: 17px;
+  }
+  .libraryTools {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .search {
+    flex-basis: 100%;
+  }
+  .libraryTools > label:not(.search) {
+    flex: 1;
+    min-width: 125px;
+  }
+  .libraryTools select {
+    width: 100%;
+    font-size: 14px;
+    min-height: 44px;
+  }
+  .layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .library {
+    width: 100%;
+  }
+  .libraryCount {
+    padding-bottom: 8px;
+  }
+  .card {
+    margin-bottom: 8px;
+  }
+  .workspace .card button {
+    padding: 10px 3px;
+  }
+  .card h2 {
+    font-size: 18px;
+  }
+  .card p {
+    -webkit-line-clamp: 2;
+  }
+  .page {
+    width: 100%;
+    min-height: 430px;
+  }
+  .empty {
+    padding: 38px 23px;
+    gap: 17px;
+  }
+  .empty h2 {
+    font-size: 28px;
+  }
+  .empty p {
+    font-size: 14px;
+  }
+  .reader {
+    padding: 28px 21px 0;
+  }
+  .reader h2 {
+    font-size: 29px;
+  }
+  .readerActions {
+    gap: 7px;
+    margin-top: 18px;
+  }
+  .question {
+    font-size: 18px;
+    padding-left: 14px;
+  }
+  .prose {
+    font-size: 17px;
+  }
+  .reflection {
+    padding: 24px 21px;
+    margin-inline: -21px;
+  }
+  .reflection > div {
+    align-items: flex-start;
+  }
+  .editor {
+    padding: 22px 18px;
+  }
+  .editorHeader h2 {
+    font-size: 24px;
+  }
+  .editorPair {
+    display: block;
+  }
+  .editorActions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .editorActions button {
+    width: 100%;
+  }
+  .footer p {
+    align-items: flex-start;
+  }
+  .footer p svg {
+    flex-shrink: 0;
+  }
+  .footer button {
+    flex: 1;
+    font-size: 12px;
+  }
+  .notice {
+    flex-wrap: wrap;
+  }
+  .confirm {
+    padding: 18px;
+  }
+}

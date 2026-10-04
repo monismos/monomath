@@ -16,8 +16,13 @@ import { installProgressEvents } from './core/integration/progressEvents';
 import { restoreNoteContext } from './core/notelets/context';
 import Progress from './ui/Progress';
 import { useGame } from './core/gamification/store';
+import { LabBoundary } from './ui/LabBoundary';
 const Echoes = lazy(() => import('./ui/Echoes'));
 const TrophyShelf = lazy(() => import('./ui/TrophyShelf'));
+const Philosophy = lazy(() => import('./ui/Philosophy'));
+const EquationWorkspace = lazy(() => import('./ui/EquationWorkspace'));
+const FractionLab = lazy(() => import('./ui/FractionLab'));
+const Monomap = lazy(() => import('./ui/Monomap'));
 
 const domains = [
   { name: 'Mathematics', symbol: '∑', color: '#2F6BFF' },
@@ -60,7 +65,14 @@ function App() {
   };
   return (
     <div className={styles.app}>
-      <a className="skip-link" href="#main">
+      <a
+        className="skip-link"
+        href="#main"
+        onClick={(event) => {
+          event.preventDefault();
+          document.getElementById('main')?.focus();
+        }}
+      >
         Skip to workshop
       </a>
       <aside
@@ -110,6 +122,27 @@ function App() {
             <Icon name="Trophy" />
             Trophy shelf
           </button>
+          <button
+            onClick={() => navigate('equations')}
+            className={page === 'equations' ? styles.navActive : ''}
+          >
+            <Icon name="Grid2X2" />
+            Equation workspace
+          </button>
+          <button
+            onClick={() => navigate('philosophy')}
+            className={page === 'philosophy' ? styles.navActive : ''}
+          >
+            <Icon name="BookOpen" />
+            Philosophy
+          </button>
+          <button
+            onClick={() => navigate('fractions')}
+            className={page === 'fractions' ? styles.navActive : ''}
+          >
+            <Icon name="Layers" />
+            Fractions lab
+          </button>
         </nav>
         <div className={styles.railSection}>Explore a little</div>
         <div className={styles.domains}>
@@ -117,7 +150,7 @@ function App() {
             <div key={domain.name}>
               <span style={{ color: domain.color }}>{domain.symbol}</span>
               {domain.name}
-              <Icon name="LockKeyhole" size={13} />
+              {domain.name !== 'Mathematics' && <Icon name="LockKeyhole" size={13} />}
             </div>
           ))}
         </div>
@@ -163,7 +196,11 @@ function App() {
                   ? 'Trophy shelf'
                   : page === 'echoes'
                     ? 'Echoes'
-                    : 'Fractions'}
+                    : page === 'philosophy'
+                      ? 'Philosophy'
+                      : page === 'equations'
+                        ? 'Equation workspace'
+                        : 'Fractions'}
             </strong>
           </div>
           <div className={styles.topActions}>
@@ -195,7 +232,7 @@ function App() {
             </button>
           </div>
         </header>
-        <main id="main" className={styles.main}>
+        <main id="main" className={styles.main} tabIndex={-1}>
           {page === 'workshop' && <Onboarding />}
           <details className={styles.progressDrawer}>
             <summary>
@@ -221,65 +258,61 @@ function App() {
               }}
             />
           </details>
-          {page === 'echoes' ? (
-            <Suspense fallback={<p>Opening your Echoes…</p>}>
-              <Echoes
-                onJumpNote={(id) => {
-                  const note = useNotes.getState().notes.find((n) => n.id === id);
-                  if (note) restoreNoteContext(note);
-                }}
-              />
-            </Suspense>
-          ) : page === 'trophies' ? (
-            <Suspense fallback={<p>Opening your trophy shelf…</p>}>
-              <TrophyShelf />
-            </Suspense>
-          ) : page === 'map' ? (
-            <>
-              <div className={styles.pageTitle}>
-                <div>
-                  <h1>Your Monomap</h1>
-                  <p>One small discovery leads to another.</p>
-                </div>
-              </div>
-              <div className={styles.foundationMap}>
-                <div className={styles.mapLine} />
-                {domains.map((domain, index) => (
-                  <div
-                    key={domain.name}
-                    style={{ transform: `translate(${index % 2 ? 100 : -100}px, 0)` }}
-                  >
-                    <span style={{ color: domain.color }}>{domain.symbol}</span>
-                    <h3>{domain.name}</h3>
-                    <p>Coming soon</p>
-                  </div>
-                ))}
-              </div>
-            </>
-          ) : (
-            <>
-              <div className={styles.pageTitle}>
-                <div>
-                  <div className={styles.topicLabel}>
-                    <span>◒</span> Mathematics <Icon name="ChevronRight" size={13} /> Parts of a
-                    whole
-                  </div>
-                  <h1>Small pieces. Big picture.</h1>
-                  <p>Start with something you can see. Let the symbols follow.</p>
-                </div>
-                <span className={styles.demoBadge}>
-                  <Icon name="Sparkles" size={15} /> Live demo
-                </span>
-              </div>
-              <Suspense
-                fallback={
-                  <div className={styles.foundationBench} aria-label="Loading your workbench" />
-                }
-              >
-                <Workshop />
+          <LabBoundary key={page}>
+            {page === 'philosophy' ? (
+              <Suspense fallback={<p>Opening your lessons…</p>}>
+                <Philosophy />
               </Suspense>
-            </>
-          )}
+            ) : page === 'equations' ? (
+              <Suspense fallback={<p>Opening the graph workspace…</p>}>
+                <EquationWorkspace />
+              </Suspense>
+            ) : page === 'fractions' ? (
+              <Suspense fallback={<p>Opening Fractions…</p>}>
+                <FractionLab />
+              </Suspense>
+            ) : page === 'echoes' ? (
+              <Suspense fallback={<p>Opening your Echoes…</p>}>
+                <Echoes
+                  onJumpNote={(id) => {
+                    const note = useNotes.getState().notes.find((n) => n.id === id);
+                    if (note) restoreNoteContext(note);
+                  }}
+                />
+              </Suspense>
+            ) : page === 'trophies' ? (
+              <Suspense fallback={<p>Opening your trophy shelf…</p>}>
+                <TrophyShelf />
+              </Suspense>
+            ) : page === 'map' ? (
+              <Suspense fallback={<p>Opening your Monomap…</p>}>
+                <Monomap />
+              </Suspense>
+            ) : (
+              <>
+                <div className={styles.pageTitle}>
+                  <div>
+                    <div className={styles.topicLabel}>
+                      <span>◒</span> Mathematics <Icon name="ChevronRight" size={13} /> Parts of a
+                      whole
+                    </div>
+                    <h1>Small pieces. Big picture.</h1>
+                    <p>Start with something you can see. Let the symbols follow.</p>
+                  </div>
+                  <span className={styles.demoBadge}>
+                    <Icon name="Sparkles" size={15} /> Live demo
+                  </span>
+                </div>
+                <Suspense
+                  fallback={
+                    <div className={styles.foundationBench} aria-label="Loading your workbench" />
+                  }
+                >
+                  <Workshop />
+                </Suspense>
+              </>
+            )}
+          </LabBoundary>
         </main>
         <footer className={styles.footer}>
           <span>One idea. Many ways to see it.</span>
@@ -442,7 +475,11 @@ function App() {
             Use Tab to reach controls and arrow keys to move a slider. Your notes and preferences
             stay on this device.
           </p>
-          <p>The other labs are marked Coming soon while they are being built.</p>
+          <p>
+            Open the Fractions lab for worked problems and challenges. The equation workspace draws
+            supported real equations; Philosophy is a place to write your own lessons. Other
+            teaching labs are marked Coming soon on the Monomap.
+          </p>
         </Dialog>
       )}
     </div>

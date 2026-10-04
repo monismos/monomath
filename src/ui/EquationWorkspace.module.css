@@ -1,0 +1,384 @@
+.workspace {
+  display: grid;
+  gap: 22px;
+  max-width: 1160px;
+  margin: auto;
+  padding: 28px 36px 60px;
+  min-width: 0;
+}
+.heading {
+  display: grid;
+  gap: 9px;
+  max-width: 790px;
+}
+.heading > span {
+  font: 600 12px var(--code);
+  letter-spacing: 0.12em;
+  color: var(--mat);
+}
+.heading h1 {
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.05;
+}
+.heading p {
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 660px;
+}
+.workspace button {
+  min-height: 44px;
+  border: 1px solid var(--rule);
+  border-radius: 9px;
+  padding: 8px 13px;
+  background: var(--surface);
+}
+.workspace button:hover {
+  border-color: var(--accent);
+}
+.workspace input {
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 7px;
+  padding: 10px;
+  min-width: 0;
+  max-width: 100%;
+}
+.workspace input[type='range'] {
+  padding: 0;
+  border: 0;
+}
+.problem {
+  display: grid;
+  gap: 12px;
+  padding: 22px;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--mat);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.problem > label {
+  font-weight: bold;
+}
+.inputRow {
+  display: flex;
+  gap: 10px;
+}
+.inputRow input {
+  font: 18px var(--code);
+  flex: 1;
+  width: 100%;
+}
+.inputRow button {
+  background: var(--mat);
+  color: white;
+  white-space: nowrap;
+  border-color: var(--mat);
+}
+.problem p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.examples {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.examples button {
+  font: 12px var(--code);
+  padding: 6px 10px;
+}
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.options label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.notice,
+.error {
+  padding: 14px 18px;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  line-height: 1.5;
+}
+.error {
+  border-left-color: #bb4238;
+}
+.resultHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 42px;
+}
+.resultHeader > p {
+  font-size: 14px;
+  color: var(--muted);
+}
+.toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.dimension {
+  display: flex;
+  gap: 4px;
+  margin-right: auto;
+}
+.dimension button[aria-pressed='true'] {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.stage {
+  position: relative;
+  border: 1px solid var(--rule);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--mat);
+  height: clamp(300px, 41vw, 520px);
+}
+.plot {
+  height: 100%;
+  width: 100%;
+}
+.loading {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: white;
+  padding: 25px;
+}
+.caption {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-top: -12px;
+}
+.parameters {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 20px;
+  background: var(--surface);
+  min-width: 0;
+}
+.parameters legend {
+  font-family: var(--display);
+  font-size: 20px;
+  padding: 0 8px;
+}
+.parameters label {
+  display: grid;
+  grid-template-columns: 28px 1fr 110px;
+  align-items: center;
+  gap: 10px;
+}
+.parameters label > span {
+  font: 16px var(--code);
+}
+.parameters button {
+  justify-self: start;
+}
+.study {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.inspection,
+.pointTable {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--surface);
+  min-width: 0;
+}
+.study h2 {
+  font-size: 24px;
+}
+.study p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.inspection > label {
+  display: grid;
+  gap: 5px;
+}
+.inspection .numeric {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.numeric input {
+  width: 130px;
+}
+.readout {
+  font: 24px var(--code);
+  padding: 15px;
+  background: var(--paper);
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+.readout small {
+  display: block;
+  font:
+    14px 'Atkinson Hyperlegible',
+    sans-serif;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.inspection .checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.checkbox input {
+  flex-shrink: 0;
+}
+.pointTable table {
+  border-collapse: collapse;
+  width: 100%;
+  font: 14px var(--code);
+}
+.pointTable td,
+.pointTable th {
+  border-bottom: 1px solid var(--rule);
+  padding: 6px;
+  text-align: left;
+}
+.pointTable th button {
+  font: inherit;
+  min-height: 36px;
+  padding: 4px 8px;
+  border: 0;
+  background: transparent;
+}
+.bounds,
+.grammar {
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--surface);
+}
+.workspace summary {
+  cursor: pointer;
+  min-height: 28px;
+  font-weight: bold;
+}
+.bounds > div {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 14px 0;
+}
+.bounds label {
+  display: grid;
+  gap: 6px;
+  font: 13px var(--code);
+}
+.bounds input {
+  width: 130px;
+}
+.bounds p,
+.grammar p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-top: 10px;
+}
+.diagnostics {
+  border-left: 3px solid var(--rule);
+  padding-left: 16px;
+  display: grid;
+  gap: 8px;
+}
+.diagnostics p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+@media (max-width: 700px) {
+  .workspace {
+    padding: 24px 16px 45px;
+    gap: 18px;
+  }
+  .problem {
+    padding: 16px;
+  }
+  .inputRow {
+    flex-wrap: wrap;
+  }
+  .inputRow input {
+    font-size: 16px;
+  }
+  .inputRow button {
+    flex-shrink: 0;
+  }
+  .inputRow {
+    flex-wrap: nowrap;
+  }
+  .examples {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .examples button {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .options {
+    gap: 10px;
+  }
+  .options label {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .options select {
+    max-width: 215px;
+  }
+  .study {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .inspection,
+  .pointTable {
+    padding: 18px;
+  }
+  .toolbar {
+    gap: 5px;
+  }
+  .toolbar button {
+    padding: 7px 10px;
+  }
+  .dimension {
+    margin-right: 5px;
+  }
+  .stage {
+    height: 320px;
+  }
+  .parameters {
+    padding: 15px;
+  }
+  .parameters label {
+    grid-template-columns: 24px 1fr 83px;
+  }
+  .resultHeader {
+    display: grid;
+  }
+  .caption {
+    font-size: 12px;
+  }
+}

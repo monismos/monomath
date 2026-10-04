@@ -10,6 +10,12 @@ The app is static. Hash routes work under a GitHub Pages repository path. Vite b
 
 `useLesson` holds the current problem, lab, step, dial and selection. `Explainer` adds the transport, notebook, mobile sheet and Predict gate. A reveal checkpoint persists in the progress action ledger; a reload or a notelet Jump can restore a previously revealed frame. Watch credit requires every unblocked step to have been viewed, while replay cannot duplicate an award.
 
+Fractions has a closed exact rational solver, typed seeded challenge validators and a versioned bounded variant for shape, mode, seed, actual pieces and Boss phase. Both renderers support piece activation. Large block and pie groups use instancing while keeping individual ids, tethers and local anchor matrices.
+
+The equation workspace uses a separate `GraphSpec` shared by SVG and Three. A local worker parses with mathjs, rejects unsupported AST nodes, then interprets a small serializable numeric AST under operation and sampling budgets. Invalid real-domain samples become gaps. It returns numerical geometry and diagnostics; it does not claim general symbolic solving. A version-one graph context captures expression, interpretation, parameters, viewport, trace and slice in notelets.
+
+Philosophy uses validated typed lessons and a versioned IndexedDB workspace with draft/reflection journals. Safe Markdown is rendered as React elements. Exports contain public lesson fields; reflections remain private and local. Bundled source lessons merge with authored lessons and source tombstones. There is no server synchronization.
+
 ## Local persistence
 
 Settings and the validated version-one progress DTO use localStorage through Zustand. Notelets and individual drafts use IndexedDB through `idb`, with a memory fallback and a visible storage warning. The composer waits for note persistence and draft deletion before closing. Imports validate the complete consumed context before mutation. Raw JSON never replaces store methods.
@@ -24,4 +30,4 @@ The guide cast shares one procedural pose model in SVG and a small demand-driven
 
 ## Adding modules
 
-Finished labs will be registered as lazy typed modules. They must supply solvers, scene proof validators, worked examples, Predicts, Bridges, dialogue and tests. `docs/ADD_A_LAB.md` will document the verified Fractions experience. The graphing and authored Philosophy extensions remain tracked in `PLAN.md`; `docs/EQUATION_WORKSPACE.md` specifies the numeric graphing design.
+Finished labs are registered as lazy typed modules. They supply solvers, scene proof validators, worked examples, Predicts, Bridges, dialogue and tests. `docs/ADD_A_LAB.md` documents the verified Fractions experience and its unlock gate. `docs/EQUATION_WORKSPACE.md` specifies the separate numeric graphing design. The user workspaces are shipped; remaining teaching labs stay locked and tracked in `PLAN.md` and `CONTENT_MAP.md`.

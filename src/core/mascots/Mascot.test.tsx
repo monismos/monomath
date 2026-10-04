@@ -5,6 +5,8 @@ import { useSettings } from '../storage/settings';
 import { useLesson } from '../scene/store';
 import { projectedEntities } from '../renderers/anchors';
 import { useGame } from '../gamification/store';
+import * as guideEvents from './events';
+import type { MascotScript } from './dialogue/lines';
 afterEach(() => {
   cleanup();
   vi.useRealTimers();
@@ -12,6 +14,37 @@ afterEach(() => {
   projectedEntities.clear();
 });
 describe('guide interface', () => {
+  it('uses updated lab scripts without resetting cooldowns or resubscribing', () => {
+    useSettings.getState().set({ dimension: '2d', mascot: 'moni' });
+    let now = 0;
+    vi.spyOn(Date, 'now').mockImplementation(() => now);
+    const subscription = vi.spyOn(guideEvents, 'subscribeMascot');
+    const first: MascotScript = {
+      intro: ['One whole, many cuts.', 'Keep one whole.', 'Meet the parts.'],
+      correct: ['The pieces agree.', 'The amount is exact.', 'A visible connection.'],
+    };
+    const { rerender } = render(<Mascot script={first} />);
+    expect(screen.getByRole('status')).toHaveTextContent('One whole, many cuts.');
+    now = 7999;
+    act(() => guideEvents.emitMascot('correct'));
+    expect(screen.getByRole('status')).toHaveTextContent('One whole, many cuts.');
+    const second: MascotScript = {
+      ...first,
+      correct: ['A new exact connection.', 'Your new pieces agree.', 'The new amount matches.'],
+    };
+    rerender(<Mascot script={second} />);
+    now = 8000;
+    act(() => guideEvents.emitMascot('correct'));
+    expect(screen.getByRole('status')).toHaveTextContent('A new exact connection.');
+    rerender(<Mascot script={{ ...second }} />);
+    now = 8100;
+    act(() => guideEvents.emitMascot('correct'));
+    expect(screen.getByRole('status')).toHaveTextContent('A new exact connection.');
+    now = 16000;
+    act(() => guideEvents.emitMascot('correct'));
+    expect(screen.getByRole('status')).toHaveTextContent('Your new pieces agree.');
+    expect(subscription).toHaveBeenCalledOnce();
+  });
   it('renders exactly one SVG eye, switches domain and removes off rigs', () => {
     useSettings.getState().set({ dimension: '2d', mascot: 'auto' });
     const { container, rerender } = render(<Mascot domain="logic" />);

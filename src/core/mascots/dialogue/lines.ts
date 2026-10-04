@@ -1,5 +1,6 @@
 import type { Domain } from '../config';
 import type { MascotEvent } from '../events';
+export type MascotScript = Partial<Record<MascotEvent, [string, string, string]>>;
 export const dialogue: Record<MascotEvent, [string, string, string]> = {
   intro: [
     'Let’s find the idea inside the picture.',
@@ -103,10 +104,10 @@ export class DialogueQueue {
     this.last = now;
     return true;
   }
-  next(event: MascotEvent, now: number): string | null {
+  next(event: MascotEvent, now: number, lines?: [string, string, string]): string | null {
     if (!this.claim(now)) return null;
     const index = this.counts[event] ?? 0;
     this.counts[event] = index + 1;
-    return dialogue[event][index % 3];
+    return (lines ?? dialogue[event])[index % 3];
   }
 }
