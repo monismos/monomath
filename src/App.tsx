@@ -17,11 +17,13 @@ import { restoreNoteContext } from './core/notelets/context';
 import Progress from './ui/Progress';
 import { useGame } from './core/gamification/store';
 import { LabBoundary } from './ui/LabBoundary';
+import { features } from './config/features';
 const Echoes = lazy(() => import('./ui/Echoes'));
 const TrophyShelf = lazy(() => import('./ui/TrophyShelf'));
 const Philosophy = lazy(() => import('./ui/Philosophy'));
 const EquationWorkspace = lazy(() => import('./ui/EquationWorkspace'));
 const FractionLab = lazy(() => import('./ui/FractionLab'));
+const SetLab = lazy(() => import('./ui/SetLab'));
 const Monomap = lazy(() => import('./ui/Monomap'));
 
 const domains = [
@@ -143,6 +145,15 @@ function App() {
             <Icon name="Layers" />
             Fractions lab
           </button>
+          {features.sets && (
+            <button
+              onClick={() => navigate('sets')}
+              className={page === 'sets' ? styles.navActive : ''}
+            >
+              <Icon name="Network" />
+              Sets lab
+            </button>
+          )}
         </nav>
         <div className={styles.railSection}>Explore a little</div>
         <div className={styles.domains}>
@@ -200,7 +211,9 @@ function App() {
                       ? 'Philosophy'
                       : page === 'equations'
                         ? 'Equation workspace'
-                        : 'Fractions'}
+                        : page === 'sets'
+                          ? 'Sets'
+                          : 'Fractions'}
             </strong>
           </div>
           <div className={styles.topActions}>
@@ -270,6 +283,10 @@ function App() {
             ) : page === 'fractions' ? (
               <Suspense fallback={<p>Opening Fractions…</p>}>
                 <FractionLab />
+              </Suspense>
+            ) : page === 'sets' ? (
+              <Suspense fallback={<p>Opening Sets…</p>}>
+                <SetLab />
               </Suspense>
             ) : page === 'echoes' ? (
               <Suspense fallback={<p>Opening your Echoes…</p>}>

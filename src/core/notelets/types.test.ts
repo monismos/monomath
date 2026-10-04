@@ -30,3 +30,20 @@ it('accepts notelet exports and rejects malformed or unbounded anchors', () => {
     validNote({ ...note, context: { ...note.context, route: 'https://untrusted.example' } }),
   ).toBe(false);
 });
+it('preserves the Sets route and its bounded manipulated lesson context', () => {
+  expect(
+    validNote({
+      ...note,
+      context: {
+        ...note.context,
+        route: 'sets',
+        labId: 'sets',
+        problem: 'A ∩ B',
+        variant: '{"view":"venn"}',
+      },
+    }),
+  ).toBe(true);
+  expect(
+    validNote({ ...note, context: { ...note.context, route: 'sets', variant: 'x'.repeat(10000) } }),
+  ).toBe(false);
+});

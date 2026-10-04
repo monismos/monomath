@@ -20,3 +20,4 @@
 - Echoes use local calendar days and preserve local wall-clock hour across DST; Good advances to 3/7/14 days and Again returns to tomorrow.
 - M3: completed Predict reveals persist separately from XP, so hinted reveals restore correctly after notelet Jump without awarding credit.
 - GitHub Pages uses relative assets, hash routes and an Actions workflow; the user will push and enable Pages in repository settings.
+- M5 Sets: use a finite, closed parser over U with exact membership operations; render SQL and Python as curated descriptions with shared token bindings, and keep complements relative to the displayed universe.

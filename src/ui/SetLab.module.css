@@ -1,0 +1,54 @@
+.lab { max-width: 1180px; margin: 0 auto; padding: 12px 0 48px; color: var(--ink, #10201c); }
+.heading { display: grid; gap: 8px; margin: 8px 0 18px; }
+.heading > span { color: var(--accent, #2f6bff); font-size: .82rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.heading h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1; }
+.heading p { margin: 0; color: var(--muted, #53635e); }
+.toolbar, .method, .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.toolbar { justify-content: space-between; margin: 14px 0; }
+.toolbar > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.toolbar button, .method button, .actions button, .subsets button, .bridges button { min-height: 42px; border: 1px solid color-mix(in srgb, var(--ink, #10201c) 18%, transparent); border-radius: 999px; padding: 8px 14px; background: var(--paper, #fff); color: inherit; cursor: pointer; }
+.toolbar button[aria-pressed=true], .method button[aria-pressed=true], .subsets button[aria-pressed=true] { background: var(--ink, #10201c); color: var(--paper, #fff); }
+.proof, .scope, .bridges { margin-top: 18px; padding: 18px; border: 1px solid color-mix(in srgb, var(--ink, #10201c) 15%, transparent); border-radius: 18px; background: color-mix(in srgb, var(--paper, #fff) 92%, var(--accent, #2f6bff)); }
+.proof h2, .bridges h2 { margin: 0 0 8px; font-size: 1.2rem; }
+.scope summary, .bridges summary { cursor: pointer; font-weight: 700; }
+.scope form { display: grid; gap: 12px; margin-top: 12px; }
+.scope form > div { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.scope label, .method label, .proof > label { display: grid; gap: 5px; font-weight: 650; }
+.scope input, .method select, .proof input, .proof select { min-height: 42px; border: 1px solid color-mix(in srgb, var(--ink, #10201c) 24%, transparent); border-radius: 9px; padding: 8px 10px; font: inherit; background: var(--paper, #fff); color: inherit; }
+.method { margin: 14px 0; justify-content: space-between; }
+.board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 16px 0; }
+.board section { min-height: 112px; padding: 10px; border: 1px dashed color-mix(in srgb, var(--ink, #10201c) 26%, transparent); border-radius: 14px; background: color-mix(in srgb, var(--paper, #fff) 84%, var(--accent, #2f6bff)); }
+.board section[data-drag-over=true] { outline: 3px solid var(--accent, #2f6bff); }
+.board h3 { margin: 0 0 8px; font-size: .9rem; }
+.board section > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.token { min-width: 42px; min-height: 42px; border: 1px solid color-mix(in srgb, var(--ink, #10201c) 24%, transparent); border-radius: 50%; background: var(--paper, #fff); color: inherit; cursor: grab; font-weight: 700; touch-action: none; }
+.token:focus-visible { outline: 3px solid var(--accent, #2f6bff); outline-offset: 2px; }
+.dragGhost { position: fixed; z-index: 20; transform: translate(-50%, -50%); pointer-events: none; min-width: 42px; min-height: 42px; display: grid; place-items: center; border-radius: 50%; background: var(--ink, #10201c); color: var(--paper, #fff); font-weight: 700; }
+.tableWrap { overflow-x: auto; margin-top: 14px; }
+.tableWrap table { width: 100%; border-collapse: collapse; min-width: 560px; }
+.tableWrap th, .tableWrap td { border-bottom: 1px solid color-mix(in srgb, var(--ink, #10201c) 13%, transparent); padding: 8px; text-align: center; }
+.tableWrap th:first-child, .tableWrap td:first-child { text-align: left; }
+.tableWrap input { width: 20px; height: 20px; accent-color: var(--accent, #2f6bff); }
+.pairGrid button { min-width: 88px; min-height: 42px; border: 0; border-radius: 7px; background: transparent; color: inherit; cursor: pointer; }
+.pairGrid button[aria-pressed=true] { background: color-mix(in srgb, var(--accent, #2f6bff) 20%, transparent); font-weight: 700; }
+.subsets { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin: 14px 0; border: 0; padding: 0; }
+.subsets legend { grid-column: 1 / -1; margin-bottom: 2px; font-weight: 700; }
+.subsets button { display: grid; gap: 4px; justify-items: center; }
+.subsets button span { font-size: .72rem; opacity: .76; }
+.proofHeading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 10px; }
+.proofHeading label { display: grid; gap: 5px; }
+.givens, .actual { color: var(--muted, #53635e); font-size: .92rem; }
+.hint { margin: 10px 0; padding: 10px 12px; border-radius: 10px; background: color-mix(in srgb, #ffe066 30%, var(--paper, #fff)); }
+.bridges { display: grid; gap: 10px; }
+.bridges details { padding: 10px 0; border-top: 1px solid color-mix(in srgb, var(--ink, #10201c) 12%, transparent); }
+.bridges pre { max-width: 100%; overflow: auto; padding: 12px; border-radius: 10px; background: #17221f; color: #ecf7ef; font-size: .8rem; }
+.comingSoon { color: var(--muted, #53635e); font-style: italic; }
+@media (max-width: 700px) {
+  .lab { padding-inline: 2px; }
+  .toolbar { align-items: stretch; }
+  .toolbar > div { width: 100%; }
+  .toolbar button { flex: 1 1 auto; }
+  .scope form > div { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .board section { min-height: 125px; }
+}

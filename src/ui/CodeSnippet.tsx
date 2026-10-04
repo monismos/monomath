@@ -4,10 +4,12 @@ export default function CodeSnippet({
   code,
   selection,
   onSelect,
+  bindings = { left: 'left', right: 'right', result: 'result' },
 }: {
   code: string;
   selection: string | null;
   onSelect: (id: string | null) => void;
+  bindings?: Record<string, string>;
 }) {
   return (
     <code>
@@ -15,18 +17,16 @@ export default function CodeSnippet({
         <span className={styles.line} key={index}>
           <span className={styles.number}>{index + 1}</span>
           {line
-            .split(
-              /(#[^\n]*|\b(?:from|import|print|return|for|in|if|else|def)\b|\b\d+\b|\b(?:left|right|result)\b)/g,
-            )
+            .split(/(#[^\n]*|--[^\n]*|"[^"]*"|'[^']*'|\b[A-Za-z_][A-Za-z0-9_]*\b|\b\d+\b)/g)
             .map((part, i) =>
-              ['left', 'right', 'result'].includes(part) ? (
+              Object.hasOwn(bindings, part) ? (
                 <button
                   key={i}
-                  className={`tk-${part} ${styles.token}`}
-                  aria-pressed={selection === part}
-                  onPointerEnter={() => onSelect(part)}
+                  className={`tk-${bindings[part]} ${styles.token}`}
+                  aria-pressed={selection === bindings[part]}
+                  onPointerEnter={() => onSelect(bindings[part])}
                   onPointerLeave={() => onSelect(null)}
-                  onClick={() => onSelect(part)}
+                  onClick={() => onSelect(bindings[part])}
                 >
                   {part}
                 </button>
@@ -34,11 +34,13 @@ export default function CodeSnippet({
                 <span
                   key={i}
                   className={
-                    part.startsWith('#')
+                    part.startsWith('#') || part.startsWith('--')
                       ? styles.comment
                       : /^\d+$/.test(part)
                         ? styles.numeric
-                        : /^(from|import|print|return|for|in|if|else|def)$/.test(part)
+                        : /^(from|import|print|return|for|in|if|else|def|select|distinct|union|intersect|except|cross|join|where|as|order|by|group|sum|and|or|not|true|false)$/.test(
+                              part.toLowerCase(),
+                            )
                           ? styles.keyword
                           : undefined
                   }

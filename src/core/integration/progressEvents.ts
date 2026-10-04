@@ -9,9 +9,13 @@ import { levelForXP } from '../gamification/logic';
 let reminded = false;
 export function installProgressEvents() {
   let disposeFractions: (() => void) | undefined;
+  let disposeSets: (() => void) | undefined;
   let active = true;
   import('../../labs/math/fractions/echo').then((module) => {
     if (active) disposeFractions = module.installFractionEchoes();
+  });
+  import('../../labs/math/sets/echo').then((module) => {
+    if (active) disposeSets = module.installSetsEchoes();
   });
   registerEchoProvider('demo-fraction', (seed) => {
     const denominator = 4 + (seed % 5);
@@ -74,6 +78,7 @@ export function installProgressEvents() {
   return () => {
     active = false;
     disposeFractions?.();
+    disposeSets?.();
     unsubscribe();
     settingsChanged();
     gameChanged();

@@ -62,6 +62,8 @@ export interface SceneSpec {
   entities: Entity[];
   steps: Step[];
   code: string;
+  codeLanguage?: string;
+  codeBindings?: Record<string, string>;
 }
 export interface ResolvedState {
   entities: Record<string, Entity>;

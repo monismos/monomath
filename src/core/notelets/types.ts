@@ -49,9 +49,16 @@ export function validNote(value: unknown): value is Notelet {
     Number.isFinite(n.createdAt) &&
     Number.isFinite(n.updatedAt) &&
     !!n.context &&
-    ['workshop', 'fractions', 'map', 'trophies', 'echoes', 'philosophy', 'equations'].includes(
-      n.context.route,
-    ) &&
+    [
+      'workshop',
+      'fractions',
+      'sets',
+      'map',
+      'trophies',
+      'echoes',
+      'philosophy',
+      'equations',
+    ].includes(n.context.route) &&
     typeof n.context.problem === 'string' &&
     typeof n.context.labId === 'string' &&
     typeof n.context.screen === 'string' &&

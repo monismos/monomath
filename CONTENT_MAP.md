@@ -6,7 +6,7 @@ This file describes shipped behavior, not the product backlog as if it were comp
 | ------------------------------------- | ---------------------------------- | ------------------------------------------------------------------- |
 | Hello Blocks / Fractions introduction | Verified M1–M3                     | Opens the full Fractions lab through navigation                     |
 | Fractions and parts of a whole        | Verified M4 locally                | Sets, Functions, Summation (locked); Equation workspace (available) |
-| Sets                                  | Coming soon, M5 first              | Logic, SQL, Functions, Fractions                                    |
+| Sets                                  | Verified M5 locally                | Logic, SQL, Functions, Fractions                                    |
 | Propositional logic                   | Coming soon                        | Sets, Programming                                                   |
 | Σ Summation                           | Coming soon                        | Fractions, Functions, Loops, Distributions                          |
 | Matrices and transformations          | Coming soon                        | Functions, Linear systems, Vectors                                  |
@@ -18,7 +18,7 @@ This file describes shipped behavior, not the product backlog as if it were comp
 | Equation workspace (user addition)    | Verified desktop/mobile acceptance | Fractions → constant value or function                              |
 | Philosophy authoring (user addition)  | Verified desktop/mobile acceptance | Author-defined references                                           |
 
-The equation workspace supports bounded real curves, implicit planar relations, height surfaces, constants and up to four parameters. It provides numerical views, not a general symbolic solver. It does not complete the Functions teaching lab's Riemann rectangles, factoring or integral explainers. Philosophy starts empty so Airator can author the lessons; private reflections are never exported with public lessons.
+Sets accepts bounded finite expressions and set-builder predicates, with Venn/Euler, sieve, power-set and ordered-pair/function views. Its code Bridge is curated Python/SQL and never executes learner input. The equation workspace supports bounded real curves, implicit planar relations, height surfaces, constants and up to four parameters. It provides numerical views, not a general symbolic solver. It does not complete the Functions teaching lab's Riemann rectangles, factoring or integral explainers. Philosophy starts empty so Airator can author the lessons; private reflections are never exported with public lessons.
 
 ## Remaining SHOULD labs
 

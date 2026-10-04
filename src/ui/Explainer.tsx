@@ -284,9 +284,14 @@ export function Explainer({
             )}
             {dial > 2.3 && !blocked && (
               <pre className={styles.codeOverlay}>
-                <span>Python</span>
+                <span>{spec.codeLanguage ?? 'Python'}</span>
                 <Suspense fallback={<code>{spec.code}</code>}>
-                  <CodeSnippet code={spec.code} selection={selection} onSelect={select} />
+                  <CodeSnippet
+                    code={spec.code}
+                    selection={selection}
+                    onSelect={select}
+                    bindings={spec.codeBindings}
+                  />
                 </Suspense>
               </pre>
             )}
