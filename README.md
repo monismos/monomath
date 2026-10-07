@@ -1,6 +1,6 @@
 # Monomath
 
-See it, touch it, then read it. Monomath is a local learning workshop for mathematics, logic, statistics, physics, and programming. The complete product specification is in [docs/BRIEF.md](docs/BRIEF.md); the build status is in [PLAN.md](PLAN.md).
+See it, click it, then read it. Monomath is a local learning workshop for mathematics, logic, statistics, physics, and programming. The complete product specification is in [docs/BRIEF.md](docs/BRIEF.md); the build status is in [PLAN.md](PLAN.md).
 
 Website: [Monomath](https://monismos.github.io/monomath/). Source: [monismos/monomath](https://github.com/monismos/monomath).
 
